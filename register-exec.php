@@ -92,14 +92,7 @@
 	}
 
 	//Create INSERT query
-	$qry = "INSERT INTO members(firstname, lastname, email, login, passwd) VALUES('$fname','$lname','$email','$login','".md5($_POST['password'])."')";
+	$qry = "INSERT INTO members(firstname, lastname, email, username, password) VALUES('$fname','$lname','$email','$login','".md5($_POST['password'])."')";
 	$result = @mysqli_query($link, $qry);
 	
-	//Check whether the query was successful or not
-	if($result) {
-		header("location: register-success.php");
-		exit();
-	}else {
-		die("Query failed");
-	}
 ?>
