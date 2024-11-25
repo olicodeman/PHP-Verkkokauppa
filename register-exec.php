@@ -83,7 +83,7 @@
 		$result = mysqli_query($link, $qry);
 		if($result) {
 			if(mysqli_num_rows($result) > 0) {
-				$errmsg_arr[] = 'Login ID already in use';
+				$errmsg_arr[] = '<p style="text-align: center;">Tili tällä käyttäjätunnuksella on jo olemassa.<p>';
 				$errflag = true;
 			}
 			@mysqli_free_result($result);

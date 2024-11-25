@@ -9,9 +9,9 @@
 ?>
 
 <body>
-<h1>Logout </h1>
+<h1 style="text-align: center;">Logout</h1>
 <p align="center">&nbsp;</p>
-<h4 align="center" class="err">Sinut on kirjauduttu ulos.</h4>
+<h4 align="center" class="err" style="color: white;">Sinut on kirjauduttu ulos.</h4>
 <p align="center">Kirjaudu sisään painamalla <a href="index.php?page=login-form">tästä</a></p>
 </body>
 </html>
