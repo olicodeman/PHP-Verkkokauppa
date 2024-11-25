@@ -8,6 +8,7 @@
 </head>
 <body>
     <?php
+    // Navigointi scripti
         $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success");
         $page = "etusivu";
         if(isset($_GET['page']))
@@ -26,6 +27,7 @@
     
 
     <?php
+    // Navigointi scripti
         $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success");
         $page = "etusivu";
         if(isset($_GET['page']))

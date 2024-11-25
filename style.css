@@ -17,6 +17,8 @@ form{
     border-radius: 10%;
     border-style: outset;
     border-color: whitesmoke;
+    padding-top: 25px;
+    margin-top: 75px;
 }
 .textfield {
     background-color:rgb(240, 240, 255);
@@ -28,6 +30,9 @@ h1{
     font-size: 3vw;
     color: white;
    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+p, b {
+    color: white;
 }
 
 /*NavBar Tyyli */
