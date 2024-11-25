@@ -13,12 +13,17 @@
         if(isset($_GET['page']))
             $page = $_GET['page'];
     ?>
-    <ul style="display: flex; gap: 30px;">
+    <!-- Navigointi valikko, joka muutuu pienellä näytöllä -->
+    <nav class="navbar">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
         <li><a href="index.php?page=etusivu">Etusivu</a></li>
         <li><a href="index.php?page=profiili">Profiili</a></li>
         <li><a href="index.php?page=login-form">Kirjaudu sisään</a></li>
         <li><a href="index.php?page=register-form">Rekisteröidy</a></li>
     </ul>
+    </nav>
+    
 
     <?php
         $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success");
@@ -34,5 +39,13 @@
                 include("error.php");
             }
     ?>
+
+    <!-- Navigointi valikkon script toiminta pienellä näytöllä -->
+<script>
+        function toggleMenu() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('hidden');
+    }
+    </script>
 </body>
 </html>
