@@ -41,39 +41,39 @@
 	
 	//Input Validations
 	if($fname == '') {
-		$errmsg_arr[] = 'First name missing';
+		$errmsg_arr[] = '<p><b style="color: red;">*</b> Etunimi puuttuu</p>';
 		$errflag = true;
 	}
 	if($lname == '') {
-		$errmsg_arr[] = 'Last name missing';
+		$errmsg_arr[] = '<p><b style="color: red;">*</b> Sukunimi puuttuu</p>';
 		$errflag = true;
 	}
 	if($email == '') {
-		$errmsg_arr[] = 'Email missing';
+		$errmsg_arr[] = '<p><b style="color: red;">*</b> Sähköposti puuttuu</p>';
 		$errflag = true;
 	}
 	if($address == '') {
-		$errmsg_arr[] = 'Address missing';
+		$errmsg_arr[] = '<p><b style="color: red;">*</b> Osoite puuttuu</p>';
 		$errflag = true;
 	}
 	if($number == '') {
-		$errmsg_arr[] = 'Phone number missing';
+		$errmsg_arr[] = '<p><b style="color: red;">*</b> Puhelinnumero puuttuu</p>';
 		$errflag = true;
 	}
 	if($login == '') {
-		$errmsg_arr[] = 'Login ID missing';
+		$errmsg_arr[] = '<p><b style="color: red;">*</b> Käyttäjätunnus puuttuu</p>';
 		$errflag = true;
 	}
 	if($password == '') {
-		$errmsg_arr[] = 'Password missing';
+		$errmsg_arr[] = '<p><b style="color: red;">*</b> Salasana puuttuu</p>';
 		$errflag = true;
 	}
 	if($cpassword == '') {
-		$errmsg_arr[] = 'Confirm password missing';
+		$errmsg_arr[] = '<p><b style="color: red;">*</b> Salasanan varmistus puuttuu</p>';
 		$errflag = true;
 	}
 	if( strcmp($password, $cpassword) != 0 ) {
-		$errmsg_arr[] = 'Passwords do not match';
+		$errmsg_arr[] = '<p>Salansanat eivät ole samoja</p>';
 		$errflag = true;
 	}
 	
@@ -83,7 +83,7 @@
 		$result = mysqli_query($link, $qry);
 		if($result) {
 			if(mysqli_num_rows($result) > 0) {
-				$errmsg_arr[] = 'Login ID already in use';
+				$errmsg_arr[] = '<p style="text-align: center;">Tili tällä käyttäjätunnuksella on jo olemassa.<p>';
 				$errflag = true;
 			}
 			@mysqli_free_result($result);
