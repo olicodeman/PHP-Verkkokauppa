@@ -69,7 +69,7 @@
 	
 	//Check for duplicate login ID
 	if($login != '') {
-		$qry = "SELECT * FROM members WHERE login='$login'";
+		$qry = "SELECT * FROM Members WHERE username='$login'";
 		$result = mysqli_query($link, $qry);
 		if($result) {
 			if(mysqli_num_rows($result) > 0) {
@@ -92,7 +92,7 @@
 	}
 
 	//Create INSERT query
-	$qry = "INSERT INTO members(firstname, lastname, email, username, password) VALUES('$fname','$lname','$email','$login','".md5($_POST['password'])."')";
+	$qry = "INSERT INTO Members(firstname, lastname, email, username, password) VALUES('$fname','$lname','$email','$login','".md5($_POST['password'])."')";
 	$result = @mysqli_query($link, $qry);
 	
 ?>

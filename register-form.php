@@ -1,16 +1,6 @@
 <?php
 	session_start();
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Login Form</title>
-<link href="css.css" rel="stylesheet"/>
-<link href="loginmodule.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-<nav id="nav01"></nav>
 <?php
 	if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) >0 ) {
 		echo '<ul class="err">';
@@ -54,10 +44,6 @@
   </table>
 </form>
 <br>
-<p style="text-align: center;"><b>Already have an account?</b></p>
-<p style="text-align: center;"><a href="login-form.php">Click here</a> to login.</P>
+<p style="text-align: center;"><b>Onko tili jo olemassa?</b></p>
+<p style="text-align: center;"><a href="login-form.php">Kirjaudu sisään</a>
 
-<footer id="foot01"></footer>
-<script src="script.js"></script>
-</body>
-</html>
