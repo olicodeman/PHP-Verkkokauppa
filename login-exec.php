@@ -47,7 +47,7 @@
 	if($errflag) {
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
-		header("location: login-form.php");
+		header("location: index.php?page=login-form");
 		exit();
 	}
 	
@@ -64,14 +64,14 @@
 			$_SESSION['SESS_MEMBER_ID'] = $member['member_id'];
 			$_SESSION['SESS_FIRST_NAME'] = $member['firstname'];
 			$_SESSION['SESS_LAST_NAME'] = $member['lastname'];
-			$_SESSION['SESS_LOGIN'] = $member['login'];
+			$_SESSION['SESS_LOGIN'] = $member['username'];
 			$_SESSION['SESS_EMAIL'] = $member['email'];
 			session_write_close();
 			$login_name = $_SESSION['SESS_LOGIN'];
 			if ($login_name == 'admin') {
 				header("location: admin-index.php");
 			}else {
-				header("location: profiili.php");
+				header("location: index.php?page=profiili");
 				exit();
 			}
 		}else {

@@ -11,23 +11,31 @@
 		unset($_SESSION['ERRMSG_ARR']);
 	}
 ?>
-<form id="loginForm" name="loginForm" method="post" action="register-exec.php">
-  <table width="300" border="0" align="center" cellpadding="2" cellspacing="0">
+<form id="loginForm" name="loginForm" method="post" action="index.php?page=register-exec">
+  <table width="300" border="0" align="center" cellpadding="5" cellspacing="0">
     <tr>
-      <th>First Name </th>
+      <th>Etunimi</th>
       <td><input name="fname" type="text" class="textfield" id="fname" /></td>
     </tr>
     <tr>
-      <th>Last Name </th>
+      <th>Sukunimi</th>
       <td><input name="lname" type="text" class="textfield" id="lname" /></td>
     </tr>
     <tr>
-      <th>Email </th>
+      <th>Sähköpostiosoite</th>
       <td><input name="email" type="email" class="textfield" id="email" /></td>
     </tr>
     <tr>
-      <th width="124">Login</th>
+      <th width="124">Käyttäjätunnus</th>
       <td width="168"><input name="login" type="text" class="textfield" id="login" /></td>
+    </tr>
+    <tr>
+      <th width="124">Osoite</th>
+      <td width="168"><input name="address" type="text" class="textfield" id="login" /></td>
+    </tr>
+    <tr>
+      <th width="124">Puhelinnumero</th>
+      <td width="168"><input name="number" type="text" class="textfield" id="login" /></td>
     </tr>
     <tr>
       <th>Password</th>
@@ -45,5 +53,5 @@
 </form>
 <br>
 <p style="text-align: center;"><b>Onko tili jo olemassa?</b></p>
-<p style="text-align: center;"><a href="login-form.php">Kirjaudu sisään</a>
+<p style="text-align: center;"><a href="index.php?page=login-form">Kirjaudu sisään</a>
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 25.11.2024 klo 10:40
+-- Generation Time: 25.11.2024 klo 11:57
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,6 +32,8 @@ CREATE TABLE `members` (
   `firstname` varchar(50) NOT NULL,
   `lastname` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
+  `address` varchar(50) NOT NULL,
+  `phonenumber` varchar(20) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -40,8 +42,9 @@ CREATE TABLE `members` (
 -- Vedos taulusta `members`
 --
 
-INSERT INTO `members` (`member_id`, `firstname`, `lastname`, `email`, `username`, `password`) VALUES
-(1, 'Teppo', 'Testi', 'teppotesti@jokuemail.com', 'teppo69', 'b8d45b209303aee4e1006fc29e7c1b05');
+INSERT INTO `members` (`member_id`, `firstname`, `lastname`, `email`, `address`, `phonenumber`, `username`, `password`) VALUES
+(1, 'Teppo', 'Testi', 'teppotesti@jokuemail.com', 'jokukatu 5', '+123 45 67890', 'teppo69', 'b8d45b209303aee4e1006fc29e7c1b05'),
+(2, 'Tommy', 'Tester', 'tomtester@somethingmail.com', 'someplace street 12', '+987 65 43210', 'tomtesterXD55', 'cf9d344afc8a2061ce216ae59e691b9c');
 
 --
 -- Indexes for dumped tables
@@ -61,7 +64,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

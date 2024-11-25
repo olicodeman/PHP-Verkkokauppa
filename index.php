@@ -8,7 +8,7 @@
 </head>
 <body>
     <?php
-        $pages = array("etusivu", "profiili", "login-form", "register-form");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];
@@ -21,7 +21,7 @@
     </ul>
 
     <?php
-        $pages = array("etusivu", "profiili", "login-form", "register-form");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];

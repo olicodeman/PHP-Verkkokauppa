@@ -33,6 +33,8 @@
 	$fname = clean($link, $_POST['fname']);
 	$lname = clean($link, $_POST['lname']);
 	$email = clean($link, $_POST['email']);
+	$address = clean($link, $_POST['address']);
+	$number = clean($link, $_POST['number']);
 	$login = clean($link, $_POST['login']);
 	$password = clean($link, $_POST['password']);
 	$cpassword = clean($link, $_POST['cpassword']);
@@ -48,6 +50,14 @@
 	}
 	if($email == '') {
 		$errmsg_arr[] = 'Email missing';
+		$errflag = true;
+	}
+	if($address == '') {
+		$errmsg_arr[] = 'Address missing';
+		$errflag = true;
+	}
+	if($number == '') {
+		$errmsg_arr[] = 'Phone number missing';
 		$errflag = true;
 	}
 	if($login == '') {
@@ -87,12 +97,21 @@
 	if($errflag) {
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
-		header("location: register-form.php");
+		header("location: index.php?page=register-form");
 		exit();
 	}
 
 	//Create INSERT query
-	$qry = "INSERT INTO Members(firstname, lastname, email, username, password) VALUES('$fname','$lname','$email','$login','".md5($_POST['password'])."')";
+	$qry = "INSERT INTO Members(firstname, lastname, email, address, phonenumber, username, password) VALUES('$fname','$lname','$email', '$address', '$number', '$login','".md5($_POST['password'])."')";
 	$result = @mysqli_query($link, $qry);
+
+	//Check whether the query was successful or not
+	if($result) {
+		header("location: index.php?page=register-success");
+		exit();
+	}else {
+		die("Query failed");
+	}
+
 	
 ?>

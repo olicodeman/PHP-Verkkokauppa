@@ -20,7 +20,7 @@
 <div style="display: flex; justify-content: center;">
     <div style="text-align: center;">
         <p><b>Not a user yet?</b></p>
-        <p><a href="register-form.php">Click here</a> to create an account.</p>
+        <p><a href="index.php?page=register-form">Paina tästä</a>, jos haluat luoda tilin.</p>
     </div>
 </div>
 </body>
