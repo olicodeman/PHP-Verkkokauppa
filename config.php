@@ -1,6 +1,6 @@
 <?php
-    define('DB_HOST', 'geronimo');
-    define('DB_USER', 'sarria');
-    define('DB_PASSWORD', 's^^rij^rvi8097!');
-    define('DB_DATABASE', 'sarria');
+    define('DB_HOST', 'localhost');
+    define('DB_USER', 'root');
+    define('DB_PASSWORD', '');
+    define('DB_DATABASE', 'verkkokauppadb');
 ?>

@@ -52,7 +52,7 @@
 	}
 	
 	//Create query
-	$qry="SELECT * FROM members WHERE login='$login' AND passwd='".md5($_POST['password'])."'";
+	$qry="SELECT * FROM Members WHERE username='$login' AND password='".md5($_POST['password'])."'";
 	$result=mysqli_query($link, $qry);
 	
 	//Check whether the query was successful or not
@@ -71,7 +71,7 @@
 			if ($login_name == 'admin') {
 				header("location: admin-index.php");
 			}else {
-				header("location: member-index.php");
+				header("location: profiili.php");
 				exit();
 			}
 		}else {
