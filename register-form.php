@@ -50,8 +50,8 @@
       <td><input type="submit" name="Submit" value="Register" /></td>
     </tr>
   </table>
-</form>
-<br>
+  <br>
 <p style="text-align: center;"><b>Onko tili jo olemassa?</b></p>
 <p style="text-align: center;"><a href="index.php?page=login-form">Kirjaudu sisään</a>
+</form>
 
