@@ -24,55 +24,73 @@ border-style: groove;
 border-radius: 10%;
 }
 
-/*Index.php sivun linkkilaatikon tyylit */
-.linkit{  
-    list-style: none;
-    Display:flex;
-    justify-content: space-between;
-    gap:10px;
-    margin-right: 6%;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-}
-
-/*Index.php sivun linkkien tyylit */
-.linkit a{
-    text-align: center;
-    background-color:  rgb(45, 45, 102);
-    text-decoration: none;
-    color:  white;
-    font-weight: bold;
-    padding: 10px 15px;
-    border-radius: 8%;
-    transition: background-color 0.3s, color 0.3s; /*Hover efekti */
-    border: 2px solid  rgb(45, 45, 102);
-    max-width: 150px;
-    display: inline-block;
-    width: clamp(100px, 20%, 300px);
-    padding: clamp(10px, 2%, 20px);
-    font-size: clamp(14px, 1vw, 24px);
-}
-
- .linkit a:hover{
-    background-color:rgb(24, 24, 83) ;
-    color:  white;
- }
- .linkit a:active{ 
-    background-color: rgb(12, 12, 51);
-    color: black;
- }
-.linkForm{
-    height: fit-content;
-    background-color:   rgb(126, 126, 167);
-    max-width: 70%;
-    text-align: center;
-margin: 20% auto;
-padding: 20px;
-    border-radius: 10%;
-    border-color:  rgb(45, 45, 102);
-    box-shadow:  rgb(45, 45, 102);
-}
 h1{
     font-size: 3vw;
     color: white;
    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+/*NavBar Tyyli */
+.navbar{
+    background-color: rgb(45, 45, 102);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    z-index: 1000;
+}
+.nav-links{
+    list-style: none;
+    Display:flex;
+    gap:15px;
+}/*Piilottaa isoilla näytöillä pienelle näytölle tarkoitetut muutokset */
+.nav-links.hidden{
+    display: none;
+}
+.menu-icon {/* Näytetään pienellä näytöllä, voi avata navbarin. */
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    display: none; /* Näytetään vain pienillä näytöillä */
+}
+/* Navbar tekstit */
+.nav-links a {
+    text-align: center;
+    text-decoration: none;
+    color:  white;
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: bold;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 10px 15px;
+    border-radius: 5%;
+    transition: background-color 0.3s, color 0.3s; /*Hover efekti */
+}
+
+.nav-links a:hover{
+    background-color: rgb(65, 65, 143) ;
+    color: rgb(216, 239, 255);
+}
+/*Puhelimen näkymä, joka piilottaa navigointipalkin oikein näkymän perusteella */
+@media (max-width: 768px) {
+    .menu-icon {
+        display: block;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: rgb(45, 45, 102);
+        width: 100%;
+        padding: 20px 0;
+    }
+    .nav-links.hidden{
+        display: none;
+    }
+    .nav-links a{
+        padding: 15px 20px;
+        font-size: clamp(10px,4vw,20px);
+    }
 }
