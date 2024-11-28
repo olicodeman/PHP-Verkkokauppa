@@ -151,7 +151,7 @@
     <!-- Tummennettu tausta -->
     <div class="overlay" id="overlay" onclick="hidePopup()"></div>
     <div class="popup" id="popup">
-        <button class="close-btn" onclick="hidePopup()">×</button>
+        <button type="button" class="close-btn" onclick="hidePopup()">×</button>
         <img id="popup-img" src="" alt="Tuotteen kuva">
         <h2 id="popup-title"></h2>
         <p id="popup-description"></p>
