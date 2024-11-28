@@ -3,6 +3,10 @@ body {
     background-image: url('https://live.staticflickr.com/8230/8410882716_2604e5af6b_b.jpg');
 }
 
+a {
+    color: cyan;
+}
+
 /*Rekisteröinnin tyyli */
 th, b{
     color:white;
