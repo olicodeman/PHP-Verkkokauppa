@@ -25,4 +25,13 @@
 </div>
 </body>
 
+<?php
+session_start();
+
+if (isset($_SESSION['message'])) {
+  echo "<p style='color: red; text-align: center;'>" . $_SESSION['message'] . "</p>";
+  unset($_SESSION['message']);
+}
+?>
+
 

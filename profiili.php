@@ -23,17 +23,20 @@
 	}
 ?>
 
-<title>Profiili</title>
-</head>
+
 <body>
-<br>
-<h1>Tervetuloa <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?></h1>
-<a href="index.php?page=logout">Logout</a>
-<h2>Sinun tiedot:</h2>
-<p>Nimi: <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?> <?php echo htmlspecialchars($_SESSION['SESS_LAST_NAME']);?></p>
-<p>Sähköposti: <?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?></p>
-<p>Osoite: <?php echo htmlspecialchars($address); ?></p>
-<p>Puhelinnumero: <?php echo htmlspecialchars($phoneNumber); ?></p>
-<p>Käyttäjänimi: <?php echo htmlspecialchars($_SESSION['SESS_LOGIN']);?></p>
+<div style="text-align: center;">
+	<h1>Tervetuloa <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?></h1>
+	<a href="index.php?page=logout">Kirajudu ulos</a>
+	<h2 style="color: white;">Sinun tiedot:</h2>
+	<div class="profile-content-box">
+		<p>Nimi: <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?> <?php echo htmlspecialchars($_SESSION['SESS_LAST_NAME']);?></p>
+		<p>Sähköposti: <?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?></p>
+		<p>Osoite: <?php echo htmlspecialchars($address); ?></p>
+		<p>Puhelinnumero: <?php echo htmlspecialchars($phoneNumber); ?></p>
+		<p>Käyttäjänimi: <?php echo htmlspecialchars($_SESSION['SESS_LOGIN']);?></p>
+		<a class="edit-btn" href="index.php?page=user-edit">Muuta tietojasi</a>
+	</div>
+</div>
 </body>
-</html>
+

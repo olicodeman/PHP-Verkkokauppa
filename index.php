@@ -9,7 +9,7 @@
 <body>
     <?php
     // Navigointi scripti
-        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success", "user-edit");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];
@@ -22,13 +22,14 @@
         <li><a href="index.php?page=profiili">Profiili</a></li>
         <li><a href="index.php?page=login-form">Kirjaudu sisään</a></li>
         <li><a href="index.php?page=register-form">Rekisteröidy</a></li>
+        
     </ul>
     </nav>
     
 
     <?php
     // Navigointi scripti
-        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success", "user-edit");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];

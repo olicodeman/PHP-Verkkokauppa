@@ -75,8 +75,9 @@
 				exit();
 			}
 		}else {
-			//Login failed
-			header("location: login-failed.php");
+			$_SESSION['message'] = "Kirjautuminen epäonnistunut";
+			header("location: index.php?page=login-form");
+			echo "Kirjautuminen epäonnistunut";
 			exit();
 		}
 	}else {
