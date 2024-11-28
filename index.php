@@ -19,10 +19,10 @@
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
         <ul class="nav-links">
         <li><a href="index.php?page=etusivu">Etusivu</a></li>
+        <li><a href="index.php?page=tuoteet">Tuotteet</a></li>
         <li><a href="index.php?page=profiili">Profiili</a></li>
         <li><a href="index.php?page=login-form">Kirjaudu sisään</a></li>
         <li><a href="index.php?page=register-form">Rekisteröidy</a></li>
-        <li><a href="index.php?page=tuoteet">Tuotteet</a></li>
 
         
     </ul>
