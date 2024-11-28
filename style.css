@@ -4,7 +4,7 @@ body {
 }
 
 a {
-    color: cyan;
+    color: darkcyan;
 }
 
 /*Rekisteröinnin tyyli */
@@ -86,6 +86,44 @@ p, b {
 .nav-links a:hover{
     background-color: rgb(65, 65, 143) ;
     color: rgb(216, 239, 255);
+}
+.edit-btn {
+    background-color: darkslateblue;
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in;
+    display: inline-block;
+}
+.edit-btn:hover {
+    transform: scale(1.1); /* Hover effect */
+}
+.edit-form {
+    max-width: 400px; 
+    margin: 20px auto; 
+    padding: 20px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px;
+}
+.edit-form-input {
+    width: 100%; 
+    padding: 8px; 
+    padding-right: 0px; 
+    margin-top: 5px; 
+    border: 1px solid#ccc; 
+    border-radius: 4px;
+}
+.profile-content-box {
+    background-color: white; 
+    border-radius: 10px;
+    padding: 15px; 
+    max-width: 500px; 
+    margin: 20px auto; 
+    box-sizing: border-box;
+}
+.profile-content-box p {
+    color: black;
 }
 /*Puhelimen näkymä, joka piilottaa navigointipalkin oikein näkymän perusteella */
 @media (max-width: 768px) {

@@ -9,7 +9,11 @@
 <body>
     <?php
     // Navigointi scripti
+<<<<<<< HEAD
         $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success", "tuoteet");
+=======
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success", "user-edit");
+>>>>>>> 2109bc9c950eeaeb9b9bf7b34fbf07089d0bd17e
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];
@@ -22,14 +26,22 @@
         <li><a href="index.php?page=profiili">Profiili</a></li>
         <li><a href="index.php?page=login-form">Kirjaudu sisään</a></li>
         <li><a href="index.php?page=register-form">Rekisteröidy</a></li>
+<<<<<<< HEAD
         <li><a href="index.php?page=tuoteet">Tuotteet</a></li>
+=======
+        
+>>>>>>> 2109bc9c950eeaeb9b9bf7b34fbf07089d0bd17e
     </ul>
     </nav>
     
 
     <?php
     // Navigointi scripti
+<<<<<<< HEAD
         $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success", "tuoteet");
+=======
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success", "user-edit");
+>>>>>>> 2109bc9c950eeaeb9b9bf7b34fbf07089d0bd17e
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];

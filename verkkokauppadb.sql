@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 28.11.2024 klo 07:30
+-- Generation Time: 28.11.2024 klo 11:31
 -- Palvelimen versio: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -43,8 +43,8 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`member_id`, `firstname`, `lastname`, `email`, `address`, `phonenumber`, `username`, `password`) VALUES
-(1, 'Teppo', 'Testi', 'teppotesti@jokuemail.com', 'jokukatu 5', '+123 45 67890', 'teppo69', 'b8d45b209303aee4e1006fc29e7c1b05'),
-(2, 'Tommy', 'Tester', 'tomtester@somethingmail.com', 'someplace street 12', '+987 65 43210', 'tomtesterXD55', 'cf9d344afc8a2061ce216ae59e691b9c'),
+(1, 'Teppo-sakari', 'Testiniemi', 'teppotestausta@jokuemail.com', 'jokukatu 9', '+123 45 67894', 'teppo5569', '827ccb0eea8a706c4c34a16891f84e7b'),
+(2, 'Thomasio', 'Testeringus', 'tomtester@somethinsmail.com', 'someplace street 15', '+123 456 7896', 'tomtesterXD56', 'cf9d344afc8a2061ce216ae59e691b9c'),
 (3, 'Rianna', 'Sarajärvi', 's3sari00@students.osao.fi', 'koti', '345', 'Rianna', '3881731093517b98cb695eed8fdaa004');
 
 --
