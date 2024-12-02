@@ -69,7 +69,7 @@
 			session_write_close();
 			$login_name = $_SESSION['SESS_LOGIN'];
 			if ($login_name == 'admin') {
-				header("location: admin-index.php");
+				header("location: admin-panel.php");
 			}else {
 				header("location: index.php?page=profiili");
 				exit();

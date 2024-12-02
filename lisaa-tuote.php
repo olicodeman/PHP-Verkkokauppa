@@ -1,3 +1,13 @@
+<?php  
+    require_once("auth.php");
+
+    $login = $_SESSION['SESS_LOGIN'];
+
+    if ($login !== 'admin') {
+        header('location: index.php?page=error');
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,6 +15,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lisää tuote</title>
+    <link href="style.css" rel="stylesheet">
 
     <style>
         .kategoria-nappi {
@@ -25,10 +36,12 @@
         }
 
         #uusi-kategoria {
-            margin-top: 20px;
+            margin: 20px auto 0; /* 20px top margin, auto left and right margins */
             display: flex;
             flex-direction: column;
             width: 200px;
+            text-align: center;
+            padding-bottom: 20px;
         }
 
         #uusi-kategoria input[type="text"] {
@@ -39,8 +52,9 @@
 </head>
 
 <body>
-    <div class="container">
+    <div style="color: white; text-align: center;">
         <h1>Lisää tuote</h1>
+        <a href="admin-panel.php">Takaisin</a> | <a href="index.php?page=logout">Kirjaudu ulos</a>
         <?php
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $host = 'localhost';
@@ -82,7 +96,6 @@
         }
         ?>
         <form action="" method="POST">
-
             <button type="submit">Lisää Tuote</button>
 
             <label for="nimi">Tuotteen nimi:</label>
@@ -112,7 +125,6 @@
             </select>
         </form>
     </div>
-
 
 
 
