@@ -1,56 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lisää tuote</title>
+
     <style>
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input, select, textarea, button {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
+        .kategoria-nappi {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #f0f0f0;
             border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            background-color: #28a745;
-            color: white;
-            font-size: 16px;
-            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        button:hover {
-            background-color: #218838;
+        .kategoria-nappi.valittu {
+            background-color: #4CAF50;
+            /* Vihreä väri valitulle napille */
+            color: white;
         }
 
-        .success {
-            color: green;
-            font-weight: bold;
+        #uusi-kategoria {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            width: 200px;
         }
 
-        .error {
-            color: red;
-            font-weight: bold;
+        #uusi-kategoria input[type="text"] {
+            padding: 10px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Lisää tuote</h1>
@@ -64,9 +51,9 @@
 
             $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
             $options = [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //Helpottaa virheiden havaitsemisessa
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //vähentää tarpeetonta käsittelyä
+                PDO::ATTR_EMULATE_PREPARES => false, //suojataan sql-injektioilta
             ];
 
             try {
@@ -79,7 +66,7 @@
                 // Lisää tuote
                 $stmt = $pdo->prepare("INSERT INTO tuotteet (nimi, kuvaus, hinta) VALUES (?, ?, ?)");
                 $stmt->execute([$nimi, $kuvaus, $hinta]);
-                
+
                 $tuote_id = $pdo->lastInsertId();
 
                 // Lisää tuote_kategoria-linkit
@@ -96,8 +83,8 @@
         ?>
         <form action="" method="POST">
 
-        <button type="submit">Lisää Tuote</button>
-        
+            <button type="submit">Lisää Tuote</button>
+
             <label for="nimi">Tuotteen nimi:</label>
             <input type="text" id="nimi" name="nimi" required>
 
@@ -107,21 +94,28 @@
             <label for="hinta">Tuotteen Hinta (€):</label>
             <input type="number" id="hinta" name="hinta" step="0.01" required>
 
-            <label for="kategoriat">Valitse kategoria(t):</label>
-            <select id="kategoriat" name="kategoriat[]" multiple required>
-                <?php
-                try {
-                    $stmt = $pdo->query("SELECT * FROM kategoriat");
-                    $kategoriat = $stmt->fetchAll();
-                    foreach ($kategoriat as $kategoria) {
-                        echo '<option value="' . $kategoria['id'] . '">' . $kategoria['nimi'] . '</option>';
-                    }
-                } catch (PDOException $e) {
-                    echo '<p class="error">Virhe: ' . $e->getMessage() . '</p>';
-                }
-                ?>
+            <h2>Valitse kategoria</h2>
+            <div id="kategoriat">
+                <?php foreach ($kategoriat as $kategoria): ?>
+                    <button type="button" class="kategoria-nappi" data-id="<?= $kategoria['id'] ?>"
+                        onclick="toggleSelection(this)">
+                        <?= $kategoria['nimi'] ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+
+            <div id="uusi-kategoria">
+                <label for="uusi_kategoria">Lisää uusi kategoria</label>
+                <input type="text" id="uusi_kategoria" name="uusi_kategoria" placeholder="Kategorian nimi">
+                <button type="button" onclick="addCategory()">Lisää kategoria</button>
+            </div>
             </select>
         </form>
     </div>
+
+
+
+
 </body>
+
 </html>

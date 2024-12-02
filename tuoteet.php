@@ -151,7 +151,7 @@
     <!-- Tummennettu tausta -->
     <div class="overlay" id="overlay" onclick="hidePopup()"></div>
     <div class="popup" id="popup">
-        <button type="button" class="close-btn" onclick="hidePopup()">×</button>
+        <button type="button" class="close-btn" onclick="hidePopup(event)">×</button>
         <img id="popup-img" src="" alt="Tuotteen kuva">
         <h2 id="popup-title"></h2>
         <p id="popup-description"></p>
@@ -170,7 +170,11 @@
             document.getElementById('popup').classList.add('show');
             document.getElementById('overlay').classList.add('show');
         }
-    function hidePopup() {
+        //Estetään se ettei sivu ohjaannu etusivulle, kun suljetaan pop-up
+    function hidePopup(event) {
+        if(event) {
+            event.preventDefault(); 
+        }
       document.getElementById('popup').classList.remove  ('show');
       document.getElementById('overlay').classList.remove  ('show');
     }

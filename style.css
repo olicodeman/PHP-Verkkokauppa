@@ -18,7 +18,7 @@ form{
     max-width: 50%;
     text-align: center;
     margin-left: 25%;
-    border-radius: 10%;
+    border-radius: 2%;
     border-style: outset;
     border-color: whitesmoke;
     padding-top: 25px;
@@ -183,4 +183,115 @@ p, b {
     .error {
         color: red;
         font-weight: bold;
+    }
+
+    /* Pop-up-ikkuna css */
+    .popup {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        background: rgb(45, 45, 102) ;
+        color: white;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 90%;
+        padding: 20px;
+    }
+
+    .popup img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .popup h2 {
+        margin: 15px 0 10px;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .popup p {
+        text-align: center;
+        margin: 10px 0 20px;
+    }
+
+    .popup .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .popup .icon img {
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+    }
+
+    /* Rasti poistumiselle*/
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: white;
+        color: black;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Tummennettu tausta */
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 999;
+    }
+
+    .show {
+        display: block;
+    }
+    /* tuote ikkunan määritykset*/
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    .product {
+        cursor: pointer;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+        text-align: center;
+        background-color: #f9f9f9;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .product:hover {
+        transform: scale(1.05);
+    }
+
+    .product img {
+        width: 100%;
+        height: auto;
     }
