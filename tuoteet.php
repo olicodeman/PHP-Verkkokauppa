@@ -1,3 +1,28 @@
+<?php  
+    require_once("auth.php");
+    require_once('config.php');
+
+    try {
+        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_DATABASE . ";charset=utf8";
+        $pdo = new PDO($dsn, DB_USER, DB_PASSWORD);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 
+        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    } catch (PDOException $e) {
+        die('Database connection failed: ' . $e->getMessage());
+    }
+
+    // Haetaan tuotteet tietokannasta
+    try {
+        $stmt = $pdo->prepare("SELECT id, nimi, kuvaus, kuva, hinta FROM tuotteet");
+        $stmt->execute();
+        $products = $stmt->fetchAll();
+    } catch (PDOException $e) {
+        echo '<p class="error">Error fetching products: ' . $e->getMessage() . '</p>';
+        $products = [];
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -131,23 +156,18 @@
     <h1>Tervetuloa Kitchen Gadget tuote sivulle! Katsaise tuotteita ja osta!</h1>
 
     <form>
-        <!-- Tuoteruudukko -->
-        <div class="product-grid">
-            <div class="product" onclick="showPopup('Airfryer', 'Sinun PITÄÄ ostaa se! Hinta VAIN 1000€.', 'https://assets.architecturaldigest.in/photos/63cfc0821283a95e1e2c885f/3:2/w_1620,h_1080,c_limit/8%20kitchen%20gadgets%20to%20upgrade%20your%20cooking%20in%202023.jpg')">
-                <img src="https://assets.architecturaldigest.in/photos/63cfc0821283a95e1e2c885f/3:2/w_1620,h_1080,c_limit/8%20kitchen%20gadgets%20to%20upgrade%20your%20cooking%20in%202023.jpg" alt="Airfryer">
+    <!-- Tuoteruudukko -->
+    <div class="product-grid">
+        <?php foreach ($products as $product): ?>
+            <div class="product" onclick="showPopup('<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>')">
+                <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
+                <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
             </div>
-            <div class="product" onclick="showPopup('Blenderi', 'Täydellinen smootheille! Hinta: 150€.', 'https://id.sharp/sites/default/files/uploads/2021-10/shutterstock_1477498184.jpg')">
-                <img src="https://id.sharp/sites/default/files/uploads/2021-10/shutterstock_1477498184.jpg" alt="Blenderi">
-            </div>
-    <div class="product" onclick="showPopup ('Mikroaaltouuni', '1000 W Mikroaaltouuni vain meitä! Hintaan 1890,50€.', 'https://cdn.create.vista.com/api/media/small/487844826/stock-vector-illustration-realistic-silver-microwave-white-background')">
-        <img src="https://cdn.create.vista.com/api/media/small/487844826/stock-vector-illustration-realistic-silver-microwave-white-background" alt="Tuote kolme">
+        <?php endforeach; ?>
     </div>
-    <div class="product" onclick="showPopup ('Vatkain', 'Vatkain meiltä! Osta ja saat vatkata joka päivää ilman taukoa. Vain 500€', 'https://media.istockphoto.com/id/1056715638/fi/valokuva/kromimunan-vatkain.jpg?s=612x612&w=0&k=20&c=_6QgABwZRqYF99njOWlzIO0mIWHWkNaRkv59i8gBMhA=')">
-        <img src="https://media.istockphoto.com/id/1056715638/fi/valokuva/kromimunan-vatkain.jpg?s=612x612&w=0&k=20&c=_6QgABwZRqYF99njOWlzIO0mIWHWkNaRkv59i8gBMhA=" alt="Vatkain">
-    </div>
-    
-    </div>
-    
+</form>
+
+
     <!-- Tummennettu tausta -->
     <div class="overlay" id="overlay" onclick="hidePopup()"></div>
     <div class="popup" id="popup">
@@ -155,6 +175,8 @@
         <img id="popup-img" src="" alt="Tuotteen kuva">
         <h2 id="popup-title"></h2>
         <p id="popup-description"></p>
+        <p id="popup-price"></p>
+
         <div class="icon">
             <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin">
         </div>
@@ -163,13 +185,15 @@
     
     <!-- Script popupin toiminnalle, piilottaa ja näyttää-->
 <script>
-    function showPopup(title, description, imageUrl) {
-            document.getElementById('popup-title').textContent = title;
-            document.getElementById('popup-description').textContent = description;
-            document.getElementById('popup-img').src = imageUrl;
-            document.getElementById('popup').classList.add('show');
-            document.getElementById('overlay').classList.add('show');
-        }
+  function showPopup(title, description, imageUrl, price) {
+    document.getElementById('popup-title').textContent = title;
+    document.getElementById('popup-description').textContent = description;
+    document.getElementById('popup-img').src = imageUrl;
+    document.getElementById('popup-price').textContent = "Hinta: €" + parseFloat(price).toFixed(2);
+    document.getElementById('popup').classList.add('show');
+    document.getElementById('overlay').classList.add('show');
+}
+
         //Estetään se ettei sivu ohjaannu etusivulle, kun suljetaan pop-up
     function hidePopup(event) {
         if(event) {
