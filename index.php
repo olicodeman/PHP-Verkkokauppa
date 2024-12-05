@@ -8,30 +8,36 @@
 </head>
 <body>
     <?php
+        session_start();
+        $IsLoggedIn = $_SESSION['loggedin'] ?? false;
+        session_write_close();
+
     // Navigointi scripti
-        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success", "tuoteet", "user-edit");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];
     ?>
     <!-- Navigointi valikko, joka muutuu pienellä näytöllä -->
-    <nav class="navbar">
-        <div class="menu-icon" onclick="toggleMenu()">☰</div>
-        <ul class="nav-links">
+<nav class="navbar">
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <ul class="nav-links">
         <li><a href="index.php?page=etusivu">Etusivu</a></li>
         <li><a href="index.php?page=tuoteet">Tuotteet</a></li>
-        <li><a href="index.php?page=profiili">Profiili</a></li>
-        <li><a href="index.php?page=login-form">Kirjaudu sisään</a></li>
-        <li><a href="index.php?page=register-form">Rekisteröidy</a></li>
-
-        
+        <?php if ($IsLoggedIn): ?>
+            <li><a href="index.php?page=profiili">Profiili</a></li>
+            <li><a href="index.php?page=logout">Kirjaudu ulos</a></li>  
+        <?php else: ?>
+            <li><a href="index.php?page=login-form">Kirjaudu sisään</a></li>
+            <li><a href="index.php?page=register-form">Rekisteröidy</a></li>
+        <?php endif; ?>
     </ul>
-    </nav>
+</nav>
     
 
     <?php
     // Navigointi scripti
-        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-exec", "register-success", "tuoteet", "user-edit");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];

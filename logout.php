@@ -6,12 +6,8 @@
 	unset($_SESSION['SESS_MEMBER_ID']);
 	unset($_SESSION['SESS_FIRST_NAME']);
 	unset($_SESSION['SESS_LAST_NAME']);
-?>
+	session_destroy();
 
-<body>
-<h1 style="text-align: center;">Logout</h1>
-<p align="center">&nbsp;</p>
-<h4 align="center" class="err" style="color: white;">Sinut on kirjauduttu ulos.</h4>
-<p align="center">Kirjaudu sisään painamalla <a href="index.php?page=login-form">tästä</a></p>
-</body>
-</html>
+	header("Location: index.php");
+	exit();
+?>
