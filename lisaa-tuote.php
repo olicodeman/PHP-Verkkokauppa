@@ -1,16 +1,66 @@
 <?php  
     require_once("auth.php");
-
+    require_once('config.php');
+    
     $login = $_SESSION['SESS_LOGIN'];
-
     if ($login !== 'admin') {
         header('location: index.php?page=error');
         exit();
     }
+
+    // Create PDO connection
+    try {
+        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_DATABASE . ";charset=utf8"; // Correct DSN
+        $pdo = new PDO($dsn, DB_USER, DB_PASSWORD);
+        
+        // Set PDO attributes
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 
+        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    } catch (PDOException $e) {
+        // Handle database connection errors
+        die('Database connection failed: ' . $e->getMessage());
+    }
+
+    // Fetch categories from the database
+    try {
+        $stmt = $pdo->prepare("SELECT id, nimi FROM kategoriat");
+        $stmt->execute();
+        $kategoriat = $stmt->fetchAll();
+    } catch (PDOException $e) {
+        echo '<p class="error">Error fetching categories: ' . $e->getMessage() . '</p>';
+        $kategoriat = [];
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $nimi = $_POST['nimi'];
+        $kuvaus = $_POST['kuvaus'];
+        $hinta = $_POST['hinta'];
+        $kategoriat_selected = $_POST['kategoriat'];  // Get the selected categories
+
+        try {
+            // Insert product into the 'tuotteet' table
+            $stmt = $pdo->prepare("INSERT INTO tuotteet (nimi, kuvaus, hinta) VALUES (?, ?, ?)");
+            $stmt->execute([$nimi, $kuvaus, $hinta]);
+
+            $tuote_id = $pdo->lastInsertId();  // Get the last inserted product ID
+
+            // Insert product-category relationships if categories are selected
+            if (!empty($kategoriat_selected)) {
+                foreach ($kategoriat_selected as $kategoria_id) {
+                    $stmt = $pdo->prepare("INSERT INTO tuote_kategoria (tuote_id, kategoria_id) VALUES (?, ?)");
+                    $stmt->execute([$tuote_id, $kategoria_id]);
+                }
+            }
+
+            echo '<p class="success">Product added successfully!</p>';
+        } catch (PDOException $e) {
+            echo '<p class="error">Error: ' . $e->getMessage() . '</p>';
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,73 +80,16 @@
         }
 
         .kategoria-nappi.valittu {
-            background-color: #4CAF50;
-            /* Vihreä väri valitulle napille */
+            background-color: #4CAF50; /* Green for selected category */
             color: white;
-        }
-
-        #uusi-kategoria {
-            margin: 20px auto 0; /* 20px top margin, auto left and right margins */
-            display: flex;
-            flex-direction: column;
-            width: 200px;
-            text-align: center;
-            padding-bottom: 20px;
-        }
-
-        #uusi-kategoria input[type="text"] {
-            padding: 10px;
-            margin-bottom: 10px;
         }
     </style>
 </head>
-
 <body>
     <div style="color: white; text-align: center;">
         <h1>Lisää tuote</h1>
-        <a href="admin-panel.php">Takaisin</a> | <a href="index.php?page=logout">Kirjaudu ulos</a>
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $host = 'localhost';
-            $db = 'verkkokauppadb';
-            $user = 'root';
-            $pass = '';
-            $charset = 'utf8mb4';
-
-            $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-            $options = [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //Helpottaa virheiden havaitsemisessa
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //vähentää tarpeetonta käsittelyä
-                PDO::ATTR_EMULATE_PREPARES => false, //suojataan sql-injektioilta
-            ];
-
-            try {
-                $pdo = new PDO($dsn, $user, $pass, $options);
-                $nimi = $_POST['nimi'];
-                $kuvaus = $_POST['kuvaus'];
-                $hinta = $_POST['hinta'];
-                $kategoriat = $_POST['kategoriat'];
-
-                // Lisää tuote
-                $stmt = $pdo->prepare("INSERT INTO tuotteet (nimi, kuvaus, hinta) VALUES (?, ?, ?)");
-                $stmt->execute([$nimi, $kuvaus, $hinta]);
-
-                $tuote_id = $pdo->lastInsertId();
-
-                // Lisää tuote_kategoria-linkit
-                foreach ($kategoriat as $kategoria_id) {
-                    $stmt = $pdo->prepare("INSERT INTO tuote_kategoria (tuote_id, kategoria_id) VALUES (?, ?)");
-                    $stmt->execute([$tuote_id, $kategoria_id]);
-                }
-
-                echo '<p class="success">Lisäsit tuotteen onnistuneesti!</p>';
-            } catch (PDOException $e) {
-                echo '<p class="error">Virhe: ' . $e->getMessage() . '</p>';
-            }
-        }
-        ?>
+        <a href="admin-panel.php">Back</a> | <a href="index.php?page=logout">Logout</a>
         <form action="" method="POST">
-            <button type="submit">Lisää Tuote</button>
 
             <label for="nimi">Tuotteen nimi:</label>
             <input type="text" id="nimi" name="nimi" required>
@@ -109,25 +102,22 @@
 
             <h2>Valitse kategoria</h2>
             <div id="kategoriat">
-                <?php foreach ($kategoriat as $kategoria): ?>
-                    <button type="button" class="kategoria-nappi" data-id="<?= $kategoria['id'] ?>"
-                        onclick="toggleSelection(this)">
-                        <?= $kategoria['nimi'] ?>
-                    </button>
-                <?php endforeach; ?>
-            </div>
+                <?php if (!empty($kategoriat)):?>
+                    <?php foreach ($kategoriat as $kategoria): ?>
+                        <label>
+                            <input type="checkbox" name="kategoriat[]" value="<?= $kategoria['id'] ?>">
+                            <?= htmlspecialchars($kategoria['nimi']) ?>
+                        </label>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>Ei valittavia kategorioita</p>
+                <?php endif; ?>
 
-            <div id="uusi-kategoria">
-                <label for="uusi_kategoria">Lisää uusi kategoria</label>
-                <input type="text" id="uusi_kategoria" name="uusi_kategoria" placeholder="Kategorian nimi">
-                <button type="button" onclick="addCategory()">Lisää kategoria</button>
+                
+            <button type="submit">Lisää Tuote</button>
+            </form>
             </div>
-            </select>
         </form>
     </div>
-
-
-
 </body>
-
 </html>

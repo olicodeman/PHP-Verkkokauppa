@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 02.12.2024 klo 10:44
+-- Generation Time: 05.12.2024 klo 09:13
 -- Palvelimen versio: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -71,6 +71,27 @@ INSERT INTO `members` (`member_id`, `firstname`, `lastname`, `email`, `address`,
 -- --------------------------------------------------------
 
 --
+-- Rakenne taululle `tuote_kategoria`
+--
+
+CREATE TABLE `tuote_kategoria` (
+  `tuote_id` int(11) NOT NULL,
+  `kategoria_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Vedos taulusta `tuote_kategoria`
+--
+
+INSERT INTO `tuote_kategoria` (`tuote_id`, `kategoria_id`) VALUES
+(3, 1),
+(3, 2),
+(11, 1),
+(11, 2);
+
+-- --------------------------------------------------------
+
+--
 -- Rakenne taululle `tuotteet`
 --
 
@@ -80,6 +101,14 @@ CREATE TABLE `tuotteet` (
   `kuvaus` text DEFAULT NULL,
   `hinta` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Vedos taulusta `tuotteet`
+--
+
+INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`) VALUES
+(3, 'mikroaaltouuni', 'Mikroaltouuni vain sinulle!', 800.00),
+(11, 'mikroaaltouuni', 'mikro 900w', 900.00);
 
 --
 -- Indexes for dumped tables
@@ -96,6 +125,13 @@ ALTER TABLE `kategoriat`
 --
 ALTER TABLE `members`
   ADD PRIMARY KEY (`member_id`);
+
+--
+-- Indexes for table `tuote_kategoria`
+--
+ALTER TABLE `tuote_kategoria`
+  ADD PRIMARY KEY (`tuote_id`,`kategoria_id`),
+  ADD KEY `kategoria_id` (`kategoria_id`);
 
 --
 -- Indexes for table `tuotteet`
@@ -123,7 +159,18 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `tuotteet`
 --
 ALTER TABLE `tuotteet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- Rajoitteet vedostauluille
+--
+
+--
+-- Rajoitteet taululle `tuote_kategoria`
+--
+ALTER TABLE `tuote_kategoria`
+  ADD CONSTRAINT `tuote_kategoria_ibfk_1` FOREIGN KEY (`tuote_id`) REFERENCES `tuotteet` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tuote_kategoria_ibfk_2` FOREIGN KEY (`kategoria_id`) REFERENCES `kategoriat` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
