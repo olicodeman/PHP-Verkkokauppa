@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 05.12.2024 klo 11:01
+-- Generation Time: 05.12.2024 klo 13:01
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -79,21 +79,6 @@ CREATE TABLE `tuote_kategoria` (
   `kategoria_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Vedos taulusta `tuote_kategoria`
---
-
-INSERT INTO `tuote_kategoria` (`tuote_id`, `kategoria_id`) VALUES
-(3, 1),
-(3, 2),
-(11, 1),
-(11, 2),
-(12, 1),
-(12, 2),
-(13, 3),
-(16, 3),
-(17, 3);
-
 -- --------------------------------------------------------
 
 --
@@ -113,12 +98,7 @@ CREATE TABLE `tuotteet` (
 --
 
 INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`) VALUES
-(3, 'mikroaaltouuni', 'Mikroaltouuni vain sinulle!', 800.00, NULL),
-(11, 'mikroaaltouuni', 'mikro 900w', 900.00, NULL),
-(12, 'mikroaaltouuni', 'mikro 900w', 900.00, NULL),
-(13, 'noci', 'testaustsa kuvan laittoon', 200.00, 'uploads/product_6751786f5d1a31.69411907.jpg'),
-(16, 'tesi', 'testi2', 60.00, 'uploads/product_6751794e8cdc64.08042354.jpg'),
-(17, 'tesi', 'testi2', 60.00, 'uploads/product_675179c6225306.69886246.jpg');
+(1, 'mikroaaltouuni', 'Kiiltävä mikro!', 950.00, 'uploads/product_675187e7c5d618.38854536.jpg');
 
 --
 -- Indexes for dumped tables
@@ -169,7 +149,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `tuotteet`
 --
 ALTER TABLE `tuotteet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Rajoitteet vedostauluille
