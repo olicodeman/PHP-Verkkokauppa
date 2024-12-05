@@ -8,21 +8,21 @@
         exit();
     }
 
-    // Create PDO connection
+    // Luodaan PDO yhteys
     try {
-        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_DATABASE . ";charset=utf8"; // Correct DSN
+        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_DATABASE . ";charset=utf8"; // Oikea DSN
         $pdo = new PDO($dsn, DB_USER, DB_PASSWORD);
         
-        // Set PDO attributes
+        // Asetetaan PDO asetukset
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     } catch (PDOException $e) {
-        // Handle database connection errors
+        //Käsitellään mahdollinen tietokanta virhe
         die('Database connection failed: ' . $e->getMessage());
     }
 
-    // Fetch categories from the database
+    // Napataan kategoriat tietokannasta
     try {
         $stmt = $pdo->prepare("SELECT id, nimi FROM kategoriat");
         $stmt->execute();
@@ -36,29 +36,62 @@
         $nimi = $_POST['nimi'];
         $kuvaus = $_POST['kuvaus'];
         $hinta = $_POST['hinta'];
-        $kategoriat_selected = $_POST['kategoriat'];  // Get the selected categories
+        $kategoriat_selected = $_POST['kategoriat'];  // Haetaan valitut kategoriat
 
-        try {
-            // Insert product into the 'tuotteet' table
-            $stmt = $pdo->prepare("INSERT INTO tuotteet (nimi, kuvaus, hinta) VALUES (?, ?, ?)");
-            $stmt->execute([$nimi, $kuvaus, $hinta]);
+        //käsitellään kuvan lataaminen
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
+            $imageTmpPath = $_FILES['image']['tmp_name'];  
+            $imageName = $_FILES['image']['name']; 
+            $imageSize = $_FILES['image']['size']; 
+            $imageType = $_FILES['image']['type']; 
+            $imageExtension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
 
-            $tuote_id = $pdo->lastInsertId();  // Get the last inserted product ID
+            // Varmistetaan kuvan tiedot ettei ole vääränlaisia
+            $validExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            if (in_array($imageExtension, $validExtensions)) {
+                // Asetetaan yksilöity nimi kuvalle
+                $newImageName = uniqid('product_', true) . '.' . $imageExtension;
 
-            // Insert product-category relationships if categories are selected
-            if (!empty($kategoriat_selected)) {
-                foreach ($kategoriat_selected as $kategoria_id) {
-                    $stmt = $pdo->prepare("INSERT INTO tuote_kategoria (tuote_id, kategoria_id) VALUES (?, ?)");
-                    $stmt->execute([$tuote_id, $kategoria_id]);
+                // Siirretään kuva uploadeihin
+                $uploadDir = 'uploads/';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
                 }
-            }
 
-            echo '<p class="success">Product added successfully!</p>';
-        } catch (PDOException $e) {
-            echo '<p class="error">Error: ' . $e->getMessage() . '</p>';
+                $imagePath = $uploadDir . $newImageName;
+
+                if (move_uploaded_file($imageTmpPath, $imagePath)) {
+                    // Kuvan lataaminen onnistui, lisää tuote tietokantaan
+                    try {
+                        $stmt = $pdo->prepare("INSERT INTO tuotteet (nimi, kuvaus, hinta, kuva) VALUES (?, ?, ?, ?)");
+                        $stmt->execute([$nimi, $kuvaus, $hinta, $imagePath]);
+
+                        $tuote_id = $pdo->lastInsertId();  // hae viimeksi laitettu ID
+
+                        // Lisätään suhteet tuote-kategoiroiden välille jos kategoriat ovat valittu
+                        if (!empty($kategoriat_selected)) {
+                            foreach ($kategoriat_selected as $kategoria_id) {
+                                $stmt = $pdo->prepare("INSERT INTO tuote_kategoria (tuote_id, kategoria_id) VALUES (?, ?)");
+                                $stmt->execute([$tuote_id, $kategoria_id]);
+                            }
+                        }
+
+                        echo '<p class="success">Product added successfully!</p>';
+                    } catch (PDOException $e) {
+                        echo '<p class="error">Error: ' . $e->getMessage() . '</p>';
+                    }
+                } else {
+                    echo '<p class="error"> Kuvan lataamisessa virhe. Yritä uudelleen.</p>';   
+                }
+            } else {
+                echo '<p class="error"> Väärä kuva tyyppi, vain JPG, JPEG, PNG, ja GIF ovat sallittuja.</p>';   
+            }
+        } else {
+            echo '<p class="error"> Kuvan lataaminen epäonnistui.</p>';
         }
     }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,7 +113,7 @@
         }
 
         .kategoria-nappi.valittu {
-            background-color: #4CAF50; /* Green for selected category */
+            background-color: #4CAF50; /*vihreä valitulle kategorialle */
             color: white;
         }
     </style>
@@ -89,7 +122,7 @@
     <div style="color: white; text-align: center;">
         <h1>Lisää tuote</h1>
         <a href="admin-panel.php">Back</a> | <a href="index.php?page=logout">Logout</a>
-        <form action="" method="POST">
+        <form action="" method="POST" enctype="multipart/form-data">
 
             <label for="nimi">Tuotteen nimi:</label>
             <input type="text" id="nimi" name="nimi" required>
@@ -113,7 +146,10 @@
                     <p>Ei valittavia kategorioita</p>
                 <?php endif; ?>
 
-                
+           <label for="image">Tuotteen kuva:</label>
+           <input type="file" id="image" name="image" accept="image/*" required>
+
+
             <button type="submit">Lisää Tuote</button>
             </form>
             </div>
