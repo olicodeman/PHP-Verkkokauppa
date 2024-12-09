@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 09.12.2024 klo 07:30
+-- Generation Time: 09.12.2024 klo 13:09
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -79,6 +79,14 @@ CREATE TABLE `tuote_kategoria` (
   `kategoria_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Vedos taulusta `tuote_kategoria`
+--
+
+INSERT INTO `tuote_kategoria` (`tuote_id`, `kategoria_id`) VALUES
+(5, 1),
+(6, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -99,7 +107,9 @@ CREATE TABLE `tuotteet` (
 --
 
 INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`, `varastomäärä`) VALUES
-(1, 'mikroaaltouuni', 'Kiiltävä mikro!', 950.00, 'uploads/product_675187e7c5d618.38854536.jpg', 0);
+(1, 'mikroaaltouuni', 'Kiiltävä mikro!', 950.00, 'uploads/product_675187e7c5d618.38854536.jpg', 0),
+(5, 'Blenderi', 'Tehokas blender maukaan smoothien ekemiseen', 150.00, 'uploads/product_6756942f6a9ee3.20237997.jpg', 12),
+(6, 'Sauvasekoitin', 'Tee maukas sose parhaalla sekoittimella!', 80.00, 'uploads/product_6756dde323cf57.06458184.jpg', 8);
 
 --
 -- Indexes for dumped tables
@@ -150,7 +160,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `tuotteet`
 --
 ALTER TABLE `tuotteet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Rajoitteet vedostauluille
