@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 05.12.2024 klo 13:01
+-- Generation Time: 09.12.2024 klo 07:30
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -90,15 +90,16 @@ CREATE TABLE `tuotteet` (
   `nimi` varchar(255) NOT NULL,
   `kuvaus` text DEFAULT NULL,
   `hinta` decimal(10,2) NOT NULL,
-  `kuva` varchar(255) DEFAULT NULL
+  `kuva` varchar(255) DEFAULT NULL,
+  `varastomäärä` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Vedos taulusta `tuotteet`
 --
 
-INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`) VALUES
-(1, 'mikroaaltouuni', 'Kiiltävä mikro!', 950.00, 'uploads/product_675187e7c5d618.38854536.jpg');
+INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`, `varastomäärä`) VALUES
+(1, 'mikroaaltouuni', 'Kiiltävä mikro!', 950.00, 'uploads/product_675187e7c5d618.38854536.jpg', 0);
 
 --
 -- Indexes for dumped tables
