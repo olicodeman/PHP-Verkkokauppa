@@ -37,6 +37,7 @@
         $kuvaus = $_POST['kuvaus'];
         $hinta = $_POST['hinta'];
         $kategoriat_selected = $_POST['kategoriat'];  // Haetaan valitut kategoriat
+        $varastomäärä = $_POST['varastomaara']; 
 
         //käsitellään kuvan lataaminen
         if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
@@ -63,8 +64,8 @@
                 if (move_uploaded_file($imageTmpPath, $imagePath)) {
                     // Kuvan lataaminen onnistui, lisää tuote tietokantaan
                     try {
-                        $stmt = $pdo->prepare("INSERT INTO tuotteet (nimi, kuvaus, hinta, kuva) VALUES (?, ?, ?, ?)");
-                        $stmt->execute([$nimi, $kuvaus, $hinta, $imagePath]);
+                        $stmt = $pdo->prepare("INSERT INTO tuotteet (nimi, kuvaus, hinta, kuva, varastomäärä) VALUES (?, ?, ?, ?, ?)");
+                        $stmt->execute([$nimi, $kuvaus, $hinta, $imagePath, $varastomäärä]);
 
                         $tuote_id = $pdo->lastInsertId();  // hae viimeksi laitettu ID
 
@@ -132,6 +133,10 @@
 
             <label for="hinta">Tuotteen Hinta (€):</label>
             <input type="number" id="hinta" name="hinta" step="0.01" required>
+
+            <label for="varastomaara">Varastomäärä:</label>
+            <input type="number" id="hinta" name="varastomaara" step="1.00" required>
+
 
             <h2>Valitse kategoria</h2>
             <div id="kategoriat">

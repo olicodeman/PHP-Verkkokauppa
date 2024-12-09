@@ -13,7 +13,7 @@
 
     // Haetaan tuotteet tietokannasta
     try {
-        $stmt = $pdo->prepare("SELECT id, nimi, kuvaus, kuva, hinta FROM tuotteet");
+        $stmt = $pdo->prepare("SELECT id, nimi, kuvaus, kuva, hinta, varastomäärä FROM tuotteet");
         $stmt->execute();
         $products = $stmt->fetchAll();
     } catch (PDOException $e) {
@@ -158,9 +158,11 @@
     <!-- Tuoteruudukko -->
     <div class="product-grid">
         <?php foreach ($products as $product): ?>
-            <div class="product" onclick="showPopup('<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>')">
+            <div class="product" onclick="showPopup('<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
                 <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
                 <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
+                <p class="varastomaara">Varastossa: <?= intval($product['varastomäärä']) ?> kpl</p>
+
             </div>
         <?php endforeach; ?>
     </div>
@@ -175,6 +177,8 @@
         <h2 id="popup-title"></h2>
         <p id="popup-description"></p>
         <p id="popup-price"></p>
+        <p id="popup-varastomaara"></p>
+
 
         <div class="icon">
             <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin">
@@ -184,11 +188,12 @@
     
     <!-- Script popupin toiminnalle, piilottaa ja näyttää-->
 <script>
-  function showPopup(title, description, imageUrl, price) {
+  function showPopup(title, description, imageUrl, price, varastomaara) {
     document.getElementById('popup-title').textContent = title;
     document.getElementById('popup-description').textContent = description;
     document.getElementById('popup-img').src = imageUrl;
     document.getElementById('popup-price').textContent = "Hinta: €" + parseFloat(price).toFixed(2);
+    document.getElementById('popup-varastomaara').textContent = "Varastossa: " + varastomaara + " kpl";
     document.getElementById('popup').classList.add('show');
     document.getElementById('overlay').classList.add('show');
 }
