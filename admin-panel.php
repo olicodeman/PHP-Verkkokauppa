@@ -39,13 +39,14 @@
         <?php
     if ($result && mysqli_num_rows($result) > 0) {
         echo '<table border="1" cellpadding="10" cellspacing="5" class="adminproductview">';
-        echo '<tr><th>Tuote ID</th><th>Nimi</th><th>Kuvaus</th><th>Hinta</th><th>Toiminnot</th></tr>';
+        echo '<tr><th>Tuote ID</th><th>Nimi</th><th>Kuvaus</th><th>Hinta</th><th>Varastomäärä</th><th>Toiminnot</th></tr>';
         while ($row = mysqli_fetch_assoc($result)) {
             echo '<tr>';
             echo '<td>' . htmlspecialchars($row['id']) . '</td>';
             echo '<td>' . htmlspecialchars($row['nimi']) . '</td>';
             echo '<td>' . htmlspecialchars($row['kuvaus']) . '</td>';
             echo '<td>' . htmlspecialchars($row['hinta']) . ' €</td>';
+            echo '<td>' . htmlspecialchars($row['varastomäärä']) . '</td>';
             echo '<td>';
             echo '<a href="edit-tuote.php?id=' . $row['id'] . '" class="admin-btn">Muokkaa</a> ';
             echo ' | ';
