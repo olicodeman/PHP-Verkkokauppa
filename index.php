@@ -32,9 +32,8 @@
             <li><a href="index.php?page=register-form">Rekisteröidy</a></li>
         <?php endif; ?>
         <!-- ostoskori -->
-<li><a href="ostoskori.php"><div class="icon">
+<li><a href="index.php?page=ostoskori"><div class="icon">
     <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Ostoskori" class="cart-icon"></div></a></li>
-
     </ul>
 </nav>
     

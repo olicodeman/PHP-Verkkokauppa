@@ -181,11 +181,15 @@
         <p id="popup-price"></p>
         <p id="popup-varastomaara"></p>
 
-
+        
+    <!-- Ostoskoriin lisääminen -->
         <div class="icon">
-            <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin">
-        </div>
-    </div>
+    <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" 
+         alt="Lisää ostoskoriin" 
+         onclick="addToCartFromPopup()">
+</div>
+    
+ 
 
     
     <!-- Script popupin toiminnalle, piilottaa ja näyttää-->
@@ -208,6 +212,39 @@
       document.getElementById('popup').classList.remove  ('show');
       document.getElementById('overlay').classList.remove  ('show');
     }
+    //ostoskoriin lisäämis script
+    function addToCartFromPopup() {
+    // Hae tiedot pop-upista
+    const title = document.getElementById('popup-title').textContent;
+    const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
+    const stock = document.getElementById('popup-varastomaara').textContent.replace('Varastossa: ', '').replace(' kpl', '');
+
+    // Lähetä tiedot palvelimelle
+    fetch('lisaa-ostoskoriin.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            name: title,
+            price: parseFloat(price),
+            stock: parseInt(stock),
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Tuote lisätty ostoskoriin!');
+        } else {
+            alert('Virhe lisättäessä tuotetta ostoskoriin.');
+        }
+    })
+    .catch(error => {
+        console.error('Virhe:', error);
+        alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
+    });
+}
+
 </script>
     </div>
   </form>
