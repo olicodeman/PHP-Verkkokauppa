@@ -41,23 +41,26 @@
         }
 
         .product {
-            cursor: pointer;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-            text-align: center;
-            background-color: #f9f9f9;
-            transition: transform 0.2s ease-in-out;
-        }
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+    background-color: darkslateblue;
+    transition: transform 0.2s ease-in-out;
+    padding: 20px; /* Lisää vähän tilaa ympärille */
+}
 
         .product:hover {
             transform: scale(1.05);
         }
 
         .product img {
-            width: 100%;
-            height: auto;
-        }
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Varmistaa, että kuva täyttää alueen ilman venyttämistä */
+    background-color: slateblue;
+}
 
         /* Pop-up-ikkuna css */
         .popup {
@@ -161,7 +164,6 @@
             <div class="product" onclick="showPopup('<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
                 <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
                 <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
-                <p class="varastomaara">Varastossa: <?= intval($product['varastomäärä']) ?> kpl</p>
 
             </div>
         <?php endforeach; ?>
