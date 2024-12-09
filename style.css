@@ -313,3 +313,16 @@ p, b {
         width: 100%;
         height: auto;
     }
+    .cart-icon {
+        width: 30px; 
+        height: 30px;
+        margin-left: 50px; 
+    }
+    
+    /* For smaller screens, adjust the cart icon size */
+    @media (max-width: 768px) {
+        .cart-icon {
+            width: 25px;
+            height: 25px;
+        }
+    }

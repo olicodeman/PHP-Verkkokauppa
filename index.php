@@ -13,7 +13,7 @@
         session_write_close();
 
     // Navigointi scripti
-        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];
@@ -31,13 +31,17 @@
             <li><a href="index.php?page=login-form">Kirjaudu sisään</a></li>
             <li><a href="index.php?page=register-form">Rekisteröidy</a></li>
         <?php endif; ?>
+        <!-- ostoskori -->
+<li><a href="ostoskori.php"><div class="icon">
+    <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Ostoskori" class="cart-icon"></div></a></li>
+
     </ul>
 </nav>
     
 
     <?php
     // Navigointi scripti
-        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit","ostoskori");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];
