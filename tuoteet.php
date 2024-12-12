@@ -164,36 +164,31 @@
             <div class="product" onclick="showPopup('<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
                 <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
                 <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
-
             </div>
         <?php endforeach; ?>
     </div>
 </form>
 
+<!-- Tummennettu tausta -->
+<div class="overlay" id="overlay" onclick="hidePopup()"></div>
+<div class="popup" id="popup">
+    <button type="button" class="close-btn" onclick="hidePopup(event)">×</button>
+    <img id="popup-img" src="" alt="Tuotteen kuva">
+    <h2 id="popup-title"></h2>
+    <p id="popup-description"></p>
+    <p id="popup-price"></p>
+    <p id="popup-varastomaara"></p>
 
-    <!-- Tummennettu tausta -->
-    <div class="overlay" id="overlay" onclick="hidePopup()"></div>
-    <div class="popup" id="popup">
-        <button type="button" class="close-btn" onclick="hidePopup(event)">×</button>
-        <img id="popup-img" src="" alt="Tuotteen kuva">
-        <h2 id="popup-title"></h2>
-        <p id="popup-description"></p>
-        <p id="popup-price"></p>
-        <p id="popup-varastomaara"></p>
-
-        
     <!-- Ostoskoriin lisääminen -->
-        <div class="icon">
-    <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" 
-         alt="Lisää ostoskoriin" 
-         onclick="addToCartFromPopup()">
+    <div class="icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" 
+             alt="Lisää ostoskoriin" 
+             onclick="addToCartFromPopup()">
+    </div>
 </div>
-    
- 
 
-    
-    <!-- Script popupin toiminnalle, piilottaa ja näyttää-->
 <script>
+  // Show the product popup
   function showPopup(title, description, imageUrl, price, varastomaara) {
     document.getElementById('popup-title').textContent = title;
     document.getElementById('popup-description').textContent = description;
@@ -202,24 +197,34 @@
     document.getElementById('popup-varastomaara').textContent = "Varastossa: " + varastomaara + " kpl";
     document.getElementById('popup').classList.add('show');
     document.getElementById('overlay').classList.add('show');
-}
+  }
 
-        //Estetään se ettei sivu ohjaannu etusivulle, kun suljetaan pop-up
-    function hidePopup(event) {
-        if(event) {
-            event.preventDefault(); 
-        }
-      document.getElementById('popup').classList.remove  ('show');
-      document.getElementById('overlay').classList.remove  ('show');
+  // Hide the popup when clicked
+  function hidePopup(event) {
+    if(event) {
+        event.preventDefault(); 
     }
-    //ostoskoriin lisäämis script
-    function addToCartFromPopup() {
-    // Hae tiedot pop-upista
+    document.getElementById('popup').classList.remove('show');
+    document.getElementById('overlay').classList.remove('show');
+  }
+
+  // Add product to cart from popup
+  function addToCartFromPopup() {
+    // Get data from popup
     const title = document.getElementById('popup-title').textContent;
     const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
     const stock = document.getElementById('popup-varastomaara').textContent.replace('Varastossa: ', '').replace(' kpl', '');
+    const imageUrl = document.getElementById('popup-img').src;
 
-    // Lähetä tiedot palvelimelle
+    // Prepare product data
+    const productData = {
+        title: title.trim(),
+        price: parseFloat(price.trim()),
+        stock: parseInt(stock.trim(), 10),
+        image: imageUrl
+    };
+
+    // Send product data to server
     fetch('lisaa-ostoskoriin.php', {
         method: 'POST',
         headers: {
@@ -229,6 +234,7 @@
             name: title,
             price: parseFloat(price),
             stock: parseInt(stock),
+            image: imageUrl  // Include image URL in the request
         }),
     })
     .then(response => response.json())
@@ -244,7 +250,6 @@
         alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
     });
 }
-
 </script>
     </div>
   </form>
