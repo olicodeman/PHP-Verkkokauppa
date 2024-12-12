@@ -54,7 +54,7 @@
                 $newImageName = uniqid('product_', true) . '.' . $imageExtension;
 
                 // Siirretään kuva uploadeihin
-                $uploadDir = __DIR__ . '/uploads/';
+                $uploadDir = 'kuvat/';
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
