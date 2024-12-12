@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 12.12.2024 klo 08:03
+-- Generation Time: 12.12.2024 klo 09:33
 -- Palvelimen versio: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -107,9 +107,9 @@ CREATE TABLE `tuotteet` (
 --
 
 INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`, `varastomäärä`) VALUES
-(1, 'mikroaaltouuni', 'Kiiltävä mikro!', 950.00, 'uploads/product_675187e7c5d618.38854536.jpg', 0),
+(1, 'mikroaaltouuni', 'Kiiltävä mikro!', 950.00, 'uploads/mikroaaltouuni1.jpg', 0),
 (5, 'Blenderi', 'Tehokas blender maukaan smoothien ekemiseen', 150.00, 'uploads/product_6756942f6a9ee3.20237997.jpg', 12),
-(6, 'Sauvasekoitin', 'Tee maukas sose parhaalla sekoittimella!', 80.00, 'uploads/product_6756dde323cf57.06458184.jpg', 8);
+(6, 'Sauvasekoitin', 'Tee maukas sose parhaalla sekoittimella!', 80.00, 'uploads/sauvasekoitin.jpg', 8);
 
 --
 -- Indexes for dumped tables
