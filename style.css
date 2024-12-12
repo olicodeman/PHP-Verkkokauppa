@@ -87,6 +87,11 @@ p, b {
     background-color: rgb(65, 65, 143) ;
     color: rgb(216, 239, 255);
 }
+.nav-links a.active {
+    background-color: rgb(65, 65, 143); /* Active background color */
+    color: rgb(216, 239, 255); /* Active text color */
+    font-size: 19px;
+}
 .edit-btn {
     background-color: darkslateblue;
     padding: 10px;
@@ -314,11 +319,23 @@ p, b {
         height: auto;
     }
     .cart-icon {
-        width: 30px; 
+        position: absolute; /* Position independently within the navbar */
+        top: 25%; /* Center vertically */
+        right: 20px; /* Move 20px away from the right edge */
+        width: 30px;
         height: 30px;
-        margin-left: 50px; 
+        transform-origin: center;
+        display: inline-block;
+        padding: 5px;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    
+    .cart-icon:hover {
+        transform: scale(1.1); /* Adds a slight rotation for fun */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Intensify the shadow on hover */
+        filter: brightness(1.2); /* Lightens the icon slightly */
+    }
     /* For smaller screens, adjust the cart icon size */
     @media (max-width: 768px) {
         .cart-icon {
