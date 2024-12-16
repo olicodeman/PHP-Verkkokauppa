@@ -129,9 +129,11 @@ body {
                         <p>Hinta: €<?= number_format($item['price'], 2) ?></p>
                         <p>Varastossa: <?= htmlspecialchars($item['stock']) ?> kpl</p>
                     </div>
-                    
                 </div>
+                
             <?php endforeach; ?>
+            
+    <a class="edit-btn" id="register-btn" href="index.php?page=ostoskori.php">Maksamaan</a>
         <?php endif; ?>
     </div>
 </body>

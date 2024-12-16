@@ -50,16 +50,16 @@
             // Varmistetaan kuvan tiedot ettei ole vääränlaisia
             $validExtensions = ['jpg', 'jpeg', 'png', 'gif'];
             if (in_array($imageExtension, $validExtensions)) {
-                // Asetetaan yksilöity nimi kuvalle
-                $newImageName = uniqid('product_', true) . '.' . $imageExtension;
+              
 
                 // Siirretään kuva uploadeihin
                 $uploadDir = 'kuvat/';
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
-
-                $imagePath = $uploadDir . $newImageName;
+                
+                $imageName = preg_replace('/[^a-zA-Z0-9_\.-]/', '_', $imageName);
+                $imagePath = $uploadDir . $imageName;
 
                 if (move_uploaded_file($imageTmpPath, $imagePath)) {
                     // Kuvan lataaminen onnistui, lisää tuote tietokantaan
