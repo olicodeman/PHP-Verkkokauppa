@@ -13,7 +13,7 @@
         session_write_close();
 
     // Navigointi scripti
-        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];
@@ -28,7 +28,7 @@
 
         <?php if ($IsLoggedIn): ?>
             <li><a href="index.php?page=profiili" class="<?= ($page == 'profiili') ? 'active' : '' ?>">Profiili</a></li>
-            <li><a href="index.php?page=logout" class="<?= ($page == 'logout') ? 'active' : '' ?>">Kirjaudu ulos</a></li>  
+            <li id="logout-link"><a href="index.php?page=logout" class="<?= ($page == 'logout') ? 'active' : '' ?>">Kirjaudu ulos</a></li>  
         <?php else: ?>
             <li><a href="index.php?page=login-form" class="<?= ($page == 'login-form') ? 'active' : '' ?>">Kirjaudu sisään</a></li>
             <li><a href="index.php?page=register-form" class="<?= ($page == 'register-form') ? 'active' : '' ?>">Rekisteröidy</a></li>
@@ -41,7 +41,7 @@
 
     <?php
     // Navigointi scripti
-        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit","ostoskori");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];

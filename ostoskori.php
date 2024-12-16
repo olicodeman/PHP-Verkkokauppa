@@ -133,7 +133,7 @@ body {
                 
             <?php endforeach; ?>
             
-    <a class="edit-btn" id="register-btn" href="index.php?page=ostoskori.php">Maksamaan</a>
+    <a class="edit-btn" id="register-btn" href="index.php?page=maksuForm">Maksamaan</a>
         <?php endif; ?>
     </div>
 </body>

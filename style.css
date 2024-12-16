@@ -6,7 +6,11 @@ body {
 a {
     color: darkcyan;
 }
-
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 /*Rekisteröinnin tyyli */
 th, b{
     color:white;
@@ -320,7 +324,7 @@ p, b {
     }
     .cart-icon {
         position: absolute; /* Position independently within the navbar */
-        top: 25%; /* Center vertically */
+        top: 22%; /* Center vertically */
         right: 20px; /* Move 20px away from the right edge */
         width: 30px;
         height: 30px;
@@ -330,6 +334,10 @@ p, b {
         border-radius: 50%;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #logout-link {
+        position: absolute; /* Position independently within the navbar */
+        right: 100px; /* Move 20px away from the right edge */
     }
     .cart-icon:hover {
         transform: scale(1.1); /* Adds a slight rotation for fun */
