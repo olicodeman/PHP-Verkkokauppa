@@ -89,7 +89,8 @@
     <h3>Innovatiiviset Keittiövälineet</h3>
     <p>Tuomme keittiöösi käytännöllisyyttä ja tyyliä! KG Keittiökalusteet tarjoaa laadukkaita keittiögadgeteja, 
     jotka tekevät arjesta sujuvampaa ja ruoanlaitosta nautinnollisempaa.</p>
-    <?php if (!$IsLoggedIn): ?>
+
+    <?php if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true): ?>
         <a style="margin-right: 10px;" id="login-btn" class="edit-btn" href="index.php?page=login-form">Kirjaudu sisään</a>
         <a class="edit-btn" id="register-btn" href="index.php?page=register-form">Rekisteröidy</a>
     <?php endif; ?>
@@ -126,8 +127,8 @@
     <p><strong id="popup-price"></strong></p>
     <p id="popup-stock"></p>
 
-     <!-- Add to Cart Icon -->
-     <div class="icon">
+    <!-- Add to Cart Icon -->
+    <div class="icon">
         <img 
             src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" 
             alt="Lisää ostoskoriin" 
@@ -153,44 +154,39 @@
     }
 
     function addToCart() {
-    // Get data from popup
-    const title = document.getElementById('popup-title').textContent;
-    const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
-    const stock = document.getElementById('popup-stock').textContent.replace('Varastossa: ', '').replace(' kpl', '');
-    const imageUrl = document.getElementById('popup-img').src;
+        // Get data from popup
+        const title = document.getElementById('popup-title').textContent;
+        const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
+        const stock = document.getElementById('popup-stock').textContent.replace('Varastossa: ', '').replace(' kpl', '');
+        const imageUrl = document.getElementById('popup-img').src;
 
-    // Prepare product data
-    const productData = {
-        title: title.trim(),
-        price: parseFloat(price.trim()),
-        stock: parseInt(stock.trim(), 10),
-        image: imageUrl
-    };
+        // Prepare product data
+        const productData = {
+            name: title.trim(),
+            price: parseFloat(price.trim()),
+            stock: parseInt(stock.trim(), 10),
+            image: imageUrl
+        };
 
-    // Send product data to server
-    fetch('lisaa-ostoskoriin.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            name: title,
-            price: parseFloat(price),
-            stock: parseInt(stock),
-            image: imageUrl  // Include image URL in the request
-        }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Tuote lisätty ostoskoriin!');
-        } else {
-            alert('Virhe lisättäessä tuotetta ostoskoriin.');
-        }
-    })
-    .catch(error => {
-        console.error('Virhe:', error);
-        alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
-    });
-}
+        // Send product data to server
+        fetch('lisaa-ostoskoriin.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(productData), // Using productData here
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Tuote lisätty ostoskoriin!');
+            } else {
+                alert(data.message || 'Virhe lisättäessä tuotetta ostoskoriin.');
+            }
+        })
+        .catch(error => {
+            console.error('Virhe:', error);
+            alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
+        });
+    }
 </script>
