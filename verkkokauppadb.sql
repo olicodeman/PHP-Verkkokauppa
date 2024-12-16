@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 12.12.2024 klo 10:58
+-- Generation Time: 16.12.2024 klo 11:43
 -- Palvelimen versio: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -71,6 +71,33 @@ INSERT INTO `members` (`member_id`, `firstname`, `lastname`, `email`, `address`,
 -- --------------------------------------------------------
 
 --
+-- Rakenne taululle `tilaukset`
+--
+
+CREATE TABLE `tilaukset` (
+  `order_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `total_price` decimal(10,2) NOT NULL,
+  `order_date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Rakenne taululle `tilaus_tuotteet`
+--
+
+CREATE TABLE `tilaus_tuotteet` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Rakenne taululle `tuote_kategoria`
 --
 
@@ -86,7 +113,7 @@ CREATE TABLE `tuote_kategoria` (
 INSERT INTO `tuote_kategoria` (`tuote_id`, `kategoria_id`) VALUES
 (5, 1),
 (6, 1),
-(21, 1);
+(25, 1);
 
 -- --------------------------------------------------------
 
@@ -111,7 +138,7 @@ INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`, `varastomäär�
 (1, 'mikroaaltouuni', 'Kiiltävä mikro!', 950.00, 'kuvat/product_675187e7c5d618.38854536.jpg', 0),
 (5, 'Blenderi', 'Tehokas blender maukaan smoothien ekemiseen', 150.00, 'kuvat/product_6756942f6a9ee3.20237997.jpg', 12),
 (6, 'Sauvasekoitin', 'Tee maukas sose parhaalla sekoittimella!', 80.00, 'kuvat/product_6756dde323cf57.06458184.jpg', 8),
-(21, 'uuni', 'Tee maukasta ruokaa', 600.00, 'kuvat/product_675aace99dcda5.97383894.png', 8);
+(25, 'Blenderi', 'test', 800.00, 'kuvat/blender.jpg', 7);
 
 --
 -- Indexes for dumped tables
@@ -128,6 +155,21 @@ ALTER TABLE `kategoriat`
 --
 ALTER TABLE `members`
   ADD PRIMARY KEY (`member_id`);
+
+--
+-- Indexes for table `tilaukset`
+--
+ALTER TABLE `tilaukset`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `member_id` (`member_id`);
+
+--
+-- Indexes for table `tilaus_tuotteet`
+--
+ALTER TABLE `tilaus_tuotteet`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `tuote_kategoria`
@@ -159,14 +201,39 @@ ALTER TABLE `members`
   MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `tilaukset`
+--
+ALTER TABLE `tilaukset`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tilaus_tuotteet`
+--
+ALTER TABLE `tilaus_tuotteet`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tuotteet`
 --
 ALTER TABLE `tuotteet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Rajoitteet vedostauluille
 --
+
+--
+-- Rajoitteet taululle `tilaukset`
+--
+ALTER TABLE `tilaukset`
+  ADD CONSTRAINT `tilaukset_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`);
+
+--
+-- Rajoitteet taululle `tilaus_tuotteet`
+--
+ALTER TABLE `tilaus_tuotteet`
+  ADD CONSTRAINT `tilaus_tuotteet_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `tilaukset` (`order_id`),
+  ADD CONSTRAINT `tilaus_tuotteet_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `tuotteet` (`id`);
 
 --
 -- Rajoitteet taululle `tuote_kategoria`
