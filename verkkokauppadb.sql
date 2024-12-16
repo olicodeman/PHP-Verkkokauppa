@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 16.12.2024 klo 11:43
+-- Generation Time: 16.12.2024 klo 12:53
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -111,9 +111,10 @@ CREATE TABLE `tuote_kategoria` (
 --
 
 INSERT INTO `tuote_kategoria` (`tuote_id`, `kategoria_id`) VALUES
-(5, 1),
-(6, 1),
-(25, 1);
+(26, 1),
+(27, 1),
+(28, 1),
+(29, 1);
 
 -- --------------------------------------------------------
 
@@ -135,10 +136,10 @@ CREATE TABLE `tuotteet` (
 --
 
 INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`, `varastomäärä`) VALUES
-(1, 'mikroaaltouuni', 'Kiiltävä mikro!', 950.00, 'kuvat/product_675187e7c5d618.38854536.jpg', 0),
-(5, 'Blenderi', 'Tehokas blender maukaan smoothien ekemiseen', 150.00, 'kuvat/product_6756942f6a9ee3.20237997.jpg', 12),
-(6, 'Sauvasekoitin', 'Tee maukas sose parhaalla sekoittimella!', 80.00, 'kuvat/product_6756dde323cf57.06458184.jpg', 8),
-(25, 'Blenderi', 'test', 800.00, 'kuvat/blender.jpg', 7);
+(26, 'Blenderi', 'Vain sileitä smoothieita!', 500.00, 'kuvat/blender.jpg', 8),
+(27, 'Uuni', 'Uuni jolla saat täyteläisen ja rapean tuloksen!', 1500.00, 'kuvat/uuni.png', 10),
+(28, 'mikroaaltouuni', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 600.00, 'kuvat/mikroaaltouuni.jpg', 6),
+(29, 'Sauvasekoitin', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 85.00, 'kuvat/sauvasekoitin.jpg', 12);
 
 --
 -- Indexes for dumped tables
@@ -216,7 +217,7 @@ ALTER TABLE `tilaus_tuotteet`
 -- AUTO_INCREMENT for table `tuotteet`
 --
 ALTER TABLE `tuotteet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Rajoitteet vedostauluille
