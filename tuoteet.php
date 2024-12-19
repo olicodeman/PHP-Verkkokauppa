@@ -20,6 +20,32 @@
         echo '<p class="error">Error fetching products: ' . $e->getMessage() . '</p>';
         $products = [];
     }
+
+    try {
+        $categoryStmt = $pdo->prepare("SELECT id, nimi FROM kategoriat");
+        $categoryStmt->execute();
+        $categories = $categoryStmt->fetchAll();
+    } catch (PDOException $e) {
+        echo '<p class="error">Error fetching categories: ' . $e->getMessage() . '</p>';
+        $categories = [];
+    }
+
+    try {
+        $stmt = $pdo->prepare("
+            SELECT 
+                t.id, t.nimi, t.kuvaus, t.kuva, t.hinta, t.varastomäärä, 
+                COALESCE(GROUP_CONCAT(k.nimi SEPARATOR ','), '') AS categories
+            FROM tuotteet t
+            LEFT JOIN tuote_kategoria tk ON t.id = tk.tuote_id
+            LEFT JOIN kategoriat k ON tk.kategoria_id = k.id
+            GROUP BY t.id
+        ");
+        $stmt->execute();
+        $products = $stmt->fetchAll();
+    } catch (PDOException $e) {
+        echo '<p class="error">Error fetching products: ' . $e->getMessage() . '</p>';
+        $products = [];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -47,12 +73,13 @@
     overflow: hidden;
     text-align: center;
     background-color: darkslateblue;
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.3s, background-color 0.3s;
     padding: 20px; /* Lisää vähän tilaa ympärille */
 }
 
         .product:hover {
             transform: scale(1.05);
+            background-color: darkcyan;
         }
 
         .product img {
@@ -144,6 +171,43 @@
         .show {
             display: block;
         }
+
+        .search-bar-container {
+            margin: 20px auto;
+            max-width: 500px;
+            text-align: center;
+        }
+        .search-bar {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .search-btn {
+            background-color: darkslateblue;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            padding: 10px 10px;
+            transition: background-color 0.3s;
+        }
+        .search-btn:hover {
+            background-color: darkcyan;
+        }
+        .category-container {
+            margin: 20px auto;
+            max-width: 300px;
+            text-align: center;
+        }
+        .category-select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <script>   
@@ -155,14 +219,29 @@
     }
 </script>
 <body>
-    <h1>Tervetuloa Kitchen Gadget tuote sivulle! Katsaise tuotteita ja osta!</h1>
+    <h1 style="text-align: center;">Tervetuloa Kitchen Gadget tuote sivulle! Katsaise tuotteita ja osta!</h1>
+    <br>
+    <div class="search-bar-container">
+        <input type="text" id="searchInput" class="search-bar" placeholder="Etsi tuotteita...">
+        <button class="search-btn" onclick="searchProduct()">Search</button>
+    </div>
+
+    <div class="category-container">
+    <select id="categorySelect" class="category-select" onchange="filterByCategory()">
+        <option value="all">Kaikki kategoriat</option>
+        <?php foreach ($categories as $category): ?>
+            <option value="<?= htmlspecialchars($category['nimi']) ?>"><?= htmlspecialchars($category['nimi']) ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
 
     <form>
     <!-- Tuoteruudukko -->
     <div class="product-grid">
         <?php foreach ($products as $product): ?>
-            <div class="product" onclick="showPopup('<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
+            <div class="product" data-categories="<?= htmlspecialchars($product['categories']) ?>" onclick="showPopup('<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
                 <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
+                <p style="color: gold;" class="name"><?= htmlspecialchars($product['nimi']) ?></p>
                 <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
             </div>
         <?php endforeach; ?>
@@ -242,7 +321,7 @@
         if (data.success) {
             alert('Tuote lisätty ostoskoriin!');
         } else {
-            alert('Virhe lisättäessä tuotetta ostoskoriin.');
+            alert('Ennen ostoskoriin lisäämistä, kirjaudu sisään.');
         }
     })
     .catch(error => {
@@ -250,6 +329,50 @@
         alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
     });
 }
+
+function searchProduct() {
+        // Get the search input value
+        const searchValue = document.getElementById('searchInput').value.toLowerCase();
+
+        // Get all product elements
+        const products = document.querySelectorAll('.product');
+
+        // Loop through all products
+        products.forEach(product => {
+            // Get the product name
+            const productName = product.querySelector('.name').textContent.toLowerCase();
+
+            // Check if the product name matches the search value
+            if (searchValue == "") {
+                product.style.display = 'block';
+            }
+            else if (productName.includes(searchValue)) {
+                // Show the product if it matches
+                product.style.display = 'block';
+            } else {
+                // Hide the product if it doesn't match
+                product.style.display = 'none';
+            }
+        });
+    }
+
+    function filterByCategory() {
+    const selectedCategory = document.getElementById('categorySelect').value.toLowerCase(); // Get selected category
+    const products = document.querySelectorAll('.product'); // All product elements
+
+    products.forEach(product => {
+        const productCategories = product.getAttribute('data-categories').toLowerCase(); // Get product categories
+
+        // Show or hide products based on selected category
+        if (selectedCategory === "all" || productCategories.includes(selectedCategory)) {
+            product.style.display = 'block';
+        } else {
+            product.style.display = 'none';
+        }
+    });
+}
+
+
 </script>
     </div>
   </form>
