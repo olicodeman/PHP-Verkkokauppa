@@ -212,10 +212,10 @@
 </head>
 <script>   
     function showDetails (name, description) {
-        document.getElementById('product-details').innerHTML = `
+        document.getElementById('product-details').innerHTML = 
         <h2>${name}</h2>
         <p>${description}</p>
-        `;
+        ;
     }
 </script>
 <body>
@@ -239,11 +239,14 @@
     <!-- Tuoteruudukko -->
     <div class="product-grid">
         <?php foreach ($products as $product): ?>
-            <div class="product" data-categories="<?= htmlspecialchars($product['categories']) ?>" onclick="showPopup('<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
-                <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
-                <p style="color: gold;" class="name"><?= htmlspecialchars($product['nimi']) ?></p>
-                <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
-            </div>
+            <div class="product" 
+            data-id="<?= htmlspecialchars($product['id']) ?>" 
+            data-categories="<?= htmlspecialchars($product['categories']) ?>" 
+            onclick="showPopup('<?= htmlspecialchars($product['id']) ?>', '<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
+            <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
+            <p style="color: gold;" class="name"><?= htmlspecialchars($product['nimi']) ?></p>
+            <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
+        </div>
         <?php endforeach; ?>
     </div>
 </form>
@@ -257,6 +260,7 @@
     <p id="popup-description"></p>
     <p id="popup-price"></p>
     <p id="popup-varastomaara"></p>
+    
 
     <!-- Ostoskoriin lisääminen -->
     <div class="icon">
@@ -268,24 +272,34 @@
 
 <script>
   // Show the product popup
-  function showPopup(title, description, imageUrl, price, varastomaara) {
+  // Show the product popup
+function showPopup(id, title, description, imageUrl, price, stock) {
+    // Set the popup details
     document.getElementById('popup-title').textContent = title;
     document.getElementById('popup-description').textContent = description;
     document.getElementById('popup-img').src = imageUrl;
     document.getElementById('popup-price').textContent = "Hinta: €" + parseFloat(price).toFixed(2);
-    document.getElementById('popup-varastomaara').textContent = "Varastossa: " + varastomaara + " kpl";
+    document.getElementById('popup-varastomaara').textContent = "Varastossa: " + stock + " kpl";
+
+    // Set the product ID for later use (for adding to cart)
+    document.getElementById('popup').setAttribute('data-product-id', id);
+
+    // Show the popup and the overlay
     document.getElementById('popup').classList.add('show');
     document.getElementById('overlay').classList.add('show');
-  }
+}
+
 
   // Hide the popup when clicked
-  function hidePopup(event) {
-    if(event) {
+  // Hide the popup when clicked
+function hidePopup(event) {
+    if (event) {
         event.preventDefault(); 
     }
     document.getElementById('popup').classList.remove('show');
     document.getElementById('overlay').classList.remove('show');
-  }
+}
+
 
   // Add product to cart from popup
   function addToCartFromPopup() {
@@ -294,6 +308,7 @@
     const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
     const stock = document.getElementById('popup-varastomaara').textContent.replace('Varastossa: ', '').replace(' kpl', '');
     const imageUrl = document.getElementById('popup-img').src;
+    const productID = document.getElementById('popup').getAttribute('data-product-id');
 
     // Prepare product data
     const productData = {
@@ -310,6 +325,7 @@
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+            id: productID,
             name: title,
             price: parseFloat(price),
             stock: parseInt(stock),

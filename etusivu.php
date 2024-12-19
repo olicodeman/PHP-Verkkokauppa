@@ -11,7 +11,7 @@
 
     // Fetch the 3 newest products
     $products = [];
-    $sql = "SELECT nimi, kuvaus, hinta, kuva, varastomäärä FROM tuotteet ORDER BY id DESC LIMIT 3";
+    $sql = "SELECT id, nimi, kuvaus, hinta, kuva, varastomäärä FROM tuotteet ORDER BY id DESC LIMIT 3";
     $result = $conn->query($sql);
 
     if ($result && $result->num_rows > 0) {
@@ -100,16 +100,18 @@
         <?php if (!empty($products)): ?>
             <?php foreach ($products as $product): ?>
                 <div class="product" onclick="showPopup(
-                    '<?= htmlspecialchars($product['nimi']) ?>',
-                    '<?= htmlspecialchars($product['kuvaus']) ?>',
-                    '<?= htmlspecialchars($product['kuva']) ?>',
-                    '<?= htmlspecialchars($product['hinta']) ?>',
-                    '<?= htmlspecialchars($product['varastomäärä']) ?>'
-                )">
-                    <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>" style="width: 100%; height: auto; border-radius: 5px;">
-                    <h4 style="color: gold;"><?= htmlspecialchars($product['nimi']) ?></h4>
-                    <p><strong>Hinta:</strong> €<?= number_format($product['hinta'], 2) ?></p>
-                </div>
+                '<?= htmlspecialchars($product['id']) ?>',
+                '<?= htmlspecialchars($product['nimi']) ?>',
+                '<?= htmlspecialchars($product['kuvaus']) ?>',
+                '<?= htmlspecialchars($product['kuva']) ?>',
+                '<?= htmlspecialchars($product['hinta']) ?>',
+                '<?= htmlspecialchars($product['varastomäärä']) ?>'
+            )">
+                <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>" style="width: 100%; height: auto; border-radius: 5px;">
+                <h4 style="color: gold;"><?= htmlspecialchars($product['nimi']) ?></h4>
+                <p><strong>Hinta:</strong> €<?= number_format($product['hinta'], 2) ?></p>
+            </div>
+
             <?php endforeach; ?>
         <?php else: ?>
             <p>Ei uusia tuotteita saatavilla tällä hetkellä.</p>
@@ -138,55 +140,70 @@
 </div>
 
 <script>
-    function showPopup(title, description, imageUrl, price, stock) {
-        document.getElementById('popup-title').textContent = title;
-        document.getElementById('popup-description').textContent = description;
-        document.getElementById('popup-img').src = imageUrl;
-        document.getElementById('popup-price').textContent = "Hinta: €" + parseFloat(price).toFixed(2);
-        document.getElementById('popup-stock').textContent = "Varastossa: " + stock + " kpl";
-        document.getElementById('popup').classList.add('show');
-        document.getElementById('overlay').classList.add('show');
+    function showPopup(id, title, description, imageUrl, price, stock) {
+    // Set the popup details
+    document.getElementById('popup-title').textContent = title;
+    document.getElementById('popup-description').textContent = description;
+    document.getElementById('popup-img').src = imageUrl;
+    document.getElementById('popup-price').textContent = "Hinta: €" + parseFloat(price).toFixed(2);
+    document.getElementById('popup-stock').textContent = "Varastossa: " + stock + " kpl";
+
+    // Store the product ID in a custom attribute for later use
+    document.getElementById('popup').setAttribute('data-product-id', id);
+
+    // Show the popup and the overlay
+    document.getElementById('popup').classList.add('show');
+    document.getElementById('overlay').classList.add('show');
+}
+
+
+
+  // Hide the popup when clicked
+  // Hide the popup when clicked
+function hidePopup(event) {
+    if (event) {
+        event.preventDefault(); 
     }
+    document.getElementById('popup').classList.remove('show');
+    document.getElementById('overlay').classList.remove('show');
+}
 
-    function hidePopup() {
-        document.getElementById('popup').classList.remove('show');
-        document.getElementById('overlay').classList.remove('show');
-    }
 
-    function addToCart() {
-        // Get data from popup
-        const title = document.getElementById('popup-title').textContent;
-        const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
-        const stock = document.getElementById('popup-stock').textContent.replace('Varastossa: ', '').replace(' kpl', '');
-        const imageUrl = document.getElementById('popup-img').src;
+  // Add product to cart from popup
+  function addToCart() {
+    // Get data from the popup
+    const productID = document.getElementById('popup').getAttribute('data-product-id');
+    const title = document.getElementById('popup-title').textContent;
+    const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
+    const stock = document.getElementById('popup-stock').textContent.replace('Varastossa: ', '').replace(' kpl', '');
+    const imageUrl = document.getElementById('popup-img').src;
 
-        // Prepare product data
-        const productData = {
-            name: title.trim(),
-            price: parseFloat(price.trim()),
-            stock: parseInt(stock.trim(), 10),
+    // Send product data to the server
+    fetch('lisaa-ostoskoriin.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            id: productID,
+            name: title,
+            price: parseFloat(price),
+            stock: parseInt(stock, 10),
             image: imageUrl
-        };
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Tuote lisätty ostoskoriin!');
+        } else {
+            alert('Ennen ostoskoriin lisäämistä, kirjaudu sisään.');
+        }
+    })
+    .catch(error => {
+        console.error('Virhe:', error);
+        alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
+    });
+}
 
-        // Send product data to server
-        fetch('lisaa-ostoskoriin.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(productData), // Using productData here
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Tuote lisätty ostoskoriin!');
-            } else {
-                alert(data.message || 'Virhe lisättäessä tuotetta ostoskoriin.');
-            }
-        })
-        .catch(error => {
-            console.error('Virhe:', error);
-            alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
-        });
-    }
 </script>

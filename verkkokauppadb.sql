@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 19.12.2024 klo 09:53
+-- Generation Time: 19.12.2024 klo 11:48
 -- Palvelimen versio: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -86,9 +86,7 @@ CREATE TABLE `tilaukset` (
 --
 
 INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`) VALUES
-(6, 3, 2000.00, '2024-12-19 08:23:06'),
-(7, 3, 85.00, '2024-12-19 08:24:02'),
-(24, 3, 2285.00, '2024-12-19 08:52:41');
+(1, 2, 685.00, '2024-12-19 10:46:00');
 
 -- --------------------------------------------------------
 
@@ -97,12 +95,19 @@ INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`) V
 --
 
 CREATE TABLE `tilaus_tuotteet` (
-  `id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Vedos taulusta `tilaus_tuotteet`
+--
+
+INSERT INTO `tilaus_tuotteet` (`order_id`, `product_id`, `quantity`, `price`) VALUES
+(1, 29, 1, 85.00),
+(1, 28, 1, 600.00);
 
 -- --------------------------------------------------------
 
@@ -121,9 +126,13 @@ CREATE TABLE `tuote_kategoria` (
 
 INSERT INTO `tuote_kategoria` (`tuote_id`, `kategoria_id`) VALUES
 (26, 1),
+(26, 2),
+(26, 3),
 (27, 1),
 (28, 1),
-(29, 1);
+(29, 1),
+(29, 2),
+(29, 3);
 
 -- --------------------------------------------------------
 
@@ -206,7 +215,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `tilaukset`
 --
 ALTER TABLE `tilaukset`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tuotteet`

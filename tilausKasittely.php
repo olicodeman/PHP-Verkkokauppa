@@ -7,6 +7,7 @@ $cart = $_SESSION['cart'] ?? [];
 $totalPrice = $_SESSION['cart_total'] ?? 0;
 $memberId = $_SESSION['SESS_MEMBER_ID'] ?? null;
 
+
 // Tarkista, onko ostoskori tyhjä tai käyttäjä ei ole kirjautunut
 if (empty($cart) || !$memberId) {
     die('Ostoskorisi on tyhjä tai et ole kirjautunut sisään.');
@@ -44,7 +45,8 @@ try {
     
     foreach ($cart as $item) {
        $quantity = $item['quantity'];
-        $price = $item['price'];
+       $price = $item['price'];
+       $productId = $item['id'];
 
         mysqli_stmt_bind_param($stmt, 'iiid', $orderId, $productId, $quantity, $price);
         mysqli_stmt_execute($stmt);

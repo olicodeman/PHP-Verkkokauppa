@@ -55,7 +55,7 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
         <br>
 		<p>Eikö tiedot ole oikein? Vaihda tietoja <a class="edit-btn" href="index.php?page=user-edit">Täältä</a>.</p>
 		<br>
-		<a class="edit-btn" href="tilausKasittely.php?page=user-edit">Vahvista tilaus</a>
+		<a class="edit-btn" href="tilausKasittely.php">Vahvista tilaus</a>
 	</div>
 </div>
 </form>
