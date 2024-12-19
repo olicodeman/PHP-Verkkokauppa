@@ -33,6 +33,7 @@ try {
 
     // Lisätään tuote ostoskoriin
     $_SESSION['cart'][] = [
+        'id' => $productId,
         'name' => $name,
         'price' => $price,
         'stock' => $stock,

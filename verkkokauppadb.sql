@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 16.12.2024 klo 12:53
+-- Generation Time: 19.12.2024 klo 09:53
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -80,6 +80,15 @@ CREATE TABLE `tilaukset` (
   `total_price` decimal(10,2) NOT NULL,
   `order_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Vedos taulusta `tilaukset`
+--
+
+INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`) VALUES
+(6, 3, 2000.00, '2024-12-19 08:23:06'),
+(7, 3, 85.00, '2024-12-19 08:24:02'),
+(24, 3, 2285.00, '2024-12-19 08:52:41');
 
 -- --------------------------------------------------------
 
@@ -165,14 +174,6 @@ ALTER TABLE `tilaukset`
   ADD KEY `member_id` (`member_id`);
 
 --
--- Indexes for table `tilaus_tuotteet`
---
-ALTER TABLE `tilaus_tuotteet`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `order_id` (`order_id`),
-  ADD KEY `product_id` (`product_id`);
-
---
 -- Indexes for table `tuote_kategoria`
 --
 ALTER TABLE `tuote_kategoria`
@@ -205,13 +206,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `tilaukset`
 --
 ALTER TABLE `tilaukset`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `tilaus_tuotteet`
---
-ALTER TABLE `tilaus_tuotteet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `tuotteet`
@@ -228,13 +223,6 @@ ALTER TABLE `tuotteet`
 --
 ALTER TABLE `tilaukset`
   ADD CONSTRAINT `tilaukset_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`);
-
---
--- Rajoitteet taululle `tilaus_tuotteet`
---
-ALTER TABLE `tilaus_tuotteet`
-  ADD CONSTRAINT `tilaus_tuotteet_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `tilaukset` (`order_id`),
-  ADD CONSTRAINT `tilaus_tuotteet_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `tuotteet` (`id`);
 
 --
 -- Rajoitteet taululle `tuote_kategoria`

@@ -2,12 +2,19 @@
 session_start();
 $cart = $_SESSION['cart'] ?? []; // Noudetaan ostoskori sessiosta
 
+
+//tuotteen poisto ostoskorista
+if(isset($_POST['remove'])) {
+    $indexToRemove = intval ($_POST['index']); //haetaan tuotteen indexi
+    unset($cart[$indexToRemove]);//tuotteen poisto
+    $_SESSION['cart'] = array_values($cart);//päivitetään sessio ja korjataan indexit
+}
 // Lasketaan kokonaishinta
 $totalPrice = 0;
 foreach ($cart as $item) {
     // Varmistetaan, että 'price' ja 'quantity' ovat asetettuina
-    if (isset($item['price']) && isset($item['quantity'])) {
-        $totalPrice += $item['price'] * $item['quantity'];
+    if (isset($item['price']) && isset($item['quantity'])) { 
+        $totalPrice += $item['price'] * $item['quantity']; 
     }
 }
 
@@ -29,6 +36,14 @@ body {
     font-family: 'Arial', sans-serif;
     color: white;
 }
+
+ /* Ei saa siirtää pois tältä sivulta */
+ form {
+            background-color:white;  /* Muutetaan lomakkeen taustaväri */
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+        }
 
 /* Cart Container */
 .cart {
@@ -129,35 +144,30 @@ body {
     </style>
 </head>
 <body>
-<?php
-$cart = $_SESSION['cart'] ?? []; // Käytetään $_SESSION['cart'] ostoskorin tietona, jos ei ole, alustetaan tyhjä taulukko
-
-$totalPrice = 0; // Määritellään kokonaishinta, jotta voidaan laskea se loopissa
-?>
-
 <div class="cart">
     <h1>Ostoskori</h1>
     <?php if (empty($cart)): ?>
         <p>Ostoskorisi on tyhjä.</p>
     <?php else: ?>
-        <?php foreach ($cart as $item): ?>
+        <?php foreach ($cart as $index => $item): ?>
             <div class="cart-item">
                 <img src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
                 <div class="cart-item-details">
                     <h3><?= htmlspecialchars($item['name']) ?></h3>
                     <p>Hinta: €<?= number_format($item['price'], 2) ?></p>
-                    
-                    <!-- Tarkistetaan, että 'quantity' on asetettu -->
-                    <p>Määrä: <?= isset($item['quantity']) ? $item['quantity'] : 'Ei määritelty' ?></p>
-                    
-                    <p>Varastossa: <?= htmlspecialchars($item['stock']) ?> kpl</p>
-                    <p>Yhteensä: €<?= number_format($item['price'] * (isset($item['quantity']) ? $item['quantity'] : 1), 2) ?></p>
+                    <p>Määrä: <?= htmlspecialchars($item['quantity']) ?></p>
+                    <p>Yhteensä: €<?= number_format($item['price'] * $item['quantity'], 2) ?></p>
                 </div>
+                <form method="POST">
+                    <input type="hidden" name="index" value="<?= $index ?>">
+                    <button type="submit" name="remove" class="remove-btn">Poista</button>
+                </form>
             </div>
-            <?php $totalPrice += $item['price'] * (isset($item['quantity']) ? $item['quantity'] : 1); ?>
         <?php endforeach; ?>
-        <h3>Kokonaishinta: €<?= number_format($totalPrice, 2) ?></h3>
-        <a class="edit-btn" id="register-btn" href="index.php?page=maksuForm">Maksamaan</a>
+        <div class="cart-total">
+            <p>Kokonaishinta: €<?= number_format($totalPrice, 2) ?></p>
+        </div>
+        <a href="index.php?page=maksuForm" class="checkout-btn">Maksamaan</a>
     <?php endif; ?>
 </div>
 </body>

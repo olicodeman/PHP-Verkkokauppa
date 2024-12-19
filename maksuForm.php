@@ -53,6 +53,8 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 		<p>Puhelinnumero: <?php echo htmlspecialchars($phoneNumber); ?></p>
 		<p>Käyttäjänimi: <?php echo htmlspecialchars($_SESSION['SESS_LOGIN']);?></p>
         <br>
+		<p>Eikö tiedot ole oikein? Vaihda tietoja <a class="edit-btn" href="index.php?page=user-edit">Täältä</a>.</p>
+		<br>
 		<a class="edit-btn" href="tilausKasittely.php?page=user-edit">Vahvista tilaus</a>
 	</div>
 </div>

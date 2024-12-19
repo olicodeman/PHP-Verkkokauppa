@@ -1,64 +1,71 @@
 <?php
-session_start();
-header('Content-Type: text/html; charset=utf-8');
 
-// Tietokantayhteys
-try {
-    $pdo = new PDO('mysql:host=localhost;dbname=verkkokauppa', 'käyttäjänimi', 'salasana');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die('Tietokantavirhe: ' . $e->getMessage());
+require_once('auth.php');
+require_once('config.php');
+
+$cart = $_SESSION['cart'] ?? [];
+$totalPrice = $_SESSION['cart_total'] ?? 0;
+$memberId = $_SESSION['SESS_MEMBER_ID'] ?? null;
+
+// Tarkista, onko ostoskori tyhjä tai käyttäjä ei ole kirjautunut
+if (empty($cart) || !$memberId) {
+    die('Ostoskorisi on tyhjä tai et ole kirjautunut sisään.');
 }
 
-// Tarkistetaan lomakedata
-$firstname = isset($_POST['firstname']) ? htmlspecialchars($_POST['firstname']) : null;
-$lastname = isset($_POST['lastname']) ? htmlspecialchars($_POST['lastname']) : null;
-$phonenumber = isset($_POST['phonenumber']) ? htmlspecialchars($_POST['phonenumber']) : null;
-
-// Varmistetaan, että kaikki pakolliset kentät on täytetty
-if (!$firstname || !$lastname || !$phonenumber) {
-    die('Virhe: Kaikki kentät ovat pakollisia.');
+// Yhteys tietokantaan
+$link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
+if(!$link) {
+    die('Failed to connect to database: ' . mysqli_connect_error());
 }
 
+//Select database
+$db = mysqli_select_db($link, DB_DATABASE);
+if(!$db) {
+    die("Unable to select database");
+} 
+
+// Aloita transaktio
+mysqli_begin_transaction($link);
+
 try {
-    // Aloitetaan tietokantatransaktio
-    $pdo->beginTransaction();
+    // Lisää tilaus tietokantaan
+    $query = "INSERT INTO tilaukset (member_id, total_price, order_date) VALUES (?, ?, NOW())";
+    $stmt = mysqli_prepare($link, $query);
+    mysqli_stmt_bind_param($stmt, 'id', $memberId, $totalPrice);
+    mysqli_stmt_execute($stmt);
 
-    // Lisätään tilaustiedot tietokantaan
-    $stmt = $pdo->prepare("INSERT INTO orders (firstname, lastname, phonenumber) VALUES (:firstname, :lastname, :phonenumber)");
-    $stmt->execute([
-        ':firstname' => $firstname,
-        ':lastname' => $lastname,
-        ':phonenumber' => $phonenumber
-    ]);
+    // Hae juuri lisätyn tilauksen ID
+    $orderId = mysqli_insert_id($link);
 
-    // Hae tilauksen ID
-    $orderId = $pdo->lastInsertId();
+    // Lisää tuotteet tilaukseen
+    $query = "INSERT INTO tilaus_tuotteet (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
+    $stmt = mysqli_prepare($link, $query);
 
-    // Lisätään ostoskori tuotteet tietokantaan
-    if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-        $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_name, price, quantity) VALUES (:order_id, :product_name, :price, :quantity)");
+    
+    foreach ($cart as $item) {
+       $quantity = $item['quantity'];
+        $price = $item['price'];
 
-        foreach ($_SESSION['cart'] as $item) {
-            $stmt->execute([
-                ':order_id' => $orderId,
-                ':product_name' => $item['name'],
-                ':price' => $item['price'],
-                ':quantity' => $item['quantity']
-            ]);
-        }
+        mysqli_stmt_bind_param($stmt, 'iiid', $orderId, $productId, $quantity, $price);
+        mysqli_stmt_execute($stmt);
     }
 
-    // Päätetään transaktio
-    $pdo->commit();
+    // Vahvista transaktio
+    mysqli_commit($link);
 
-    // Tyhjennetään ostoskori
+    // Tyhjennä ostoskori
     unset($_SESSION['cart']);
+    unset($_SESSION['cart_total']);
 
-    echo 'Tilaus käsiteltiin onnistuneesti!';
+    echo "Tilaus tallennettu onnistuneesti!";
+    echo "<a href='index.php'>Takaisin etusviulle</a>";
+
 } catch (Exception $e) {
-    // Palautetaan mahdolliset muutokset, jos jotain meni pieleen
-    $pdo->rollBack();
-    die('Virhe tilausta käsiteltäessä: ' . $e->getMessage());
+    // Peru transaktio virheen sattuessa
+    mysqli_rollback($link);
+    echo "Tilausta ei voitu tallentaa: " . $e->getMessage();
 }
+
+// Sulje yhteys
+mysqli_close($link);
 ?>
