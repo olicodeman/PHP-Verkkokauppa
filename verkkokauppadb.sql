@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 19.12.2024 klo 11:48
+-- Generation Time: 19.12.2024 klo 13:00
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -183,6 +183,13 @@ ALTER TABLE `tilaukset`
   ADD KEY `member_id` (`member_id`);
 
 --
+-- Indexes for table `tilaus_tuotteet`
+--
+ALTER TABLE `tilaus_tuotteet`
+  ADD KEY `fk_order_id` (`order_id`),
+  ADD KEY `fk_product_id` (`product_id`);
+
+--
 -- Indexes for table `tuote_kategoria`
 --
 ALTER TABLE `tuote_kategoria`
@@ -232,6 +239,13 @@ ALTER TABLE `tuotteet`
 --
 ALTER TABLE `tilaukset`
   ADD CONSTRAINT `tilaukset_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`);
+
+--
+-- Rajoitteet taululle `tilaus_tuotteet`
+--
+ALTER TABLE `tilaus_tuotteet`
+  ADD CONSTRAINT `fk_order_id` FOREIGN KEY (`order_id`) REFERENCES `tilaukset` (`order_id`),
+  ADD CONSTRAINT `fk_product_id` FOREIGN KEY (`product_id`) REFERENCES `tuotteet` (`id`);
 
 --
 -- Rajoitteet taululle `tuote_kategoria`
