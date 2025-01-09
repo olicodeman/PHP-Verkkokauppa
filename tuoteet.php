@@ -321,7 +321,7 @@
         if (data.success) {
             alert('Tuote lisätty ostoskoriin!');
         } else {
-            alert('Ennen ostoskoriin lisäämistä, kirjaudu sisään.');
+            alert('Ennen ostoskoriin lisäämistä, kirjaudu sisään.' + data.message);
         }
     })
     .catch(error => {
