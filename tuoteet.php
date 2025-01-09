@@ -260,8 +260,10 @@
     <p id="popup-description"></p>
     <p id="popup-price"></p>
     <p id="popup-varastomaara"></p>
+    <!-- Määrä jota halutaan ostaa -->
+    <label for="popup-quantity">Määrä:</label>
+    <input id="popup-quantity" type="number" min="1" value="1" step="1" onchange="updateSelectedQuantity()">
     
-
     <!-- Ostoskoriin lisääminen -->
     <div class="icon">
         <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" 
@@ -308,17 +310,15 @@ function hidePopup(event) {
     const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
     const stock = document.getElementById('popup-varastomaara').textContent.replace('Varastossa: ', '').replace(' kpl', '');
     const imageUrl = document.getElementById('popup-img').src;
+    const quantity = document.getElementById('popup-quantity').value;
     const productID = document.getElementById('popup').getAttribute('data-product-id');
 
-    // Prepare product data
-    const productData = {
-        title: title.trim(),
-        price: parseFloat(price.trim()),
-        stock: parseInt(stock.trim(), 10),
-        image: imageUrl
-    };
+    if (quantity > stock) {
+        alert('Varastossa ei ole tarpeeksi tuotteita.');
+        return;
+    }
 
-    // Send product data to server
+    // Lähetä tiedot palvelimelle
     fetch('lisaa-ostoskoriin.php', {
         method: 'POST',
         headers: {
@@ -345,6 +345,14 @@ function hidePopup(event) {
         alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
     });
 }
+
+    // Prepare product data
+    const productData = {
+        title: title.trim(),
+        price: parseFloat(price.trim()),
+        stock: parseInt(stock.trim(), 10),
+        image: imageUrl
+    };
 
 function searchProduct() {
         // Get the search input value

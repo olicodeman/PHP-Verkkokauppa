@@ -40,16 +40,30 @@ try {
         exit;
     }
 
-    // Add the product to the cart
-    $_SESSION['cart'][] = [
-        'id' => $productID, 
-        'name' => $name,
-        'price' => $price,
-        'stock' => $stock,
-        'image' => $imageURL,
-        'quantity' => $quantity,
-    ];
+    // Check if the product already exists in the cart
+    $found = false;
+    foreach ($_SESSION['cart'] as &$item) {
+        if ($item['id'] === $productID) {
+            // If the product is already in the cart, update the quantity
+            $item['quantity'] = min($item['quantity'] + $quantity, $item['stock']);
+            $found = true;
+            break;
+        }
+    }
 
+    // If the product is not in the cart, add it
+    if (!$found) {
+        $_SESSION['cart'][] = [
+            'id' => $productID, 
+            'name' => $name,
+            'price' => $price,
+            'stock' => $stock,
+            'image' => $imageURL,
+            'quantity' => $quantity,
+        ];
+    }
+
+    // Recalculate the total price
     $_SESSION['cart_total'] = array_reduce($_SESSION['cart'], function($carry, $item) {
         return $carry + ($item['price'] * $item['quantity']);
     }, 0);

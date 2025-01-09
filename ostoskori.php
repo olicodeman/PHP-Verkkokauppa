@@ -155,9 +155,10 @@ body {
                 <div class="cart-item-details">
                     <h3><?= htmlspecialchars($item['name']) ?></h3>
                     <p>Hinta: €<?= number_format($item['price'], 2) ?></p>
-                    <p>Määrä: <?= htmlspecialchars($item['quantity']) ?></p>
-                    <p>Yhteensä: €<?= number_format($item['price'] * $item['quantity'], 2) ?></p>
-                </div>
+<p>Määrä: <?= htmlspecialchars($item['quantity']) ?></p>
+<p>Yhteensä: €<?= number_format($item['price'] * $item['quantity'], 2) ?></p>
+        </div>
+
                 <form method="POST">
                     <input type="hidden" name="index" value="<?= $index ?>">
                     <button type="submit" name="remove" class="remove-btn">Poista</button>
@@ -170,5 +171,31 @@ body {
         <a href="index.php?page=maksuForm" class="checkout-btn">Maksamaan</a>
     <?php endif; ?>
 </div>
+<script>
+    function updateCart(index, newQuantity) {
+        fetch('paivita-ostoskorin-maara.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type: 'application/json',
+            },
+            body: JSON.stringify({
+                index:index,
+                quantity: parseInt(newQuantity, 10),
+            })
+        })
+        .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById(`total-${index}`).textContent = `€${(data.updatedPrice).toFixed(2)}`;
+            document.getElementById('cart-total').textContent = `Kokonaishinta: €${(data.cartTotal).toFixed(2)}`;
+        } else {
+            alert('Virhe määrää päivitettäessä.');
+        }
+    })
+    .catch(error => {
+        console.error('Virhe:', error);
+    });
+    }
+</script>
 </body>
 </html>
