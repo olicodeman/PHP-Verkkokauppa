@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 09.01.2025 klo 07:45
+-- Generation Time: 09.01.2025 klo 09:53
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -134,7 +134,11 @@ INSERT INTO `tuote_kategoria` (`tuote_id`, `kategoria_id`) VALUES
 (28, 1),
 (29, 1),
 (29, 2),
-(29, 3);
+(29, 3),
+(31, 3),
+(32, 3),
+(33, 3),
+(34, 3);
 
 -- --------------------------------------------------------
 
@@ -159,7 +163,11 @@ INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`, `varastomäär�
 (26, 'Blenderi', 'Vain sileitä smoothieita!', 500.00, 'kuvat/blender.jpg', 8),
 (27, 'Uuni', 'Uuni jolla saat täyteläisen ja rapean tuloksen!', 1500.00, 'kuvat/uuni.png', 10),
 (28, 'mikroaaltouuni', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 600.00, 'kuvat/mikroaaltouuni.jpg', 6),
-(29, 'Sauvasekoitin', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 85.00, 'kuvat/sauvasekoitin.jpg', 12);
+(29, 'Sauvasekoitin', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 85.00, 'kuvat/sauvasekoitin.jpg', 12),
+(31, 'Aterin setti', 'Ruostumaton teräs aterin setti. 10 kpl jokaista. Isot lusikat, pienet lusikat, haarukat, sekä veitset.', 50.00, 'kuvat/aterinsetti.jpg', 15),
+(32, 'Aterin setti', 'Hopeinen aterin setti. 5 kpl jokaista. Pienet lusikat, isot lusikat, haarukat ja veitset.', 50.00, 'kuvat/HopeinenAterinsetti.jpg', 10),
+(33, 'Veitsisetti', '6 erilaista veitseä. 20-10cm pituus väli.', 20.00, 'kuvat/veitsisetti.jpg', 8),
+(34, 'Keittiövälinesetti', '14 eri keittiötarviketta. Lisäksi keittiövälinepidike.', 12.00, 'kuvat/keittiovalineet.jpg', 5);
 
 --
 -- Indexes for dumped tables
@@ -230,7 +238,7 @@ ALTER TABLE `tilaukset`
 -- AUTO_INCREMENT for table `tuotteet`
 --
 ALTER TABLE `tuotteet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- Rajoitteet vedostauluille
