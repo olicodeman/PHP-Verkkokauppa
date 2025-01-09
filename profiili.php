@@ -22,22 +22,10 @@
 		$phoneNumber = $userDetails['phonenumber'] ?? 'Ei tiedossa'; 
 	}
 
-	$qry = "
-    SELECT 
-        t.order_id,
-        p.nimi AS nimi,
-        op.quantity,
-        (p.hinta * op.quantity) AS total_price
-    FROM 
-        tilaukset t
-    INNER JOIN 
-        tilaus_tuotteet op ON t.order_id = op.order_id
-    INNER JOIN 
-        tuotteet p ON op.product_id = p.id
-    WHERE 
-        t.member_id = " . intval($_SESSION['SESS_MEMBER_ID']);
+	$qry = " SELECT order_id, order_date, total_price FROM tilaukset WHERE member_id = " . intval($_SESSION['SESS_MEMBER_ID']);
 
 		$result = mysqli_query($link, $qry);
+
 
 		$orderDetails = [];
 		if ($result) {
@@ -45,6 +33,8 @@
 				$orderDetails[] = $row;
 			}
 		}
+
+        $userOrder = htmlspecialchars('order_id');
 ?>
 
 <style>
@@ -108,9 +98,8 @@
         <thead>
             <tr>
                 <th>Tilauksen ID</th>
-                <th>Tuotteen nimi</th>
-                <th>Määrä</th>
-                <th>Hinta</th>
+                <th>Kokonaishinta</th>
+                <th>Päivämäärä</th>
             </tr>
         </thead>
         <tbody>
@@ -118,9 +107,8 @@
                 <?php foreach ($orderDetails as $order): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($order['order_id']); ?></td>
-                        <td><?php echo htmlspecialchars($order['nimi']); ?></td>
-                        <td><?php echo htmlspecialchars($order['quantity']); ?></td>
-                        <td><?php echo htmlspecialchars(number_format($order['total_price'], 2)); ?> €</td>
+                        <td><?php echo htmlspecialchars($order['total_price']); ?></td>
+                        <td><?php echo htmlspecialchars($order['order_date']); ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
