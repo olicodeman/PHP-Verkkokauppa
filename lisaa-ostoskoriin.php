@@ -9,7 +9,7 @@ ini_set('error_log', '/path/to/php-error.log');
 
 try {
     // Check if the user is logged in
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    if (!isset($_SESSION['SESS_MEMBER_ID'])) {
         echo json_encode(['success' => false, 'message' => 'Ennen ostoskoriin lisäämistä, kirjaudu sisään.']);
         exit;
     }
