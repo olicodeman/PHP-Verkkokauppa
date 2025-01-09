@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 19.12.2024 klo 13:00
+-- Generation Time: 09.01.2025 klo 07:45
 -- Palvelimen versio: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -65,7 +65,7 @@ CREATE TABLE `members` (
 INSERT INTO `members` (`member_id`, `firstname`, `lastname`, `email`, `address`, `phonenumber`, `username`, `password`) VALUES
 (1, 'Teppo-sakari', 'Testiniemi', 'teppotestausta@jokuemail.com', 'jokukatu 9', '+123 45 67894', 'teppo5569', '827ccb0eea8a706c4c34a16891f84e7b'),
 (2, 'Thomasio', 'Testeringus', 'tomtester@somethinsmail.com', 'someplace street 15', '+123 456 7896', 'tomtesterXD56', 'cf9d344afc8a2061ce216ae59e691b9c'),
-(3, 'Rianna', 'Sarajärvi', 's3sari00@students.osao.fi', 'koti', '345 67', 'Rianna', '3881731093517b98cb695eed8fdaa004'),
+(3, 'Rianna', 'Sarajärvi', 's3sari00@students.osao.fi', 'koti', '345 67', 'Rianna', '6530e95e3fcf785ea9febde39f567630'),
 (4, 'admin', 'admin', 'admin@adminemail.com', 'no', '+123 654 7891', 'admin', '1e783b87df681e37f6456f64cb9fadd8');
 
 -- --------------------------------------------------------
@@ -86,7 +86,8 @@ CREATE TABLE `tilaukset` (
 --
 
 INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`) VALUES
-(1, 2, 685.00, '2024-12-19 10:46:00');
+(1, 2, 685.00, '2024-12-19 10:46:00'),
+(2, 3, 85.00, '2025-01-09 06:39:59');
 
 -- --------------------------------------------------------
 
@@ -107,7 +108,8 @@ CREATE TABLE `tilaus_tuotteet` (
 
 INSERT INTO `tilaus_tuotteet` (`order_id`, `product_id`, `quantity`, `price`) VALUES
 (1, 29, 1, 85.00),
-(1, 28, 1, 600.00);
+(1, 28, 1, 600.00),
+(2, 29, 1, 85.00);
 
 -- --------------------------------------------------------
 
@@ -222,7 +224,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `tilaukset`
 --
 ALTER TABLE `tilaukset`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tuotteet`
