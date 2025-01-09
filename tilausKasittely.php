@@ -50,6 +50,12 @@ try {
 
         mysqli_stmt_bind_param($stmt, 'iiid', $orderId, $productId, $quantity, $price);
         mysqli_stmt_execute($stmt);
+
+        $updateStockQuery = "UPDATE tuotteet SET varastomäärä = varastomäärä - ? WHERE id = ?";
+        $updateStmt = mysqli_prepare($link, $updateStockQuery);
+        mysqli_stmt_bind_param($updateStmt, 'ii', $quantity, $productId);
+        mysqli_stmt_execute($updateStmt);
+        mysqli_stmt_close($updateStmt);
     }
 
     // Vahvista transaktio
