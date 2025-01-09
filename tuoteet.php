@@ -212,10 +212,10 @@
 </head>
 <script>   
     function showDetails (name, description) {
-        document.getElementById('product-details').innerHTML = 
+        document.getElementById('product-details').innerHTML = `
         <h2>${name}</h2>
         <p>${description}</p>
-        ;
+        `;
     }
 </script>
 <body>
