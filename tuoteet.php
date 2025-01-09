@@ -337,7 +337,7 @@ function hidePopup(event) {
         if (data.success) {
             alert('Tuote lisätty ostoskoriin!');
         } else {
-            alert('Ennen ostoskoriin lisäämistä, kirjaudu sisään.' + data.message);
+            alert('Ennen ostoskoriin lisäämistä, kirjaudu sisään.');
         }
     })
     .catch(error => {
