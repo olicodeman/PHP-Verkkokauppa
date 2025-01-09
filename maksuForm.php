@@ -47,11 +47,22 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 
 
 	<div class="profile-content-box">
-		<p>Nimi: <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?> <?php echo htmlspecialchars($_SESSION['SESS_LAST_NAME']);?></p>
-		<p>Sähköposti: <?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?></p>
-		<p>Osoite: <?php echo htmlspecialchars($address); ?></p>
-		<p>Puhelinnumero: <?php echo htmlspecialchars($phoneNumber); ?></p>
-		<p>Käyttäjänimi: <?php echo htmlspecialchars($_SESSION['SESS_LOGIN']);?></p>
+		<form>
+			<label for="fname">Etunimi</label>
+			<input size="30" name="fname" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?>" readonly></input>
+
+			<label for="lname">Sukunimi</label>
+			<input size="30" name="lname" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_LAST_NAME']);?>" readonly></input>
+
+			<label for="osoite">Osoite</label>
+			<input size="30" name="osoite" type="text" value="<?php echo htmlspecialchars($address);?>" readonly></input>
+
+			<label for="sähköposti">Sähköpostiosoite</label>
+			<input size="30" name="sähköposti" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?>" readonly></input>
+
+			<label for="puhelin">Puhelinnumero</label>
+			<input size="30" name="puhelin" type="text" value="<?php echo htmlspecialchars($phoneNumber);?>" readonly></input>
+		</form>
         <br>
 		<p>Eikö tiedot ole oikein? Vaihda tietoja <a class="edit-btn" href="index.php?page=user-edit">Täältä</a>.</p>
 		<br>
