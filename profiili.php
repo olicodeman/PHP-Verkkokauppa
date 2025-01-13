@@ -50,7 +50,7 @@ if (isset($_GET['order_id'])) {
     $orderId = intval($_GET['order_id']);  // Ensure it's a valid integer
 
     if ($orderId > 0) {
-        $orderQry = "SELECT order_id, order_date, total_price FROM tilaukset WHERE order_id = ?";
+        $orderQry = "SELECT order_id, order_date, total_price, Maksutapa, Toimitustapa FROM tilaukset WHERE order_id = ?";
         $stmt = mysqli_prepare($link, $orderQry);
         mysqli_stmt_bind_param($stmt, "i", $orderId);
         mysqli_stmt_execute($stmt);
@@ -216,6 +216,8 @@ if (isset($_GET['order_id'])) {
                         <th>ID</th>
                         <th>Kokonaishinta</th>
                         <th>Päivämäärä</th>
+                        <th>Maksutapa</th>
+                        <th>Toimitustapa</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -223,6 +225,8 @@ if (isset($_GET['order_id'])) {
                         <td><?php echo htmlspecialchars($orderData['order_id']); ?></td>
                         <td><?php echo htmlspecialchars($orderData['total_price']); ?> €</td>
                         <td><?php echo htmlspecialchars($orderData['order_date']); ?></td>
+                        <td><?php echo htmlspecialchars($orderData['Maksutapa']); ?></td>
+                        <td><?php echo htmlspecialchars($orderData['Toimitustapa']); ?></td>
                     </tr>
                 </tbody>
             </table>

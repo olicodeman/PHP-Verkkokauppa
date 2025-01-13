@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 09.01.2025 klo 12:43
+-- Generation Time: 13.01.2025 klo 12:49
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -78,19 +78,31 @@ CREATE TABLE `tilaukset` (
   `order_id` int(11) NOT NULL,
   `member_id` int(11) NOT NULL,
   `total_price` decimal(10,2) NOT NULL,
-  `order_date` timestamp NOT NULL DEFAULT current_timestamp()
+  `order_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `Maksutapa` varchar(20) NOT NULL,
+  `Toimitustapa` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Vedos taulusta `tilaukset`
 --
 
-INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`) VALUES
-(1, 2, 685.00, '2024-12-19 10:46:00'),
-(2, 3, 85.00, '2025-01-09 06:39:59'),
-(3, 3, 70.00, '2025-01-09 09:13:03'),
-(4, 2, 655.00, '2025-01-09 11:17:17'),
-(5, 2, 2100.00, '2025-01-09 11:18:31');
+INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`, `Maksutapa`, `Toimitustapa`) VALUES
+(1, 2, 685.00, '2024-12-19 10:46:00', 'Kortti', 'Nouto'),
+(2, 3, 85.00, '2025-01-09 06:39:59', 'Lasku', 'Nouto'),
+(3, 3, 70.00, '2025-01-09 09:13:03', 'Kortti', 'Nouto'),
+(4, 2, 655.00, '2025-01-09 11:17:17', 'Lasku', 'Nouto'),
+(5, 2, 2100.00, '2025-01-09 11:18:31', 'Kortti', 'Postitus'),
+(6, 2, 50.00, '2025-01-13 07:50:32', 'Lasku', 'Postitus'),
+(7, 2, 20.00, '2025-01-13 08:03:41', 'Kortti', 'Postitus'),
+(8, 2, 650.00, '2025-01-13 08:12:56', 'Lasku', 'Postitus'),
+(9, 2, 1500.00, '2025-01-13 08:51:35', 'Kortti', 'Postitus'),
+(10, 2, 85.00, '2025-01-13 08:53:43', 'Lasku', 'Nouto'),
+(11, 2, 155.00, '2025-01-13 08:55:32', 'Kortti', 'Postitus'),
+(12, 2, 1500.00, '2025-01-13 09:57:31', 'Lasku', 'Nouto'),
+(13, 2, 52.00, '2025-01-13 11:21:00', 'Kortti', 'Postitus'),
+(14, 2, 100.00, '2025-01-13 11:30:05', 'Lasku', 'Nouto'),
+(15, 2, 109.00, '2025-01-13 11:45:02', 'Kortti', 'Postitus');
 
 -- --------------------------------------------------------
 
@@ -120,7 +132,21 @@ INSERT INTO `tilaus_tuotteet` (`order_id`, `product_id`, `quantity`, `price`) VA
 (4, 29, 1, 85.00),
 (4, 36, 1, 20.00),
 (5, 27, 1, 1500.00),
-(5, 28, 1, 600.00);
+(5, 28, 1, 600.00),
+(6, 38, 1, 50.00),
+(7, 36, 1, 20.00),
+(8, 28, 1, 600.00),
+(8, 31, 1, 50.00),
+(9, 27, 1, 1500.00),
+(10, 29, 1, 85.00),
+(11, 31, 1, 50.00),
+(11, 33, 1, 20.00),
+(11, 29, 1, 85.00),
+(12, 27, 1, 1500.00),
+(13, 39, 1, 52.00),
+(14, 38, 2, 50.00),
+(15, 34, 2, 12.00),
+(15, 29, 1, 85.00);
 
 -- --------------------------------------------------------
 
@@ -174,17 +200,17 @@ CREATE TABLE `tuotteet` (
 
 INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`, `varastomäärä`) VALUES
 (26, 'Blenderi', 'Vain sileitä smoothieita!', 500.00, 'kuvat/blender.jpg', 0),
-(27, 'Uuni', 'Uuni jolla saat täyteläisen ja rapean tuloksen!', 1500.00, 'kuvat/uuni.png', 9),
-(28, 'mikroaaltouuni', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 600.00, 'kuvat/mikroaaltouuni.jpg', 5),
-(29, 'Sauvasekoitin', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 85.00, 'kuvat/sauvasekoitin.jpg', 11),
-(31, 'Aterin setti', 'Ruostumaton teräs aterin setti. 10 kpl jokaista. Isot lusikat, pienet lusikat, haarukat, sekä veitset.', 50.00, 'kuvat/aterinsetti.jpg', 14),
+(27, 'Uuni', 'Uuni jolla saat täyteläisen ja rapean tuloksen!', 1500.00, 'kuvat/uuni.png', 7),
+(28, 'mikroaaltouuni', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 600.00, 'kuvat/mikroaaltouuni.jpg', 4),
+(29, 'Sauvasekoitin', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 85.00, 'kuvat/sauvasekoitin.jpg', 8),
+(31, 'Aterin setti', 'Ruostumaton teräs aterin setti. 10 kpl jokaista. Isot lusikat, pienet lusikat, haarukat, sekä veitset.', 50.00, 'kuvat/aterinsetti.jpg', 12),
 (32, 'Aterin setti', 'Hopeinen aterin setti. 5 kpl jokaista. Pienet lusikat, isot lusikat, haarukat ja veitset.', 50.00, 'kuvat/HopeinenAterinsetti.jpg', 10),
-(33, 'Veitsisetti', '6 erilaista veitseä. 20-10cm pituus väli.', 20.00, 'kuvat/veitsisetti.jpg', 8),
-(34, 'Keittiövälinesetti', '14 eri keittiötarviketta. Lisäksi keittiövälinepidike.', 12.00, 'kuvat/keittiovalineet.jpg', 5),
+(33, 'Veitsisetti', '6 erilaista veitseä. 20-10cm pituus väli.', 20.00, 'kuvat/veitsisetti.jpg', 7),
+(34, 'Keittiövälinesetti', '14 eri keittiötarviketta. Lisäksi keittiövälinepidike.', 12.00, 'kuvat/keittiovalineet.jpg', 3),
 (35, 'Kattila', 'Kiiltävä teräskattila.', 15.00, 'kuvat/kattila.jpg', 6),
-(36, 'Kattila', 'Musta kahvallinen kattila, tarttumaton pinta. Sisältää kannen.', 20.00, 'kuvat/kattilamusta.jpg', 11),
-(38, 'Valurauta paistinpannu', 'Valurauta paistinpannu 28cm. ', 50.00, 'kuvat/paistinpannu.jpg', 8),
-(39, 'Wokkipannu', 'Wokkipannu kasvisten paistoon!', 52.00, 'kuvat/wokkipannu.jpg', 16);
+(36, 'Kattila', 'Musta kahvallinen kattila, tarttumaton pinta. Sisältää kannen.', 20.00, 'kuvat/kattilamusta.jpg', 10),
+(38, 'Valurauta paistinpannu', 'Valurauta paistinpannu 28cm. ', 50.00, 'kuvat/paistinpannu.jpg', 5),
+(39, 'Wokkipannu', 'Wokkipannu kasvisten paistoon!', 52.00, 'kuvat/wokkipannu.jpg', 15);
 
 --
 -- Indexes for dumped tables
@@ -249,7 +275,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `tilaukset`
 --
 ALTER TABLE `tilaukset`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tuotteet`

@@ -8,9 +8,17 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 $memberId = $_SESSION['SESS_MEMBER_ID'] ?? null;
 
 
-// Tarkista, onko ostoskori tyhjä tai käyttäjä ei ole kirjautunut
-if (empty($cart) || !$memberId) {
-    die('Ostoskorisi on tyhjä tai et ole kirjautunut sisään.');
+// Checks if order token exists after confirming order in payment form page
+if (!isset($_GET['token']) || !isset($_SESSION['order_token']) || $_GET['token'] !== $_SESSION['order_token']) {
+    header('Location: index.php?page=error');
+    exit();
+}
+
+unset($_SESSION['order_token']);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
+    $paymentMethod = htmlspecialchars($_POST['choice']);
+    $deliveryMethod = htmlspecialchars($_POST['choice2']);
 }
 
 // Yhteys tietokantaan
@@ -30,9 +38,9 @@ mysqli_begin_transaction($link);
 
 try {
     // Lisää tilaus tietokantaan
-    $query = "INSERT INTO tilaukset (member_id, total_price, order_date) VALUES (?, ?, NOW())";
+    $query = "INSERT INTO tilaukset (member_id, total_price, order_date, Maksutapa, Toimitustapa) VALUES (?, ?, NOW(), ?, ?)";
     $stmt = mysqli_prepare($link, $query);
-    mysqli_stmt_bind_param($stmt, 'id', $memberId, $totalPrice);
+    mysqli_stmt_bind_param($stmt, 'idss', $memberId, $totalPrice, $paymentMethod, $deliveryMethod);
     mysqli_stmt_execute($stmt);
 
     // Hae juuri lisätyn tilauksen ID
@@ -65,7 +73,8 @@ try {
     unset($_SESSION['cart']);
     unset($_SESSION['cart_total']);
 
-    echo "Tilaus tallennettu onnistuneesti!";
+    echo "<h1>Tilauksesi on vahvistettu!</h1>";
+    echo "<h3>Kiitos tilauksestasi.</h3>";
     echo "<a href='index.php'>Takaisin etusviulle</a>";
 
 } catch (Exception $e) {
@@ -77,3 +86,14 @@ try {
 // Sulje yhteys
 mysqli_close($link);
 ?>
+
+
+<style>
+    body {
+    background-image: url('https://live.staticflickr.com/8230/8410882716_2604e5af6b_b.jpg');
+    text-align: center;
+    color: white;
+    margin-top: 100px;
+    }
+
+</style>
