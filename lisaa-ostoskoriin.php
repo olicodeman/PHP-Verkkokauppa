@@ -32,29 +32,32 @@ try {
     $price = floatval($data['price']);
     $stock = intval($data['stock']);
     $imageURL = htmlspecialchars($data['image']);
-    $quantity = isset($data['quantity']) && is_numeric($data['quantity']) && $data['quantity'] > 0 ? intval($data['quantity']) : 1;
+    $quantity = isset($data['quantity']) && is_numeric($data['quantity']) && $data['quantity'] > 0
+        ? min(intval($data['quantity']), $stock) // Käytetään pienempää määrää quantityn ja stockin välillä 
+        : 1;
 
-    // Validate price and stock
+
+    // Tarkistetaan hinta ja varasto
     if ($price <= 0 || $stock < 0) {
         echo json_encode(['success' => false, 'message' => 'Tuotteen hinnan tai varaston on oltava positiivinen.']);
         exit;
     }
 
-    // Check if the product already exists in the cart
+    // tarkistetaan onko tuote jo olemassa ostoskorissa
     $found = false;
     foreach ($_SESSION['cart'] as &$item) {
         if ($item['id'] === $productID) {
-            // If the product is already in the cart, update the quantity
-            $item['quantity'] = min($item['quantity'] + $quantity, $item['stock']);
+            // Jos tuote on jo ostoskorissa, päivitä määrä
+            $item['quantity'] = min($item['quantity'] + $quantity, $stock); // käyetään tuotteen tämänhetkistä määrää
             $found = true;
             break;
         }
     }
 
-    // If the product is not in the cart, add it
+    // jos tuote ei ole jo ostoskorissa, lisätään se
     if (!$found) {
         $_SESSION['cart'][] = [
-            'id' => $productID, 
+            'id' => $productID,
             'name' => $name,
             'price' => $price,
             'stock' => $stock,
@@ -63,14 +66,14 @@ try {
         ];
     }
 
-    // Recalculate the total price
-    $_SESSION['cart_total'] = array_reduce($_SESSION['cart'], function($carry, $item) {
+    // lasketaan yhteensä hinta uuelleen
+    $_SESSION['cart_total'] = array_reduce($_SESSION['cart'], function ($carry, $item) {
         return $carry + ($item['price'] * $item['quantity']);
     }, 0);
 
-    // Success response
+    // onnistunut ilmoitus
     echo json_encode(['success' => true, 'message' => 'Tuote lisätty ostoskoriin.']);
 } catch (Exception $e) {
-    // Catch any errors and return a JSON error message
+    // Virheilmoitus
     echo json_encode(['success' => false, 'message' => 'Palvelinvirhe: ' . $e->getMessage()]);
 }
