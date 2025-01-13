@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 13.01.2025 klo 12:49
+-- Generation Time: 13.01.2025 klo 13:00
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -102,7 +102,9 @@ INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`, `
 (12, 2, 1500.00, '2025-01-13 09:57:31', 'Lasku', 'Nouto'),
 (13, 2, 52.00, '2025-01-13 11:21:00', 'Kortti', 'Postitus'),
 (14, 2, 100.00, '2025-01-13 11:30:05', 'Lasku', 'Nouto'),
-(15, 2, 109.00, '2025-01-13 11:45:02', 'Kortti', 'Postitus');
+(15, 2, 109.00, '2025-01-13 11:45:02', 'Kortti', 'Postitus'),
+(16, 2, 150.00, '2025-01-13 11:57:14', 'Kortti', 'Nouto'),
+(17, 2, 255.00, '2025-01-13 11:58:56', 'Lasku', 'Postitus');
 
 -- --------------------------------------------------------
 
@@ -146,7 +148,9 @@ INSERT INTO `tilaus_tuotteet` (`order_id`, `product_id`, `quantity`, `price`) VA
 (13, 39, 1, 52.00),
 (14, 38, 2, 50.00),
 (15, 34, 2, 12.00),
-(15, 29, 1, 85.00);
+(15, 29, 1, 85.00),
+(16, 31, 3, 50.00),
+(17, 29, 3, 85.00);
 
 -- --------------------------------------------------------
 
@@ -202,8 +206,8 @@ INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`, `varastomäär�
 (26, 'Blenderi', 'Vain sileitä smoothieita!', 500.00, 'kuvat/blender.jpg', 0),
 (27, 'Uuni', 'Uuni jolla saat täyteläisen ja rapean tuloksen!', 1500.00, 'kuvat/uuni.png', 7),
 (28, 'mikroaaltouuni', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 600.00, 'kuvat/mikroaaltouuni.jpg', 4),
-(29, 'Sauvasekoitin', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 85.00, 'kuvat/sauvasekoitin.jpg', 8),
-(31, 'Aterin setti', 'Ruostumaton teräs aterin setti. 10 kpl jokaista. Isot lusikat, pienet lusikat, haarukat, sekä veitset.', 50.00, 'kuvat/aterinsetti.jpg', 12),
+(29, 'Sauvasekoitin', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 85.00, 'kuvat/sauvasekoitin.jpg', 5),
+(31, 'Aterin setti', 'Ruostumaton teräs aterin setti. 10 kpl jokaista. Isot lusikat, pienet lusikat, haarukat, sekä veitset.', 50.00, 'kuvat/aterinsetti.jpg', 9),
 (32, 'Aterin setti', 'Hopeinen aterin setti. 5 kpl jokaista. Pienet lusikat, isot lusikat, haarukat ja veitset.', 50.00, 'kuvat/HopeinenAterinsetti.jpg', 10),
 (33, 'Veitsisetti', '6 erilaista veitseä. 20-10cm pituus väli.', 20.00, 'kuvat/veitsisetti.jpg', 7),
 (34, 'Keittiövälinesetti', '14 eri keittiötarviketta. Lisäksi keittiövälinepidike.', 12.00, 'kuvat/keittiovalineet.jpg', 3),
@@ -275,7 +279,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `tilaukset`
 --
 ALTER TABLE `tilaukset`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `tuotteet`
