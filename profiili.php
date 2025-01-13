@@ -238,7 +238,7 @@ if (isset($_GET['order_id'])) {
                     <tr>
                         <th>Tuote</th>
                         <th>Kpl</th>
-                        <th>Hinta</th>
+                        <th>Hinta per kappale</th>
                     </tr>
                 </thead>
                 <tbody>
