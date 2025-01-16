@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 13.01.2025 klo 13:00
+-- Generation Time: 16.01.2025 klo 13:03
 -- Palvelimen versio: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,37 @@ SET time_zone = "+00:00";
 --
 -- Database: `verkkokauppadb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Rakenne taululle `arvostelut`
+--
+
+CREATE TABLE `arvostelut` (
+  `id` int(11) NOT NULL,
+  `tuote_id` int(11) NOT NULL,
+  `nimi` varchar(255) NOT NULL,
+  `sähköposti` varchar(255) NOT NULL,
+  `otsikko` varchar(255) NOT NULL,
+  `kommentti` text NOT NULL,
+  `tähtiarvostelu` int(1) NOT NULL,
+  `luotu` timestamp NOT NULL DEFAULT current_timestamp(),
+  `arvosana` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Vedos taulusta `arvostelut`
+--
+
+INSERT INTO `arvostelut` (`id`, `tuote_id`, `nimi`, `sähköposti`, `otsikko`, `kommentti`, `tähtiarvostelu`, `luotu`, `arvosana`) VALUES
+(10, 27, 'Rianna', 'riannakatariina@gmail.com', 'Uuni', 'Uuni paistaa ruuan hyvin! Kannattaa kuitenkin ottaa huomioon että uunin lämpötila saattaa olla korkeampi kuin sanottu!', 3, '2025-01-16 10:06:59', 0),
+(15, 26, 'Rianna', 'riannakatariina@gmail.com', 'Uuni', 'tulee sileä aamupala smoothie!', 3, '2025-01-16 10:17:42', 0),
+(16, 31, 'Rianna', 'riannakatariina@gmail.com', 'Uuni', 'Huippu hyvä juhliin!', 4, '2025-01-16 10:20:17', 0),
+(17, 34, 'Rianna', 'riannakatariina@gmail.com', 'Keittiövälinesetti', 'Tullut käyttöön kokkauksessa TODELLA paljon!', 5, '2025-01-16 10:21:06', 0),
+(18, 26, 'Rianna', 'riannakatariina@gmail.com', 'blender', 'sopivan pehmeä tulos!', 3, '2025-01-16 11:17:49', 0),
+(19, 33, 'Rianna', 'riannakatariina@gmail.com', 'Veitsinsetti', 'Komea ja kiiltävä, leikkaa hyvin!', 5, '2025-01-16 11:39:58', 0),
+(20, 39, 'Roope', 'roop@gmail.com', 'Wokkipannu', 'Maukkaat wokkiruoat on tulleet tällä pannulla!', 4, '2025-01-16 11:47:37', 0);
 
 -- --------------------------------------------------------
 
@@ -104,7 +135,9 @@ INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`, `
 (14, 2, 100.00, '2025-01-13 11:30:05', 'Lasku', 'Nouto'),
 (15, 2, 109.00, '2025-01-13 11:45:02', 'Kortti', 'Postitus'),
 (16, 2, 150.00, '2025-01-13 11:57:14', 'Kortti', 'Nouto'),
-(17, 2, 255.00, '2025-01-13 11:58:56', 'Lasku', 'Postitus');
+(17, 2, 255.00, '2025-01-13 11:58:56', 'Lasku', 'Postitus'),
+(18, 3, 50.00, '2025-01-16 06:15:43', 'Lasku', 'Nouto'),
+(19, 3, 500.00, '2025-01-16 06:37:57', 'Lasku', 'Postitus');
 
 -- --------------------------------------------------------
 
@@ -150,7 +183,9 @@ INSERT INTO `tilaus_tuotteet` (`order_id`, `product_id`, `quantity`, `price`) VA
 (15, 34, 2, 12.00),
 (15, 29, 1, 85.00),
 (16, 31, 3, 50.00),
-(17, 29, 3, 85.00);
+(17, 29, 3, 85.00),
+(18, 38, 1, 50.00),
+(19, 26, 1, 500.00);
 
 -- --------------------------------------------------------
 
@@ -203,7 +238,7 @@ CREATE TABLE `tuotteet` (
 --
 
 INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`, `varastomäärä`) VALUES
-(26, 'Blenderi', 'Vain sileitä smoothieita!', 500.00, 'kuvat/blender.jpg', 0),
+(26, 'Blenderi', 'Vain sileitä smoothieita!', 500.00, 'kuvat/blender.jpg', 4),
 (27, 'Uuni', 'Uuni jolla saat täyteläisen ja rapean tuloksen!', 1500.00, 'kuvat/uuni.png', 7),
 (28, 'mikroaaltouuni', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 600.00, 'kuvat/mikroaaltouuni.jpg', 4),
 (29, 'Sauvasekoitin', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 85.00, 'kuvat/sauvasekoitin.jpg', 5),
@@ -213,12 +248,19 @@ INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`, `varastomäär�
 (34, 'Keittiövälinesetti', '14 eri keittiötarviketta. Lisäksi keittiövälinepidike.', 12.00, 'kuvat/keittiovalineet.jpg', 3),
 (35, 'Kattila', 'Kiiltävä teräskattila.', 15.00, 'kuvat/kattila.jpg', 6),
 (36, 'Kattila', 'Musta kahvallinen kattila, tarttumaton pinta. Sisältää kannen.', 20.00, 'kuvat/kattilamusta.jpg', 10),
-(38, 'Valurauta paistinpannu', 'Valurauta paistinpannu 28cm. ', 50.00, 'kuvat/paistinpannu.jpg', 5),
+(38, 'Valurauta paistinpannu', 'Valurauta paistinpannu 28cm. ', 50.00, 'kuvat/paistinpannu.jpg', 4),
 (39, 'Wokkipannu', 'Wokkipannu kasvisten paistoon!', 52.00, 'kuvat/wokkipannu.jpg', 15);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `arvostelut`
+--
+ALTER TABLE `arvostelut`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tuote_id` (`tuote_id`);
 
 --
 -- Indexes for table `kategoriat`
@@ -264,6 +306,12 @@ ALTER TABLE `tuotteet`
 --
 
 --
+-- AUTO_INCREMENT for table `arvostelut`
+--
+ALTER TABLE `arvostelut`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
 -- AUTO_INCREMENT for table `kategoriat`
 --
 ALTER TABLE `kategoriat`
@@ -279,7 +327,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `tilaukset`
 --
 ALTER TABLE `tilaukset`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tuotteet`
@@ -290,6 +338,12 @@ ALTER TABLE `tuotteet`
 --
 -- Rajoitteet vedostauluille
 --
+
+--
+-- Rajoitteet taululle `arvostelut`
+--
+ALTER TABLE `arvostelut`
+  ADD CONSTRAINT `arvostelut_ibfk_1` FOREIGN KEY (`tuote_id`) REFERENCES `tuotteet` (`id`) ON DELETE CASCADE;
 
 --
 -- Rajoitteet taululle `tilaukset`
