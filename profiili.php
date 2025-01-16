@@ -133,7 +133,7 @@ if (isset($_GET['order_id'])) {
     }
     /* Centered Popup */
     #orderDetailsPopup {
-        position: absolute;
+        position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%); /* This centers the popup */
@@ -158,6 +158,10 @@ if (isset($_GET['order_id'])) {
 <div style="text-align: center;">
     <h1>Tervetuloa <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?></h1>
     <a href="index.php?page=logout">Kirajudu ulos</a>
+
+    <?php if ($_SESSION['SESS_LOGIN'] == 'admin'): ?>
+        <a style="margin-left: 10px;" href="admin-panel.php">Admin Panel</a>
+    <?php endif; ?>
 
     <div class="profile-content-container">
         <div class="profile-content-box">

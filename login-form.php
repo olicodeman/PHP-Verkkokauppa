@@ -19,7 +19,7 @@
 <br>
 <div style="display: flex; justify-content: center;">
     <div style="text-align: center;">
-        <p><b>Not a user yet?</b></p>
+        <p><b>Eikö ole vielä tiliä?</b></p>
         <p><a href="index.php?page=register-form">Paina tästä</a>, jos haluat luoda tilin.</p>
     </div>
 </div>
