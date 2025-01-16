@@ -20,6 +20,30 @@ if ($result && $result->num_rows > 0) {
     }
 }
 $conn->close();
+
+// Yhdistetään tietokantaan uudelleen (käytetään samaa yhteyttä)
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Hae uusimmat arvostelut (3 viimeisintä)
+$reviews = [];
+$sql = "SELECT r.id, r.nimi, r.otsikko, r.kommentti, r.tähtiarvostelu, r.luotu, t.nimi AS tuote_nimi 
+        FROM arvostelut r
+        JOIN tuotteet t ON r.tuote_id = t.id 
+        ORDER BY r.luotu DESC LIMIT 3";
+$result = $conn->query($sql);
+
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $reviews[] = $row;
+    }
+}
+$conn->close();
+?>
+
 ?>
 <style>
     /* Popup and overlay styles */
@@ -98,6 +122,68 @@ $conn->close();
             max-width: 50px;
             width: 100%;
         }
+        /* Container for reviews */
+.reviews-container {
+    display: flex;
+    justify-content: space-between; /* Tasaa arvostelut vierekkäin */
+    gap: 20px; /* Väli arvosteluiden välillä */
+    flex-wrap: wrap; /* Sallii rivin täyttämisen ja siirtymisen seuraavalle riville pienemmillä näytöillä */
+    padding: 20px 0;
+    max-width: 1200px; /* Maksimileveys */
+    margin: 0 auto; /* Keskittää containerin */
+}
+
+/* Each individual review card */
+.review {
+    background-color: #2d2d66; /* Sama taustaväri kuin popupissa */
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 30%; /* Kolme arvostelua vierekkäin */
+    text-align: left;
+    flex: 1 1 30%; /* Flexbox-asettelu */
+    box-sizing: border-box; /* Estää ylivuotoa */
+}
+
+.review h4 {
+    color: gold;
+    margin: 0;
+}
+
+.review p {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.review em {
+    color: #bbb;
+}
+
+.center-align {
+            display: flex;
+            justify-content: center;
+            /* Keskittää vaakasuunnassa */
+            align-items: center;
+            /* Keskittää pystysuunnassa */
+            margin: 20px 0;
+            /* Lisää tilaa ylä- ja alapuolelle */
+        }
+
+        .edit-btn {
+            margin-right: 10px;
+            background-color: #4545a6;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background-color: rgb(85, 85, 145);
+        }
 </style>
 
 <div style="text-align: center; color: white;">
@@ -158,6 +244,31 @@ $conn->close();
         <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin" onclick="addToCart()"
             style="width: 40px; height: 40px; cursor: pointer; margin-top: 10px;">
     </div>
+    <div class="center-align">
+    <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu">Anna arvostelu</a>
+
+    <div class="center-align">
+            <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">Lue arvosteluja</a>
+        </div>
+</div>
+
+</div>
+<div style="text-align: center; color: white; margin-top: 50px;">
+    <h2>Uusimmat arvostelut</h2>
+    <div class="reviews-container">
+    <?php if (!empty($reviews)): ?>
+        <?php foreach ($reviews as $review): ?>
+            <div class="review">
+                <h4><?= htmlspecialchars($review['nimi']) ?> - <?= htmlspecialchars($review['tuote_nimi']) ?></h4>
+                <p><strong>Otsikko:</strong> <?= htmlspecialchars($review['otsikko']) ?></p>
+                <p><strong>Arvostelu:</strong> <?= htmlspecialchars($review['kommentti']) ?></p>
+                <p><strong>Tähtiä:</strong> <?= str_repeat("★", $review['tähtiarvostelu']) ?> <?= $review['tähtiarvostelu'] ?>/5</p>
+                <p><em>Julkaisupäivämäärä: <?= date('d.m.Y', strtotime($review['luotu'])) ?></em></p>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Ei arvosteluja saatavilla tällä hetkellä.</p>
+    <?php endif; ?>
 </div>
 
 <script>

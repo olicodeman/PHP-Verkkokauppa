@@ -32,14 +32,17 @@ try {
 
 try {
     $stmt = $pdo->prepare("
-            SELECT 
-                t.id, t.nimi, t.kuvaus, t.kuva, t.hinta, t.varastomäärä, 
-                COALESCE(GROUP_CONCAT(k.nimi SEPARATOR ','), '') AS categories
-            FROM tuotteet t
-            LEFT JOIN tuote_kategoria tk ON t.id = tk.tuote_id
-            LEFT JOIN kategoriat k ON tk.kategoria_id = k.id
-            GROUP BY t.id
-        ");
+    SELECT 
+        t.id, t.nimi, t.kuvaus, t.kuva, t.hinta, t.varastomäärä, 
+        COALESCE(GROUP_CONCAT(k.nimi SEPARATOR ','), '') AS categories,
+        COALESCE(AVG(a.arvosana), 0) AS avg_rating
+    FROM tuotteet t
+    LEFT JOIN tuote_kategoria tk ON t.id = tk.tuote_id
+    LEFT JOIN kategoriat k ON tk.kategoria_id = k.id
+    LEFT JOIN arvostelut a ON t.id = a.tuote_id
+    GROUP BY t.id
+");
+
     $stmt->execute();
     $products = $stmt->fetchAll();
 } catch (PDOException $e) {
@@ -231,6 +234,37 @@ try {
             max-width: 50px;
             width: 100%;
         }
+
+        .center-align {
+            display: flex;
+            justify-content: center;
+            /* Keskittää vaakasuunnassa */
+            align-items: center;
+            /* Keskittää pystysuunnassa */
+            margin: 20px 0;
+            /* Lisää tilaa ylä- ja alapuolelle */
+        }
+
+        .edit-btn {
+            margin-right: 10px;
+            background-color: #4545a6;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background-color: rgb(85, 85, 145);
+        }
+        .rating {
+    color: gold;
+    font-size: 18px;
+    margin: 5px 0;
+}
+
     </style>
 </head>
 <script>
@@ -247,7 +281,7 @@ try {
     <br>
     <div class="search-bar-container">
         <input type="text" id="searchInput" class="search-bar" placeholder="Etsi tuotteita...">
-        <button class="search-btn" onclick="searchProduct()">Search</button>
+        <button class="search-btn" onclick="searchProduct()">Hae</button>
     </div>
 
     <div class="category-container">
@@ -269,6 +303,18 @@ try {
                     onclick="showPopup('<?= htmlspecialchars($product['id']) ?>', '<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
                     <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
                     <p style="color: gold;" class="name"><?= htmlspecialchars($product['nimi']) ?></p>
+                    <p class="rating">
+                        <?php
+                        $rating = round($product['avg_rating']); // Pyöristetään lähimpään kokonaislukuun
+                        for ($i = 1; $i <= 5; $i++) {
+                            if ($i <= $rating) {
+                                echo '★'; // Täytetty tähti
+                            } else {
+                                echo '☆'; // Tyhjä tähti
+                            }
+                        }
+                        ?>
+                    </p>
                     <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
                 </div>
             <?php endforeach; ?>
@@ -294,103 +340,108 @@ try {
             <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin"
                 onclick="addToCartFromPopup()">
         </div>
-    </div>
+        <div class="center-align">
+            <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu">Anna arvostelu</a>
+            
+        <div class="center-align">
+            <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">Lue arvosteluja</a>
+        </div>
 
-    <script>
-        // näytetään tuote popup
-        function showPopup(id, title, description, imageUrl, price, stock) {
-            // popup yksityiskohdat
-            document.getElementById('popup-title').textContent = title;
-            document.getElementById('popup-description').textContent = description;
-            document.getElementById('popup-img').src = imageUrl;
-            document.getElementById('popup-price').textContent = "Hinta: €" + parseFloat(price).toFixed(2);
-            document.getElementById('popup-varastomaara').textContent = "Varastossa: " + stock + " kpl";
+        <script>
+            // näytetään tuote popup
+            function showPopup(id, title, description, imageUrl, price, stock) {
+                // popup yksityiskohdat
+                document.getElementById('popup-title').textContent = title;
+                document.getElementById('popup-description').textContent = description;
+                document.getElementById('popup-img').src = imageUrl;
+                document.getElementById('popup-price').textContent = "Hinta: €" + parseFloat(price).toFixed(2);
+                document.getElementById('popup-varastomaara').textContent = "Varastossa: " + stock + " kpl";
 
-            // Asetetaan tuote ID ostoskoriinlisäämistä varten 
-            document.getElementById('popup').setAttribute('data-product-id', id);
+                // Asetetaan tuote ID ostoskoriinlisäämistä varten 
+                document.getElementById('popup').setAttribute('data-product-id', id);
 
-            // Tarkistetaan varasto ja päivitetään popup sen mukaan 
-            const addToCartIcon = document.querySelector('.popup .icon img'); // Lisää ostoskoriin icon
-            const quantityInput = document.getElementById('popup-quantity'); // Määrä joka on asetettu 
-            const quantityLabel = document.querySelector('.keskita label');
+                // Tarkistetaan varasto ja päivitetään popup sen mukaan 
+                const addToCartIcon = document.querySelector('.popup .icon img'); // Lisää ostoskoriin icon
+                const quantityInput = document.getElementById('popup-quantity'); // Määrä joka on asetettu 
+                const quantityLabel = document.querySelector('.keskita label');
 
-            if (stock == 0) {
-                // Varaston määrä on 0, piilotetaan kohtia jos näin
-                quantityInput.style.display = 'none'; // piilotetaan määrä
-                quantityLabel.style.display = 'none'; // Piilotetaan määrän label
-                const stockMessageElement = document.getElementById('popup-varastomaara'); // Näytetään varastotyhjä viesti
-                stockMessageElement.innerHTML = `<span style="color: red;">Varasto tyhjä</span>, täytämme sen mahdollisimman pian!`;
+                if (stock == 0) {
+                    // Varaston määrä on 0, piilotetaan kohtia jos näin
+                    quantityInput.style.display = 'none'; // piilotetaan määrä
+                    quantityLabel.style.display = 'none'; // Piilotetaan määrän label
+                    const stockMessageElement = document.getElementById('popup-varastomaara'); // Näytetään varastotyhjä viesti
+                    stockMessageElement.innerHTML = `<span style="color: red;">Varasto tyhjä</span>, täytämme sen mahdollisimman pian!`;
 
 
-                // Muutetaan kuva ja laitetaan niin ettei sitä voida klikata
-                addToCartIcon.src = "https://img.icons8.com/?size=100&id=7850&format=png&color=FFFFFF"; // muutetaan kuva 
-                addToCartIcon.onclick = null; //Ei voi klikata
-            } else {
-                // Varastossa on tuote joten näytetään määrä ja miten paljon asiakas haluaa tilata
-                quantityInput.style.display = 'block'; // Näytetään määrä jota voidaan valita
-                quantityLabel.style.display = 'block'; // Näytetään määrä
+                    // Muutetaan kuva ja laitetaan niin ettei sitä voida klikata
+                    addToCartIcon.src = "https://img.icons8.com/?size=100&id=7850&format=png&color=FFFFFF"; // muutetaan kuva 
+                    addToCartIcon.onclick = null; //Ei voi klikata
+                } else {
+                    // Varastossa on tuote joten näytetään määrä ja miten paljon asiakas haluaa tilata
+                    quantityInput.style.display = 'block'; // Näytetään määrä jota voidaan valita
+                    quantityLabel.style.display = 'block'; // Näytetään määrä
 
-                // Muokataan kuva toiminnalliseksi ja laitetaan alkuperäinen kuva
-                addToCartIcon.src = "https://cdn-icons-png.flaticon.com/512/6713/6713719.png";
-                addToCartIcon.onclick = function () { addToCartFromPopup(); }; // toiminnallinen klikkaus
+                    // Muokataan kuva toiminnalliseksi ja laitetaan alkuperäinen kuva
+                    addToCartIcon.src = "https://cdn-icons-png.flaticon.com/512/6713/6713719.png";
+                    addToCartIcon.onclick = function () { addToCartFromPopup(); }; // toiminnallinen klikkaus
+                }
+
+                // näytetään popup ja overlay
+                document.getElementById('popup').classList.add('show');
+                document.getElementById('overlay').classList.add('show');
             }
 
-            // näytetään popup ja overlay
-            document.getElementById('popup').classList.add('show');
-            document.getElementById('overlay').classList.add('show');
-        }
-
-        // Piilota popup
-        function hidePopup() {
-            document.getElementById('popup').classList.remove('show');
-            document.getElementById('overlay').classList.remove('show');
-        }
-
-        // Sulje napin toiminto
-        document.querySelector('.close-btn').addEventListener('click', function (event) {
-            event.stopPropagation();
-            hidePopup(); // piilotetaan popup kun painetaan poistumista
-        });
-
-        //lisätään tuote ostoskoriin popupista
-        function addToCartFromPopup() {
-            const title = document.getElementById('popup-title').textContent;
-            const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
-            const stock = parseInt(document.getElementById('popup-varastomaara').textContent.replace('Varastossa: ', '').replace(' kpl', ''), 10);
-            const quantity = parseInt(document.getElementById('popup-quantity').value, 10);
-            const productID = document.getElementById('popup').getAttribute('data-product-id');
-            const imageUrl = document.getElementById('popup-img').src;
-
-            if (quantity > stock) {
-                alert('Varastossa ei ole tarpeeksi tuotteita.');
-                return;
+            // Piilota popup
+            function hidePopup() {
+                document.getElementById('popup').classList.remove('show');
+                document.getElementById('overlay').classList.remove('show');
             }
 
-            fetch('lisaa-ostoskoriin.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: productID,
-                    name: title,
-                    price: parseFloat(price),
-                    stock: stock,
-                    image: imageUrl,
-                    quantity: quantity,
-                }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Tuote lisätty ostoskoriin!');
-                    } else {
-                        alert('Ennen ostoskoriin lisäämistä, kirjaudu sisään.');
-                    }
+            // Sulje napin toiminto
+            document.querySelector('.close-btn').addEventListener('click', function (event) {
+                event.stopPropagation();
+                hidePopup(); // piilotetaan popup kun painetaan poistumista
+            });
+
+            //lisätään tuote ostoskoriin popupista
+            function addToCartFromPopup() {
+                const title = document.getElementById('popup-title').textContent;
+                const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
+                const stock = parseInt(document.getElementById('popup-varastomaara').textContent.replace('Varastossa: ', '').replace(' kpl', ''), 10);
+                const quantity = parseInt(document.getElementById('popup-quantity').value, 10);
+                const productID = document.getElementById('popup').getAttribute('data-product-id');
+                const imageUrl = document.getElementById('popup-img').src;
+
+                if (quantity > stock) {
+                    alert('Varastossa ei ole tarpeeksi tuotteita.');
+                    return;
+                }
+
+                fetch('lisaa-ostoskoriin.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: productID,
+                        name: title,
+                        price: parseFloat(price),
+                        stock: stock,
+                        image: imageUrl,
+                        quantity: quantity,
+                    }),
                 })
-                .catch(error => {
-                    console.error('Virhe:', error);
-                    alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
-                });
-        }
-    </script>
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Tuote lisätty ostoskoriin!');
+                        } else {
+                            alert('Ennen ostoskoriin lisäämistä, kirjaudu sisään.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Virhe:', error);
+                        alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
+                    });
+            }
+        </script>

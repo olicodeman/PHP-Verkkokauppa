@@ -13,7 +13,7 @@
         session_write_close();
 
     // Navigointi scripti
-        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm", "lisaaArvostelu", "arvosteluSivu");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];
@@ -41,7 +41,7 @@
 
     <?php
     // Navigointi scripti
-        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm");
+        $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm","lisaaArvostelu", "arvosteluSivu");
         $page = "etusivu";
         if(isset($_GET['page']))
             $page = $_GET['page'];
