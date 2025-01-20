@@ -90,8 +90,6 @@ $conn->close();
     .show {
         display: block;
     }
-
-    /* Product hover effect */
     .product:hover {
         transform: scale(1.05);
         background-color: darkcyan;
@@ -107,83 +105,83 @@ $conn->close();
         cursor: pointer;
         transition: transform 0.3s, background-color 0.3s;
     }
+
     .keskita {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
 
-        /* Keskitetään määrä */
-        .keskita label,
-        .keskita input {
-            max-width: 50px;
-            width: 100%;
-        }
-        /* Container for reviews */
-.reviews-container {
-    display: flex;
-    justify-content: space-between; /* Tasaa arvostelut vierekkäin */
-    gap: 20px; /* Väli arvosteluiden välillä */
-    flex-wrap: wrap; /* Sallii rivin täyttämisen ja siirtymisen seuraavalle riville pienemmillä näytöillä */
-    padding: 20px 0;
-    max-width: 1200px; /* Maksimileveys */
-    margin: 0 auto; /* Keskittää containerin */
-}
+    /* Keskitetään määrä */
+    .keskita label,
+    .keskita input {
+        max-width: 50px;
+        width: 100%;
+    }
 
-/* Each individual review card */
-.review {
-    background-color: #2d2d66; /* Sama taustaväri kuin popupissa */
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 30%; /* Kolme arvostelua vierekkäin */
-    text-align: left;
-    flex: 1 1 30%; /* Flexbox-asettelu */
-    box-sizing: border-box; /* Estää ylivuotoa */
-}
+    .reviews-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        padding: 20px 0;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
 
-.review h4 {
-    color: gold;
-    margin: 0;
-}
+    .review {
+        background-color: #2d2d66;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        width: 30%;
+        text-align: left;
+        flex: 1 1 30%;
+        box-sizing: border-box;
+    }
 
-.review p {
-    font-size: 14px;
-    line-height: 1.6;
-}
+    .review h4 {
+        color: gold;
+        margin: 0;
+    }
 
-.review em {
-    color: #bbb;
-}
+    .review p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
 
-.center-align {
-            display: flex;
-            justify-content: center;
-            /* Keskittää vaakasuunnassa */
-            align-items: center;
-            /* Keskittää pystysuunnassa */
-            margin: 20px 0;
-            /* Lisää tilaa ylä- ja alapuolelle */
-        }
+    .review em {
+        color: #bbb;
+    }
 
-        .edit-btn {
-            margin-right: 10px;
-            background-color: #4545a6;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
+    .center-align {
+        display: flex;
+        justify-content: center;
+        /* Keskittää vaakasuunnassa */
+        align-items: center;
+        /* Keskittää pystysuunnassa */
+        margin: 20px 0;
+        /* Lisää tilaa ylä- ja alapuolelle */
+    }
 
-        .edit-btn:hover {
-            background-color: rgb(85, 85, 145);
-        }
+    .edit-btn {
+        margin-right: 10px;
+        background-color: #4545a6;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .edit-btn:hover {
+        background-color: rgb(85, 85, 145);
+    }
 </style>
 
 <div style="text-align: center; color: white;">
@@ -245,193 +243,196 @@ $conn->close();
             style="width: 40px; height: 40px; cursor: pointer; margin-top: 10px;">
     </div>
     <div class="center-align">
-    <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu">Anna arvostelu</a>
+        <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu">Anna arvostelu</a>
 
-    <div class="center-align">
+        <div class="center-align">
             <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">Lue arvosteluja</a>
         </div>
-</div>
+    </div>
 
 </div>
 <div style="text-align: center; color: white; margin-top: 50px;">
     <h2>Uusimmat arvostelut</h2>
+
+    <a class="edit-btn" href="index.php?page=lisaaArvostelu">Anna arvostelu!</a>
     <div class="reviews-container">
-    <?php if (!empty($reviews)): ?>
-        <?php foreach ($reviews as $review): ?>
-            <div class="review">
-                <h4><?= htmlspecialchars($review['nimi']) ?> - <?= htmlspecialchars($review['tuote_nimi']) ?></h4>
-                <p><strong>Otsikko:</strong> <?= htmlspecialchars($review['otsikko']) ?></p>
-                <p><strong>Arvostelu:</strong> <?= htmlspecialchars($review['kommentti']) ?></p>
-                <p><strong>Tähtiä:</strong> <?= str_repeat("★", $review['tähtiarvostelu']) ?> <?= $review['tähtiarvostelu'] ?>/5</p>
-                <p><em>Julkaisupäivämäärä: <?= date('d.m.Y', strtotime($review['luotu'])) ?></em></p>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>Ei arvosteluja saatavilla tällä hetkellä.</p>
-    <?php endif; ?>
-</div>
+        <?php if (!empty($reviews)): ?>
+            <?php foreach ($reviews as $review): ?>
+                <div class="review">
+                    <h4><?= htmlspecialchars($review['nimi']) ?> - <?= htmlspecialchars($review['tuote_nimi']) ?></h4>
+                    <p><strong>Otsikko:</strong> <?= htmlspecialchars($review['otsikko']) ?></p>
+                    <p><strong>Arvostelu:</strong> <?= htmlspecialchars($review['kommentti']) ?></p>
+                    <p><strong>Tähtiä:</strong> <?= str_repeat("★", $review['tähtiarvostelu']) ?>
+                        <?= $review['tähtiarvostelu'] ?>/5</p>
+                    <p><em>Julkaisupäivämäärä: <?= date('d.m.Y', strtotime($review['luotu'])) ?></em></p>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>Ei arvosteluja saatavilla tällä hetkellä.</p>
+        <?php endif; ?>
+    </div>
 
-<script>
-  function showPopup(id, title, description, imageUrl, price, stock) {
-    console.log("Popup triggered for product ID:", id); // Debuggaus
+    <script>
+        function showPopup(id, title, description, imageUrl, price, stock) {
+            console.log("Popup triggered for product ID:", id); // Debuggaus
 
-    //haetaan popupin elementit
-    const popupTitle = document.getElementById('popup-title');
-    const popupDescription = document.getElementById('popup-description');
-    const popupImg = document.getElementById('popup-img');
-    const popupPrice = document.getElementById('popup-price');
-    const popupStock = document.getElementById('popup-stock');
+            //haetaan popupin elementit
+            const popupTitle = document.getElementById('popup-title');
+            const popupDescription = document.getElementById('popup-description');
+            const popupImg = document.getElementById('popup-img');
+            const popupPrice = document.getElementById('popup-price');
+            const popupStock = document.getElementById('popup-stock');
 
-    // tarkistetaane ttä kaikki elementit löytyvät ennen niiden sisällön päivittämistä
-    if (popupTitle && popupDescription && popupImg && popupPrice && popupStock) {
-        popupTitle.textContent = title;
-        popupDescription.textContent = description;
-        popupImg.src = imageUrl;
-        popupPrice.textContent = "Hinta: €" + parseFloat(price).toFixed(2);
-        popupStock.textContent = "Varastossa: " + stock + " kpl";
+            // tarkistetaane ttä kaikki elementit löytyvät ennen niiden sisällön päivittämistä
+            if (popupTitle && popupDescription && popupImg && popupPrice && popupStock) {
+                popupTitle.textContent = title;
+                popupDescription.textContent = description;
+                popupImg.src = imageUrl;
+                popupPrice.textContent = "Hinta: €" + parseFloat(price).toFixed(2);
+                popupStock.textContent = "Varastossa: " + stock + " kpl";
 
-        //Lisätään tuote-ID ostoskoria varten
-        document.getElementById('popup').setAttribute('data-product-id', id);
+                //Lisätään tuote-ID ostoskoria varten
+                document.getElementById('popup').setAttribute('data-product-id', id);
 
-        //käsitellään varastotilanne
-        const addToCartIcon = document.querySelector('.popup .icon img');
-        const quantityInput = document.getElementById('popup-quantity');
-        const quantityLabel = document.querySelector('.keskita label');
+                //käsitellään varastotilanne
+                const addToCartIcon = document.querySelector('.popup .icon img');
+                const quantityInput = document.getElementById('popup-quantity');
+                const quantityLabel = document.querySelector('.keskita label');
 
-        //jos varastossae i ole tuotteita, piilotetaan määräinput ja label
-        if (stock == 0) {
-            quantityInput.style.display = 'none';
-            quantityLabel.style.display = 'none';
-            const stockMessageElement = document.getElementById('popup-stock');
-            stockMessageElement.innerHTML = `<span style="color: red;">Varasto tyhjä</span>, täytämme sen mahdollisimman pian!`;
+                //jos varastossae i ole tuotteita, piilotetaan määräinput ja label
+                if (stock == 0) {
+                    quantityInput.style.display = 'none';
+                    quantityLabel.style.display = 'none';
+                    const stockMessageElement = document.getElementById('popup-stock');
+                    stockMessageElement.innerHTML = `<span style="color: red;">Varasto tyhjä</span>, täytämme sen mahdollisimman pian!`;
 
-            //muutetaan kuvake ja poistetaan klikkauksen mahdollisuus
-            addToCartIcon.src = "https://img.icons8.com/?size=100&id=7850&format=png&color=FFFFFF";
-            addToCartIcon.onclick = null;
-        } else {
-            //jos varastossa on tuotteita, näytetään määräinput ja label
-            quantityInput.style.display = 'block';
-            quantityLabel.style.display = 'block';
-            //näyetään normaali kuvake
-            addToCartIcon.src = "https://cdn-icons-png.flaticon.com/512/6713/6713719.png";
-            addToCartIcon.onclick = function () { addToCart(); };
-
-        }
-
-        // näytetään popup ja overlay
-        document.getElementById('popup').classList.add('show');
-        document.getElementById('overlay').classList.add('show');
-    } else {
-        //virhe jos jokin pop-up elementeistä puuttuu
-        console.error("One or more popup elements are missing.");
-    }
-}
-
-
-
-    function addToCart() {
-        // Haetaan tiedot popupista
-        const title = document.getElementById('popup-title').textContent;
-        const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
-        const stock = parseInt(document.getElementById('popup-stock').textContent.replace('Varastossa: ', '').replace(' kpl', ''), 10); // Convert stock to number
-        const quantity = parseInt(document.getElementById('popup-quantity').value, 10); // Get and parse quantity
-        const productID = document.getElementById('popup').getAttribute('data-product-id');
-        const imageUrl = document.getElementById('popup-img').src;
-
-        // tarkistetaan ylittääkö määrä varaston.
-        if (quantity > stock) {
-            alert('Varastossa ei ole tarpeeksi tuotteita.');
-            return;
-        }
-
-        // lähetetään tuotteen tiedot
-        fetch('lisaa-ostoskoriin.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: productID,
-                name: title,
-                price: parseFloat(price),
-                stock: stock,
-                image: imageUrl,
-                quantity: quantity, // lisätään määrä tietoihin
-            }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Tuote lisätty ostoskoriin!');
+                    //muutetaan kuvake ja poistetaan klikkauksen mahdollisuus
+                    addToCartIcon.src = "https://img.icons8.com/?size=100&id=7850&format=png&color=FFFFFF";
+                    addToCartIcon.onclick = null;
                 } else {
-                    alert('Ennen ostoskoriin lisäämistä, kirjaudu sisään.');
+                    //jos varastossa on tuotteita, näytetään määräinput ja label
+                    quantityInput.style.display = 'block';
+                    quantityLabel.style.display = 'block';
+                    //näyetään normaali kuvake
+                    addToCartIcon.src = "https://cdn-icons-png.flaticon.com/512/6713/6713719.png";
+                    addToCartIcon.onclick = function () { addToCart(); };
+
                 }
-            })
-            .catch(error => {
-                console.error('Virhe:', error);
-                alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
-            });
-    }
 
-
-    // Valmistellaan tuotteen
-    const title = document.getElementById('popup-title').textContent;
-    const productData = {
-        title: title.trim(),
-        price: parseFloat(price.trim()),
-        stock: parseInt(stock.trim(), 10),
-        image: imageUrl
-    };
-
-    function searchProduct() {
-        // Get the search input value
-        const searchValue = document.getElementById('searchInput').value.toLowerCase();
-
-        // Get all product elements
-        const products = document.querySelectorAll('.product');
-
-        // Loop through all products
-        products.forEach(product => {
-            // Get the product name
-            const productName = product.querySelector('.name').textContent.toLowerCase();
-
-            // Check if the product name matches the search value
-            if (searchValue == "") {
-                product.style.display = 'block';
-            }
-            else if (productName.includes(searchValue)) {
-                // Show the product if it matches
-                product.style.display = 'block';
+                // näytetään popup ja overlay
+                document.getElementById('popup').classList.add('show');
+                document.getElementById('overlay').classList.add('show');
             } else {
-                // Hide the product if it doesn't match
-                product.style.display = 'none';
+                //virhe jos jokin pop-up elementeistä puuttuu
+                console.error("One or more popup elements are missing.");
             }
-        });
-    }
-    function hidePopup(event) {
-        if (event) {
-            event.preventDefault();
-            event.stopPropagation();
         }
-        // piilotetaan popup ja overlay
-        document.getElementById('popup').classList.remove('show');
-        document.getElementById('overlay').classList.remove('show');
-    }
 
-    function filterByCategory() {
-        const selectedCategory = document.getElementById('categorySelect').value.toLowerCase(); // Get selected category
-        const products = document.querySelectorAll('.product'); // All product elements
 
-        products.forEach(product => {
-            const productCategories = product.getAttribute('data-categories').toLowerCase(); // Get product categories
 
-            // Show or hide products based on selected category
-            if (selectedCategory === "all" || productCategories.includes(selectedCategory)) {
-                product.style.display = 'block';
-            } else {
-                product.style.display = 'none';
+        function addToCart() {
+            // Haetaan tiedot popupista
+            const title = document.getElementById('popup-title').textContent;
+            const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
+            const stock = parseInt(document.getElementById('popup-stock').textContent.replace('Varastossa: ', '').replace(' kpl', ''), 10); // Convert stock to number
+            const quantity = parseInt(document.getElementById('popup-quantity').value, 10); // Get and parse quantity
+            const productID = document.getElementById('popup').getAttribute('data-product-id');
+            const imageUrl = document.getElementById('popup-img').src;
+
+            // tarkistetaan ylittääkö määrä varaston.
+            if (quantity > stock) {
+                alert('Varastossa ei ole tarpeeksi tuotteita.');
+                return;
             }
-        });
-    }
 
-</script>
+            // lähetetään tuotteen tiedot
+            fetch('lisaa-ostoskoriin.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: productID,
+                    name: title,
+                    price: parseFloat(price),
+                    stock: stock,
+                    image: imageUrl,
+                    quantity: quantity, // lisätään määrä tietoihin
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Tuote lisätty ostoskoriin!');
+                    } else {
+                        alert('Ennen ostoskoriin lisäämistä, kirjaudu sisään.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Virhe:', error);
+                    alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
+                });
+        }
+
+
+        // Valmistellaan tuotteen
+        const title = document.getElementById('popup-title').textContent;
+        const productData = {
+            title: title.trim(),
+            price: parseFloat(price.trim()),
+            stock: parseInt(stock.trim(), 10),
+            image: imageUrl
+        };
+
+        function searchProduct() {
+            // Get the search input value
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+
+            // Get all product elements
+            const products = document.querySelectorAll('.product');
+
+            // Loop through all products
+            products.forEach(product => {
+                // Get the product name
+                const productName = product.querySelector('.name').textContent.toLowerCase();
+
+                // Check if the product name matches the search value
+                if (searchValue == "") {
+                    product.style.display = 'block';
+                }
+                else if (productName.includes(searchValue)) {
+                    // Show the product if it matches
+                    product.style.display = 'block';
+                } else {
+                    // Hide the product if it doesn't match
+                    product.style.display = 'none';
+                }
+            });
+        }
+        function hidePopup(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            // piilotetaan popup ja overlay
+            document.getElementById('popup').classList.remove('show');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        function filterByCategory() {
+            const selectedCategory = document.getElementById('categorySelect').value.toLowerCase(); // Get selected category
+            const products = document.querySelectorAll('.product'); // All product elements
+
+            products.forEach(product => {
+                const productCategories = product.getAttribute('data-categories').toLowerCase(); // Get product categories
+
+                // Show or hide products based on selected category
+                if (selectedCategory === "all" || productCategories.includes(selectedCategory)) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+    </script>

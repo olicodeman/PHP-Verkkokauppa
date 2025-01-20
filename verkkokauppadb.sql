@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 16.01.2025 klo 13:03
+-- Generation Time: 20.01.2025 klo 09:08
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -44,13 +44,12 @@ CREATE TABLE `arvostelut` (
 --
 
 INSERT INTO `arvostelut` (`id`, `tuote_id`, `nimi`, `sähköposti`, `otsikko`, `kommentti`, `tähtiarvostelu`, `luotu`, `arvosana`) VALUES
-(10, 27, 'Rianna', 'riannakatariina@gmail.com', 'Uuni', 'Uuni paistaa ruuan hyvin! Kannattaa kuitenkin ottaa huomioon että uunin lämpötila saattaa olla korkeampi kuin sanottu!', 3, '2025-01-16 10:06:59', 0),
-(15, 26, 'Rianna', 'riannakatariina@gmail.com', 'Uuni', 'tulee sileä aamupala smoothie!', 3, '2025-01-16 10:17:42', 0),
-(16, 31, 'Rianna', 'riannakatariina@gmail.com', 'Uuni', 'Huippu hyvä juhliin!', 4, '2025-01-16 10:20:17', 0),
-(17, 34, 'Rianna', 'riannakatariina@gmail.com', 'Keittiövälinesetti', 'Tullut käyttöön kokkauksessa TODELLA paljon!', 5, '2025-01-16 10:21:06', 0),
-(18, 26, 'Rianna', 'riannakatariina@gmail.com', 'blender', 'sopivan pehmeä tulos!', 3, '2025-01-16 11:17:49', 0),
-(19, 33, 'Rianna', 'riannakatariina@gmail.com', 'Veitsinsetti', 'Komea ja kiiltävä, leikkaa hyvin!', 5, '2025-01-16 11:39:58', 0),
-(20, 39, 'Roope', 'roop@gmail.com', 'Wokkipannu', 'Maukkaat wokkiruoat on tulleet tällä pannulla!', 4, '2025-01-16 11:47:37', 0);
+(20, 39, 'Roope', 'roop@gmail.com', 'Wokkipannu', 'Maukkaat wokkiruoat on tulleet tällä pannulla!', 4, '2025-01-16 11:47:37', 0),
+(21, 33, 'Saara', 'SaaraVuoko@email.com', 'Veitsinsetti', 'Kaikki veitset ovat todella hyviä ruoanlaitossa! Kestävä materiaalikin.', 4, '2025-01-20 07:11:04', 0),
+(22, 35, 'Johannes', 'JohannesKoivisto@hotmail.com', 'Teräskattila', 'Vahva kunnon teräs! Helppo tehdä ruokaa.', 5, '2025-01-20 07:27:16', 0),
+(23, 32, 'Pasi', 'PasiKauljumaa@gmail.com', 'Aterinsetti (hopeinen)', 'Tällä on monesti pidetty juhlia ja on ollut hyvä setti!', 3, '2025-01-20 07:33:14', 0),
+(24, 39, 'Sofi', 'SofiMaalima@hotmail.fi', 'Wokkipannu', 'Dietti lähtenyt hyvin käyntiin, kun on saanut tällä tehtyä maukasta wokkiruokaa!', 3, '2025-01-20 07:37:44', 0),
+(33, 26, 'Waltteri', 'WalterGamer898@gmail.com', 'Blender', 'Hinta laatu suhde ei ole hyvä!', 1, '2025-01-20 07:48:26', 0);
 
 -- --------------------------------------------------------
 
@@ -309,7 +308,7 @@ ALTER TABLE `tuotteet`
 -- AUTO_INCREMENT for table `arvostelut`
 --
 ALTER TABLE `arvostelut`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `kategoriat`
