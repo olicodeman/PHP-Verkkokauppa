@@ -348,6 +348,36 @@ try {
         </div>
 
         <script>
+           function filterByCategory() {
+            const selectedCategory = document.getElementById('categorySelect').value.toLowerCase();
+            const products = document.querySelectorAll('.product');
+
+            products.forEach(product => {
+                const productCategories = product.getAttribute('data-categories').toLowerCase();
+                if (selectedCategory === 'all' || productCategories.includes(selectedCategory)) {
+                    product.style.display = 'block'; // Show the product
+                } else {
+                    product.style.display = 'none'; // Hide the product
+                }
+            });
+        }
+
+        function searchProduct() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const products = document.querySelectorAll('.product');
+
+        products.forEach(product => {
+            const productName = product.querySelector('.name').textContent.toLowerCase();
+            const productDescription = product.getAttribute('data-description') || '';
+
+            if (productName.includes(searchInput) || productDescription.includes(searchInput)) {
+                product.style.display = 'block'; // Show the product
+            } else {
+                product.style.display = 'none'; // Hide the product
+            }
+        });
+    }
+
             // näytetään tuote popup
             function showPopup(id, title, description, imageUrl, price, stock) {
                 // popup yksityiskohdat
