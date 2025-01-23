@@ -8,7 +8,25 @@
 </head>
 <body>
     <?php
+        // Start session
         session_start();
+        
+        // Include the language file
+        require 'lang.php';
+        
+        // Set the default language to English
+        if (!isset($_SESSION['lang'])) {
+            $_SESSION['lang'] = 'en';
+        }
+        
+        // Change language if the user selects one
+        if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $lang)) {
+            $_SESSION['lang'] = $_GET['lang'];
+        }
+        
+        // Load the current language
+        $current_lang = $lang[$_SESSION['lang']];
+        
         $IsLoggedIn = $_SESSION['loggedin'] ?? false;
         session_write_close();
 
@@ -23,16 +41,24 @@
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
     <ul class="nav-links">
         <!-- Add active class if the current page matches the link -->
-        <li><a href="index.php?page=etusivu" class="<?= ($page == 'etusivu') ? 'active' : '' ?>">Etusivu</a></li>
-        <li><a href="index.php?page=tuoteet" class="<?= ($page == 'tuoteet') ? 'active' : '' ?>">Tuotteet</a></li>
+        <li><a href="index.php?page=etusivu" class="<?= ($page == 'etusivu') ? 'active' : '' ?>"><?= $current_lang['homepage']; ?></a></li>
+        <li><a href="index.php?page=tuoteet" class="<?= ($page == 'tuoteet') ? 'active' : '' ?>"><?= $current_lang['products']; ?></a></li>
 
         <?php if ($IsLoggedIn): ?>
-            <li><a href="index.php?page=profiili" class="<?= ($page == 'profiili') ? 'active' : '' ?>">Profiili</a></li>
-            <li id="logout-link"><a href="index.php?page=logout" class="<?= ($page == 'logout') ? 'active' : '' ?>">Kirjaudu ulos</a></li>  
+            <li><a href="index.php?page=profiili" class="<?= ($page == 'profiili') ? 'active' : '' ?>"><?= $current_lang['login']; ?></a></li>
+            <li id="logout-link"><a href="index.php?page=logout" class="<?= ($page == 'logout') ? 'active' : '' ?>"><?= $current_lang['logout']; ?></a></li>  
         <?php else: ?>
-            <li><a href="index.php?page=login-form" class="<?= ($page == 'login-form') ? 'active' : '' ?>">Kirjaudu sisään</a></li>
-            <li><a href="index.php?page=register-form" class="<?= ($page == 'register-form') ? 'active' : '' ?>">Rekisteröidy</a></li>
+            <li><a href="index.php?page=login-form" class="<?= ($page == 'login-form') ? 'active' : '' ?>"><?= $current_lang['login']; ?></a></li>
+            <li><a href="index.php?page=register-form" class="<?= ($page == 'register-form') ? 'active' : '' ?>"><?= $current_lang['register']; ?></a></li>
         <?php endif; ?>
+        <form method="get" style="display: inline;">
+    <select name="lang" onchange="this.form.submit()">
+    <img src="" alt="Ostoskori" class="cart-icon"></div></a>
+        <option value="en" <?= ($_SESSION['lang'] ?? 'en') === 'en' ? 'selected' : '' ?>>English</option>
+        <option value="fi" <?= ($_SESSION['lang'] ?? 'en') === 'fi' ? 'selected' : '' ?>>Suomi</option>
+    </select>
+</form>
+
     </ul>
     <a href="index.php?page=ostoskori"><div class="icon">
     <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Ostoskori" class="cart-icon"></div></a>

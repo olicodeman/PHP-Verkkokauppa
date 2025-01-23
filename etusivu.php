@@ -1,3 +1,4 @@
+
 <?php
 require_once('config.php');
 session_start();
@@ -90,6 +91,7 @@ $conn->close();
     .show {
         display: block;
     }
+
     .product:hover {
         transform: scale(1.05);
         background-color: darkcyan;
@@ -185,147 +187,156 @@ $conn->close();
 </style>
 
 <div style="text-align: center; color: white;">
-    <h1>KG Keittiövälineet</h1>
-    <h3>Innovatiiviset Keittiövälineet</h3>
-    <p>Tuomme keittiöösi käytännöllisyyttä ja tyyliä! KG Keittiökalusteet tarjoaa laadukkaita keittiögadgeteja,
-        jotka tekevät arjesta sujuvampaa ja ruoanlaitosta nautinnollisempaa.</p>
+    <h1><?= $current_lang['title']; ?></h1>
+    <h3><?= $current_lang['subtitle']; ?></h3>
+    <p><?= $current_lang['description']; ?></p>
 
     <?php if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true): ?>
-        <a style="margin-right: 10px;" id="login-btn" class="edit-btn" href="index.php?page=login-form">Kirjaudu sisään</a>
-        <a class="edit-btn" id="register-btn" href="index.php?page=register-form">Rekisteröidy</a>
+        <a style="margin-right: 10px;" id="login-btn" class="edit-btn" href="index.php?page=login-form">
+            <?= $current_lang['login']; ?>
+        </a>
+        <a class="edit-btn" id="register-btn" href="index.php?page=register-form">
+            <?= $current_lang['register']; ?>
+        </a>
     <?php endif; ?>
+
     <br><br>
-    <h2>Uusimmat tuotteet</h2>
+    <h2><?= $current_lang['latest_products']; ?></h2>
     <div style="display: flex; justify-content: center; gap: 20px;">
         <?php if (!empty($products)): ?>
             <?php foreach ($products as $product): ?>
-                <div class="product" onclick="showPopup(
-    '<?= htmlspecialchars($product['id']) ?>',
-    '<?= htmlspecialchars($product['nimi']) ?>',
-    '<?= htmlspecialchars($product['kuvaus']) ?>',
-    '<?= htmlspecialchars($product['kuva']) ?>',
-    '<?= htmlspecialchars($product['hinta']) ?>',
-    '<?= htmlspecialchars($product['varastomäärä']) ?>'
-)">
+                <div class="product" onclick="showPopup(<?= $product['id'] ?>, 
+                                    '<?= htmlspecialchars($product['nimi']) ?>', 
+                                    '<?= htmlspecialchars($product['kuvaus']) ?>', 
+                                    '<?= htmlspecialchars($product['kuva']) ?>', 
+                                    '<?= $product['hinta'] ?>', 
+                                    '<?= $product['varastomäärä'] ?>')">
+                    <!-- Display product image -->
                     <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>"
                         style="width: 100%; height: auto; border-radius: 5px;">
-                    <h4 style="color: gold;"><?= htmlspecialchars($product['nimi']) ?></h4>
-                    <p><strong>Hinta:</strong> €<?= number_format($product['hinta'], 2) ?></p>
-                </div>
 
+                    <!-- Product name in the selected language -->
+                    <h4 style="color: gold;"><?= htmlspecialchars($product['nimi']) ?></h4>
+
+                    <!-- Product price with translation for 'Price' -->
+                    <p><strong><?= $current_lang['price']; ?>:</strong> €<?= number_format($product['hinta'], 2) ?></p>
+                </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p>Ei uusia tuotteita saatavilla tällä hetkellä.</p>
+            <!-- Message when no products are available -->
+            <p><?= $current_lang['no_products']; ?></p>
         <?php endif; ?>
     </div>
-</div>
 
-<!-- Popup modal -->
-<div class="overlay" id="overlay" onclick="hidePopup()"></div>
-<div class="popup" id="popup">
-    <button type="button"
-        style="position: absolute; top: 10px; right: 10px; background: white; color: black; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;"
-        onclick="hidePopup(event)">×</button>
-    <img id="popup-img" src="" alt="Tuotekuva">
-    <h4 id="popup-title"></h4>
-    <p id="popup-description"></p>
-    <p><strong id="popup-price"></strong></p>
-    <p id="popup-stock"></p>
-    <!-- Määrä jota halutaan ostaa -->
-    <div class="keskita">
-        <label for="popup-quantity">Määrä:</label>
-        <input id="popup-quantity" type="number" min="1" value="1" step="1" onchange="updateSelectedQuantity()">
-    </div>
 
-    <!-- Lisätään ostoskoriin iconi -->
-    <div class="icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin" onclick="addToCart()"
-            style="width: 40px; height: 40px; cursor: pointer; margin-top: 10px;">
-    </div>
-    <div class="center-align">
-        <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu">Anna arvostelu</a>
 
+    <!-- Popup modal -->
+    <div class="overlay" id="overlay" onclick="hidePopup()"></div>
+    <div class="popup" id="popup">
+        <button type="button"
+            style="position: absolute; top: 10px; right: 10px; background: white; color: black; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;"
+            onclick="hidePopup(event)">×</button>
+        <img id="popup-img" src="" alt="Tuotekuva">
+        <h4 id="popup-title"></h4>
+        <p id="popup-description"></p>
+        <p><strong id="popup-price"></strong></p>
+        <p id="popup-stock"></p>
+        <!-- Määrä jota halutaan ostaa -->
+        <div class="keskita">
+            <label for="popup-quantity">
+                <?= $current_lang['quantity']; ?>
+            </label>
+            <input id="popup-quantity" type="number" min="1" value="1" step="1" onchange="updateSelectedQuantity()">
+        </div>
+
+        <!-- Lisätään ostoskoriin iconi -->
+        <div class="icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin"
+                onclick="addToCart()" style="width: 40px; height: 40px; cursor: pointer; margin-top: 10px;">
+        </div>
         <div class="center-align">
-            <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">Lue arvosteluja</a>
+            <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu">
+                <?= $current_lang['leaveReview']; ?></a>
+
+                <div class="center-align">
+                    <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">
+                    <?= $current_lang['read_reviews']; ?></a>
+        </div>
+            </a>
         </div>
     </div>
 
 </div>
 <div style="text-align: center; color: white; margin-top: 50px;">
-    <h2>Uusimmat arvostelut</h2>
+    <h2><?= $current_lang['latest_reviews']; ?></h2>
 
-    <a class="edit-btn" href="index.php?page=lisaaArvostelu">Anna arvostelu!</a>
+    <a class="edit-btn" href="index.php?page=lisaaArvostelu">
+    <?= $current_lang['leaveReview']; ?></a>
     <div class="reviews-container">
         <?php if (!empty($reviews)): ?>
             <?php foreach ($reviews as $review): ?>
                 <div class="review">
                     <h4><?= htmlspecialchars($review['nimi']) ?> - <?= htmlspecialchars($review['tuote_nimi']) ?></h4>
-                    <p><strong>Otsikko:</strong> <?= htmlspecialchars($review['otsikko']) ?></p>
-                    <p><strong>Arvostelu:</strong> <?= htmlspecialchars($review['kommentti']) ?></p>
-                    <p><strong>Tähtiä:</strong> <?= str_repeat("★", $review['tähtiarvostelu']) ?>
-                        <?= $review['tähtiarvostelu'] ?>/5</p>
-                    <p><em>Julkaisupäivämäärä: <?= date('d.m.Y', strtotime($review['luotu'])) ?></em></p>
+                    <p><strong>
+                    <a><?= $current_lang['review_title']; ?></a></strong> <?= htmlspecialchars($review['otsikko']) ?></p>
+                    <p><strong><a><?= $current_lang['review']; ?></a></strong> <?= htmlspecialchars($review['kommentti']) ?></p>
+                    <p><strong><a><?= $current_lang['stars']; ?></a></strong> <?= str_repeat("★", $review['tähtiarvostelu']) ?>
+                        <?= $review['tähtiarvostelu'] ?>/5
+                    </p>
+                    <p><em><?= $current_lang['publish_date']; ?><?= date('d.m.Y', strtotime($review['luotu'])) ?></em></p>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p>Ei arvosteluja saatavilla tällä hetkellä.</p>
+            <p><?= $current_lang['no_reviews']; ?></p>
         <?php endif; ?>
     </div>
 
     <script>
         function showPopup(id, title, description, imageUrl, price, stock) {
-            console.log("Popup triggered for product ID:", id); // Debuggaus
-
-            //haetaan popupin elementit
+            const popup = document.getElementById('popup');
+            const overlay = document.getElementById('overlay');
             const popupTitle = document.getElementById('popup-title');
             const popupDescription = document.getElementById('popup-description');
             const popupImg = document.getElementById('popup-img');
             const popupPrice = document.getElementById('popup-price');
             const popupStock = document.getElementById('popup-stock');
 
-            // tarkistetaane ttä kaikki elementit löytyvät ennen niiden sisällön päivittämistä
-            if (popupTitle && popupDescription && popupImg && popupPrice && popupStock) {
-                popupTitle.textContent = title;
-                popupDescription.textContent = description;
-                popupImg.src = imageUrl;
-                popupPrice.textContent = "Hinta: €" + parseFloat(price).toFixed(2);
-                popupStock.textContent = "Varastossa: " + stock + " kpl";
-
-                //Lisätään tuote-ID ostoskoria varten
-                document.getElementById('popup').setAttribute('data-product-id', id);
-
-                //käsitellään varastotilanne
-                const addToCartIcon = document.querySelector('.popup .icon img');
-                const quantityInput = document.getElementById('popup-quantity');
-                const quantityLabel = document.querySelector('.keskita label');
-
-                //jos varastossae i ole tuotteita, piilotetaan määräinput ja label
-                if (stock == 0) {
-                    quantityInput.style.display = 'none';
-                    quantityLabel.style.display = 'none';
-                    const stockMessageElement = document.getElementById('popup-stock');
-                    stockMessageElement.innerHTML = `<span style="color: red;">Varasto tyhjä</span>, täytämme sen mahdollisimman pian!`;
-
-                    //muutetaan kuvake ja poistetaan klikkauksen mahdollisuus
-                    addToCartIcon.src = "https://img.icons8.com/?size=100&id=7850&format=png&color=FFFFFF";
-                    addToCartIcon.onclick = null;
-                } else {
-                    //jos varastossa on tuotteita, näytetään määräinput ja label
-                    quantityInput.style.display = 'block';
-                    quantityLabel.style.display = 'block';
-                    //näyetään normaali kuvake
-                    addToCartIcon.src = "https://cdn-icons-png.flaticon.com/512/6713/6713719.png";
-                    addToCartIcon.onclick = function () { addToCart(); };
-
-                }
-
-                // näytetään popup ja overlay
-                document.getElementById('popup').classList.add('show');
-                document.getElementById('overlay').classList.add('show');
-            } else {
-                //virhe jos jokin pop-up elementeistä puuttuu
-                console.error("One or more popup elements are missing.");
+            if (!popup || !overlay || !popupTitle || !popupDescription || !popupImg || !popupPrice || !popupStock) {
+                console.error("Popup elements missing in the DOM");
+                return;
             }
+
+            // Update popup content
+            popupTitle.textContent = title || "No title";
+            popupDescription.textContent = description || "No description";
+            popupImg.src = imageUrl || "";
+            popupPrice.textContent = "Hinta: €" + parseFloat(price).toFixed(2);
+            popupStock.textContent = "Varastossa: " + stock + " kpl";
+
+            // Set product ID for adding to cart
+            document.getElementById('popup').setAttribute('data-product-id', id);
+
+            const addToCartIcon = document.querySelector('.popup .icon img');
+            const quantityInput = document.getElementById('popup-quantity');
+            const quantityLabel = document.querySelector('.keskita label');
+
+            if (stock == 0) {
+                quantityInput.style.display = 'none';
+                quantityLabel.style.display = 'none';
+                popupStock.innerHTML = `<span style="color: red;">Varasto tyhjä</span>, täytämme sen mahdollisimman pian!`;
+                addToCartIcon.src = "https://img.icons8.com/?size=100&id=7850&format=png&color=FFFFFF";
+                addToCartIcon.style.opacity = 0.5;
+                addToCartIcon.onclick = null;
+            } else {
+                quantityInput.style.display = 'block';
+                quantityLabel.style.display = 'block';
+                addToCartIcon.src = "https://cdn-icons-png.flaticon.com/512/6713/6713719.png";
+                addToCartIcon.onclick = function () { addToCart(); };
+            }
+
+            // Show the popup and overlay
+            popup.classList.add('show');
+            overlay.classList.add('show');
         }
 
 
@@ -409,14 +420,13 @@ $conn->close();
                 }
             });
         }
-        function hidePopup(event) {
-            if (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            // piilotetaan popup ja overlay
-            document.getElementById('popup').classList.remove('show');
-            document.getElementById('overlay').classList.remove('show');
+
+        // Hide the popup
+        function hidePopup() {
+            const popup = document.getElementById('popup');
+            const overlay = document.getElementById('overlay');
+            popup.classList.remove('show');
+            overlay.classList.remove('show');
         }
 
         function filterByCategory() {
