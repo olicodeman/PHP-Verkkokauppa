@@ -14,23 +14,23 @@
 <form id="loginForm" name="loginForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?page=<?php echo htmlspecialchars($_GET['page']); ?>">
   <table width="300" border="0" align="center" cellpadding="5" cellspacing="5">
     <tr>
-      <th>Etunimi</th>
+      <th><?= addslashes($current_lang['FirstName']); ?></th>
       <td><input name="fname" type="text" class="textfield" id="fname" /></td>
-      <th>Sukunimi</th>
+      <th><?= addslashes($current_lang['LastName']); ?></th>
       <td><input name="lname" type="text" class="textfield" id="lname" /></td>
   </tr>
   
     <tr>
-      <th>Sähköpostiosoite</th>
+      <th><?= addslashes($current_lang['Email']); ?></th>
       <td><input name="email" type="email" class="textfield" id="email" /></td>
-      <th width="124">Käyttäjätunnus</th>
+      <th width="124"><?= addslashes($current_lang['User']); ?></th>
       <td width="168"><input name="login" type="text" class="textfield" id="login" /></td>
     </tr>
     
     <tr>
-      <th width="124">Osoite</th>
+      <th width="124"><?= addslashes($current_lang['Adress']); ?></th>
       <td width="168"><input name="address" type="text" class="textfield" id="login" /></td>
-      <th width="124">Puhelinnumero</th>
+      <th width="124"><?= addslashes($current_lang['phoneNmb']); ?></th>
       <td width="168"><input name="number" type="text" class="textfield" id="login" /></td>
     </tr>
     

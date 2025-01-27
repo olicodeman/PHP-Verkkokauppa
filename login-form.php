@@ -1,30 +1,3 @@
-<body>
-<p>&nbsp;</p>
-<form id="loginForm" name="loginForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?page=<?php echo htmlspecialchars($_GET['page']); ?>">
-  <table width="300" border="0" align="center" cellpadding="2" cellspacing="0">
-    <tr>
-      <td width="112"><b>Login</b></td>
-      <td width="188"><input name="login" type="text" class="textfield" id="login" /></td>
-    </tr>
-    <tr>
-      <td><b>Password</b></td>
-      <td><input name="password" type="password" class="textfield" id="password" /></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><input type="submit" name="Submit" value="Login" /></td>
-    </tr>
-  </table>
-</form>
-<br>
-<div style="display: flex; justify-content: center;">
-    <div style="text-align: center;">
-        <p><b>Eikö ole vielä tiliä?</b></p>
-        <p><a href="index.php?page=register-form">Paina tästä</a>, jos haluat luoda tilin.</p>
-    </div>
-</div>
-</body>
-
 <?php
 session_start();
 
@@ -121,6 +94,34 @@ if (isset($_SESSION['message'])) {
 	}
 }
 ?>
+<body>
+<p>&nbsp;</p>
+<form id="loginForm" name="loginForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?page=<?php echo htmlspecialchars($_GET['page']); ?>">
+  <table width="300" border="0" align="center" cellpadding="2" cellspacing="0">
+    <tr>
+      <td width="112"><b><?= addslashes($current_lang['Login']); ?></b></td>
+      <td width="188"><input name="login" type="text" class="textfield" id="login" /></td>
+    </tr>
+    <tr>
+      <td><b><?= addslashes($current_lang['Password']); ?></b></td>
+      <td><input name="password" type="password" class="textfield" id="password" /></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><input type="submit" name="Submit" value="<?= addslashes($current_lang['LogIn']); ?>" /></td>
+    </tr>
+  </table>
+</form>
+<br>
+<div style="display: flex; justify-content: center;">
+    <div style="text-align: center;">
+        <p><b><?= addslashes($current_lang['noAccount']); ?></b></p>
+        <p><a href="index.php?page=register-form"><?= addslashes($current_lang['PressHere']); ?></a><?= addslashes($current_lang['ToCreate']); ?></p>
+    </div>
+</div>
+</body>
+
+
 
 
 
