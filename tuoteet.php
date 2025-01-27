@@ -408,7 +408,7 @@ try {
                         quantityInput.style.display = 'none'; // piilotetaan määrä
                         quantityLabel.style.display = 'none'; // Piilotetaan määrän label
                         const stockMessageElement = document.getElementById('popup-varastomaara'); // Näytetään varastotyhjä viesti
-                        stockMessageElement.innerHTML = `<span style="color: red;"> <?= $current_lang['emptyStock']; ?>`;
+                        stockMessageElement.innerHTML = `<span style="color: red;"> <?= $current_lang['emptystock']; ?>`;
 
 
                         // Muutetaan kuva ja laitetaan niin ettei sitä voida klikata
