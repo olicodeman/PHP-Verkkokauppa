@@ -231,9 +231,49 @@ $_SESSION['cart_total'] = $totalPrice;
         .action-btn:hover {
             transform: scale(1.1);
         }
+        @media (max-width: 500px) {
+            .action-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s, transform 0.2s;
+            text-align: center;
+        }
+        .action-form {
+            gap: 5px;
+            background-color: rgba(45, 45, 102, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .remove-btn {
+            background-color: #ff4d4d;
+        }
+        .cart-item img {
+            max-width: 80px;
+        }
+        .cart-item {
+            padding: 10px;
+        }
+        .cart {
+            max-width: 500px;
+        }
+        }
+        @media (max-width: 400px) {
+            .action-btn {
+            padding: 5px 10px;
+            font-size: 10px;
+        }
+        .cart-item img {
+            max-width: 60px;
+        }
+        }
     </style>
 </head>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <body>
     <div class="cart">
         <h1>Ostoskori</h1>

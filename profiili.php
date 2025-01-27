@@ -152,8 +152,62 @@ if (isset($_GET['order_id'])) {
     th, td {
         text-align: center;
     }
+    @media (max-width: 480px) {
+        .orders-table {
+        width: 25%;
+        font-size: 8px;
+        text-align: center;
+    }
+    /* Table headers */
+    .orders-table th {
+        padding: 2px 5px;
+    }
+    /* Table rows */
+    .orders-table td {
+        padding: 2px 5px;
+    }
+    #orderDetailsPopup {
+        padding: 10px;
+    }
+    }
+    @media (max-width: 768px) {
+        .orders-table {
+        width: 25%;
+        font-size: 8px;
+        text-align: center;
+    }
+    /* Table headers */
+    .orders-table th {
+        padding: 2px 5px;
+    }
+    /* Table rows */
+    .orders-table td {
+        padding: 2px 5px;
+    }
+    #orderDetailsPopup {
+        padding: 10px;
+    }
+    }
+    @media (max-width: 400px) {
+        .orders-table {
+        width: 25%;
+        font-size: 8px;
+        text-align: center;
+    }
+    /* Table headers */
+    .orders-table th {
+        padding: 1px 3px;
+    }
+    /* Table rows */
+    .orders-table td {
+        padding: 1px 3px;
+    }
+    #orderDetailsPopup {
+        padding: 5px;
+    }
+    }
 </style>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <body>
 <div style="text-align: center;">
     <h1>Tervetuloa <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?></h1>

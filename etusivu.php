@@ -385,16 +385,6 @@ $conn->close();
                 });
         }
 
-
-        // Valmistellaan tuotteen
-        const title = document.getElementById('popup-title').textContent;
-        const productData = {
-            title: title.trim(),
-            price: parseFloat(price.trim()),
-            stock: parseInt(stock.trim(), 10),
-            image: imageUrl
-        };
-
         function searchProduct() {
             // Get the search input value
             const searchValue = document.getElementById('searchInput').value.toLowerCase();

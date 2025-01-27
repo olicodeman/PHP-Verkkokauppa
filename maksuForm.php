@@ -42,8 +42,26 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 .hidden {
     display: none;
 }
-
+@media (max-width: 500px) {
+    .resize {
+        width: 175px;  
+        font-size: 12px;
+    }
+    #lo, #crdnmb {
+        width: 175px !important;
+    }
+}
+@media (max-width: 400px) {
+    .resize {
+        width: 150px;  
+        font-size: 10px;
+    }
+    #lo, #crdnmb {
+        width: 160px !important;
+    }
+}
 </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <form id="paymentForm" action="tilausKasittely.php?token=<?= htmlspecialchars($token)?>" method="POST">
     <div style="text-align: center;">
         <h1>Tilaus vahvistus</h1>
@@ -63,19 +81,21 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 
         <div class="profile-content-box">
             <label for="fname">Etunimi</label>
-            <input size="30" id="fname" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?>" readonly>
+            <input class="resize" size="30" id="fname" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?>" readonly>
 
             <label for="lname">Sukunimi</label>
-            <input size="30" id="lname" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_LAST_NAME']);?>" readonly>
+            <input class="resize" size="30" id="lname" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_LAST_NAME']);?>" readonly>
 
             <label for="osoite">Osoite</label>
-            <input size="30" id="osoite" type="text" value="<?php echo htmlspecialchars($address);?>" readonly>
+            <input class="resize" size="30" id="osoite" type="text" value="<?php echo htmlspecialchars($address);?>" readonly>
 
             <label for="sähköposti">Sähköpostiosoite</label>
-            <input size="30" id="sähköposti" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?>" readonly>
+            <input class="resize" size="30" id="sähköposti" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?>" readonly>
 
             <label for="puhelin">Puhelinnumero</label>
-            <input size="30" id="puhelin" type="text" value="<?php echo htmlspecialchars($phoneNumber);?>" readonly>
+            <input class="resize" size="30" id="puhelin" type="text" value="<?php echo htmlspecialchars($phoneNumber);?>" readonly>
+
+            <p>Onko kaikki tietosi oikein? Jos ei ole, voit muokata niitä <a href="index.php?page=user-edit">tästä</a>.</p>
 
             <h3>Valitse maksutapa</h3>
             <input type="radio" name="choice" value="Kortti" onchange="toggleVisibility()" required> Kortti
