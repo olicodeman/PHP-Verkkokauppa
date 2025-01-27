@@ -30,24 +30,24 @@
     <tr>
       <th width="124"><?= addslashes($current_lang['Adress']); ?></th>
       <td width="168"><input name="address" type="text" class="textfield" id="login" /></td>
-      <th width="124"><?= addslashes($current_lang['phoneNmb']); ?></th>
+      <th width="124"><?= addslashes($current_lang['PhoneNmb']); ?></th>
       <td width="168"><input name="number" type="text" class="textfield" id="login" /></td>
     </tr>
     
     <tr>
-      <th>Salasana</th>
+      <th><?= addslashes($current_lang['Password']); ?></th>
       <td><input name="password" type="password" class="textfield" id="password" /></td>
-      <th>Varmista salasana</th>
+      <th><?= addslashes($current_lang['CheckPassword']); ?></th>
       <td><input name="cpassword" type="password" class="textfield" id="cpassword" /></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td colspan="1"><input style="justify-content: center;" type="submit" name="Submit" value="Register" /></td>
+      <td colspan="1"><input style="justify-content: center;" type="submit" name="Submit" value="<?= addslashes($current_lang['register']); ?>" /></td>
     </tr>
   </table>
   <br>
-<p style="text-align: center;"><b>Onko tili jo olemassa?</b></p>
-<p style="text-align: center;"><a href="index.php?page=login-form">Kirjaudu sisään</a>
+<p style="text-align: center;"><b><?= addslashes($current_lang['YesAccount']); ?></b></p>
+<p style="text-align: center;"><a href="index.php?page=login-form"><?= addslashes($current_lang['LogIn']); ?></a>
 </form>
 
 <?php
