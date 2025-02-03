@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 20.01.2025 klo 09:08
+-- Generation Time: 03.02.2025 klo 08:09
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -49,7 +49,13 @@ INSERT INTO `arvostelut` (`id`, `tuote_id`, `nimi`, `sähköposti`, `otsikko`, `
 (22, 35, 'Johannes', 'JohannesKoivisto@hotmail.com', 'Teräskattila', 'Vahva kunnon teräs! Helppo tehdä ruokaa.', 5, '2025-01-20 07:27:16', 0),
 (23, 32, 'Pasi', 'PasiKauljumaa@gmail.com', 'Aterinsetti (hopeinen)', 'Tällä on monesti pidetty juhlia ja on ollut hyvä setti!', 3, '2025-01-20 07:33:14', 0),
 (24, 39, 'Sofi', 'SofiMaalima@hotmail.fi', 'Wokkipannu', 'Dietti lähtenyt hyvin käyntiin, kun on saanut tällä tehtyä maukasta wokkiruokaa!', 3, '2025-01-20 07:37:44', 0),
-(33, 26, 'Waltteri', 'WalterGamer898@gmail.com', 'Blender', 'Hinta laatu suhde ei ole hyvä!', 1, '2025-01-20 07:48:26', 0);
+(33, 26, 'Waltteri', 'WalterGamer898@gmail.com', 'Blender', 'Hinta laatu suhde ei ole hyvä!', 1, '2025-01-20 07:48:26', 0),
+(34, 27, 'Ellen', 'jajjajaja@kaaja.com', 'Uunin arvostelu', 'Tämä uuni on todella hyvä!!! Suosittelen uunia kaikille, jotka haluavat toimivan ja upean näköisen uunin mikä sopii joka sisustukseen. KIITOS', 5, '2025-01-23 06:14:12', 0),
+(35, 33, 'Johan Dealerson', 'DealJohan@email.com', 'Knife set', 'Really good and reliable! I recomend these.', 4, '2025-01-30 10:25:37', 0),
+(42, 28, 'Brian Smith', 'BrianSmith@email.com', 'Mikrowave', 'Very good micorwave warm foor in no time!', 4, '2025-01-30 10:48:55', 0),
+(43, 39, 'Katelyn Carlson', 'CarlsonKatlyn@gmail.com', 'Wok pan', 'absolutely MAGNIFICENT food!!', 5, '2025-01-30 11:12:21', 0),
+(55, 31, 'Seth Rockan', 'RockanSe@email.com', 'Cutlery set', 'really good for daily use! Beautiful design .', 4, '2025-01-30 11:46:47', 0),
+(56, 40, 'Fanni Luoja', 'FanniLuo@gmail.com', 'Moccamaster', 'Kallis mutta joka pennin arvoinen! Päivittäin hyvät kahvit.', 5, '2025-01-30 11:48:42', 0);
 
 -- --------------------------------------------------------
 
@@ -85,18 +91,20 @@ CREATE TABLE `members` (
   `address` varchar(50) NOT NULL,
   `phonenumber` varchar(20) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `password` varchar(100) NOT NULL
+  `password` varchar(100) NOT NULL,
+  `language` varchar(2) NOT NULL DEFAULT 'fi'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Vedos taulusta `members`
 --
 
-INSERT INTO `members` (`member_id`, `firstname`, `lastname`, `email`, `address`, `phonenumber`, `username`, `password`) VALUES
-(1, 'Teppo-sakari', 'Testiniemi', 'teppotestausta@jokuemail.com', 'jokukatu 9', '+123 45 67894', 'teppo5569', '827ccb0eea8a706c4c34a16891f84e7b'),
-(2, 'Thomasio', 'Testeringus', 'tomtester@somethinsmail.com', 'someplace street 15', '+123 456 7896', 'tomtesterXD56', 'cf9d344afc8a2061ce216ae59e691b9c'),
-(3, 'Rianna', 'Sarajärvi', 's3sari00@students.osao.fi', 'koti', '345 67', 'Rianna', '6530e95e3fcf785ea9febde39f567630'),
-(4, 'admin', 'admin', 'admin@adminemail.com', 'no', '+123 654 7891', 'admin', '1e783b87df681e37f6456f64cb9fadd8');
+INSERT INTO `members` (`member_id`, `firstname`, `lastname`, `email`, `address`, `phonenumber`, `username`, `password`, `language`) VALUES
+(1, 'Teppo-sakari', 'Testiniemi', 'teppotestausta@jokuemail.com', 'jokukatu 9', '+123 45 67894', 'teppo5569', '827ccb0eea8a706c4c34a16891f84e7b', 'fi'),
+(2, 'Thomasio', 'Testeringus', 'tomtester@somethinsmail.com', 'someplace street 15', '+123 456 7896', 'tomtesterXD56', 'cf9d344afc8a2061ce216ae59e691b9c', 'fi'),
+(3, 'Rianna', 'Sarajärvi', 's3sari00@students.osao.fi', 'koti', '345 67', 'Rianna', '6530e95e3fcf785ea9febde39f567630', 'fi'),
+(4, 'admin', 'admin', 'admin@adminemail.com', 'no', '+123 654 7891', 'admin', '1e783b87df681e37f6456f64cb9fadd8', 'fi'),
+(6, 'Greg', 'Wellington', 'GregWellington@gmail.cok', 'Home', '12345', 'GregWell', '646c490db8f1951b717be6816af287e0', 'fi');
 
 -- --------------------------------------------------------
 
@@ -136,7 +144,8 @@ INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`, `
 (16, 2, 150.00, '2025-01-13 11:57:14', 'Kortti', 'Nouto'),
 (17, 2, 255.00, '2025-01-13 11:58:56', 'Lasku', 'Postitus'),
 (18, 3, 50.00, '2025-01-16 06:15:43', 'Lasku', 'Nouto'),
-(19, 3, 500.00, '2025-01-16 06:37:57', 'Lasku', 'Postitus');
+(19, 3, 500.00, '2025-01-16 06:37:57', 'Lasku', 'Postitus'),
+(20, 3, 1500.00, '2025-01-20 10:39:44', 'Lasku', 'Nouto');
 
 -- --------------------------------------------------------
 
@@ -184,7 +193,8 @@ INSERT INTO `tilaus_tuotteet` (`order_id`, `product_id`, `quantity`, `price`) VA
 (16, 31, 3, 50.00),
 (17, 29, 3, 85.00),
 (18, 38, 1, 50.00),
-(19, 26, 1, 500.00);
+(19, 26, 1, 500.00),
+(20, 27, 1, 1500.00);
 
 -- --------------------------------------------------------
 
@@ -215,7 +225,8 @@ INSERT INTO `tuote_kategoria` (`tuote_id`, `kategoria_id`) VALUES
 (35, 2),
 (36, 2),
 (38, 2),
-(39, 2);
+(39, 2),
+(40, 1);
 
 -- --------------------------------------------------------
 
@@ -226,7 +237,9 @@ INSERT INTO `tuote_kategoria` (`tuote_id`, `kategoria_id`) VALUES
 CREATE TABLE `tuotteet` (
   `id` int(11) NOT NULL,
   `nimi` varchar(255) NOT NULL,
+  `nimi_en` varchar(255) DEFAULT NULL,
   `kuvaus` text DEFAULT NULL,
+  `kuvaus_en` text DEFAULT NULL,
   `hinta` decimal(10,2) NOT NULL,
   `kuva` varchar(255) DEFAULT NULL,
   `varastomäärä` int(11) DEFAULT 0
@@ -236,19 +249,20 @@ CREATE TABLE `tuotteet` (
 -- Vedos taulusta `tuotteet`
 --
 
-INSERT INTO `tuotteet` (`id`, `nimi`, `kuvaus`, `hinta`, `kuva`, `varastomäärä`) VALUES
-(26, 'Blenderi', 'Vain sileitä smoothieita!', 500.00, 'kuvat/blender.jpg', 4),
-(27, 'Uuni', 'Uuni jolla saat täyteläisen ja rapean tuloksen!', 1500.00, 'kuvat/uuni.png', 7),
-(28, 'mikroaaltouuni', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 600.00, 'kuvat/mikroaaltouuni.jpg', 4),
-(29, 'Sauvasekoitin', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 85.00, 'kuvat/sauvasekoitin.jpg', 5),
-(31, 'Aterin setti', 'Ruostumaton teräs aterin setti. 10 kpl jokaista. Isot lusikat, pienet lusikat, haarukat, sekä veitset.', 50.00, 'kuvat/aterinsetti.jpg', 9),
-(32, 'Aterin setti', 'Hopeinen aterin setti. 5 kpl jokaista. Pienet lusikat, isot lusikat, haarukat ja veitset.', 50.00, 'kuvat/HopeinenAterinsetti.jpg', 10),
-(33, 'Veitsisetti', '6 erilaista veitseä. 20-10cm pituus väli.', 20.00, 'kuvat/veitsisetti.jpg', 7),
-(34, 'Keittiövälinesetti', '14 eri keittiötarviketta. Lisäksi keittiövälinepidike.', 12.00, 'kuvat/keittiovalineet.jpg', 3),
-(35, 'Kattila', 'Kiiltävä teräskattila.', 15.00, 'kuvat/kattila.jpg', 6),
-(36, 'Kattila', 'Musta kahvallinen kattila, tarttumaton pinta. Sisältää kannen.', 20.00, 'kuvat/kattilamusta.jpg', 10),
-(38, 'Valurauta paistinpannu', 'Valurauta paistinpannu 28cm. ', 50.00, 'kuvat/paistinpannu.jpg', 4),
-(39, 'Wokkipannu', 'Wokkipannu kasvisten paistoon!', 52.00, 'kuvat/wokkipannu.jpg', 15);
+INSERT INTO `tuotteet` (`id`, `nimi`, `nimi_en`, `kuvaus`, `kuvaus_en`, `hinta`, `kuva`, `varastomäärä`) VALUES
+(26, 'Blenderi', 'Blender', 'Vain sileitä smoothieita!', 'For smooth smoothies only!', 500.00, 'kuvat/blender.jpg', 4),
+(27, 'Uuni', 'Oven', 'Uuni jolla saat täyteläisen ja rapean tuloksen!', 'Oven that gives you a full and crisp result!', 1500.00, 'kuvat/uuni.png', 6),
+(28, 'mikroaaltouuni', 'Microwave', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 'Warm up your food fast and efficient!', 600.00, 'kuvat/mikroaaltouuni.jpg', 4),
+(29, 'Sauvasekoitin', 'Immersion blender', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 'Efficient immersion blender that gives you a smooth and spotless result!', 85.00, 'kuvat/sauvasekoitin.jpg', 5),
+(31, 'Aterin setti', 'Stainless Steel Cutlery Set', 'Ruostumaton teräs aterin setti. 10 kpl jokaista. Isot lusikat, pienet lusikat, haarukat, sekä veitset.', 'Stainless steel cutlery set. 10 pieces of each. Large spoons, small spoons, forks, and knives.', 50.00, 'kuvat/aterinsetti.jpg', 9),
+(32, 'Aterin setti', 'Silver Cutlery Set', 'Hopeinen aterin setti. 5 kpl jokaista. Pienet lusikat, isot lusikat, haarukat ja veitset.', 'Silver cutlery set. 5 pieces of each. Small spoons, large spoons, forks, and knives.', 50.00, 'kuvat/HopeinenAterinsetti.jpg', 10),
+(33, 'Veitsisetti', 'Knife Set', '6 erilaista veitseä. 20-10cm pituus väli.', '6 different types of knives. 10-20 cm in length.', 20.00, 'kuvat/veitsisetti.jpg', 7),
+(34, 'Keittiövälinesetti', 'Kitchen tools', '14 eri keittiötarviketta. Lisäksi keittiövälinepidike.', '14 different kitchen tools. Additionally, a kitchen utensil holder.', 12.00, 'kuvat/keittiovalineet.jpg', 3),
+(35, 'Kattila', 'Stainless steel pot', 'Kiiltävä teräskattila.', 'Shiny stainless steel pot.', 15.00, 'kuvat/kattila.jpg', 6),
+(36, 'Kattila', 'Non-stick pot', 'Musta kahvallinen kattila, tarttumaton pinta. Sisältää kannen.', 'Black pot with handle, non-stick surface. Includes lid.', 20.00, 'kuvat/kattilamusta.jpg', 10),
+(38, 'Valurauta paistinpannu', 'Iron frying pan', 'Valurauta paistinpannu 28cm. ', 'Cast iron frying pan 28cm', 50.00, 'kuvat/paistinpannu.jpg', 4),
+(39, 'Wokkipannu', 'Wok pan', 'Wokkipannu kasvisten paistoon!', 'Wok pan for frying vegetablesand other ingridients!', 52.00, 'kuvat/wokkipannu.jpg', 15),
+(40, 'Kahvinkeitin', 'Coffee maker', 'Moccamaster kahvinkeitin, maukkaat kahvit päivittäin!', 'Moccamaster coffee maker, delicious coffee daily!', 300.00, 'kuvat/moccamaster.jpg', 16);
 
 --
 -- Indexes for dumped tables
@@ -308,7 +322,7 @@ ALTER TABLE `tuotteet`
 -- AUTO_INCREMENT for table `arvostelut`
 --
 ALTER TABLE `arvostelut`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `kategoriat`
@@ -320,19 +334,19 @@ ALTER TABLE `kategoriat`
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tilaukset`
 --
 ALTER TABLE `tilaukset`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tuotteet`
 --
 ALTER TABLE `tuotteet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- Rajoitteet vedostauluille
