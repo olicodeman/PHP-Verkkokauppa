@@ -210,8 +210,8 @@ if (isset($_GET['order_id'])) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <body>
 <div style="text-align: center;">
-    <h1>Tervetuloa <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?></h1>
-    <a href="index.php?page=logout">Kirajudu ulos</a>
+    <h1><?= $current_lang['Welcome']; ?> <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?></h1>
+    <a href="index.php?page=logout"><?= $current_lang['logout']; ?></a>
 
     <?php if ($_SESSION['SESS_LOGIN'] == 'admin'): ?>
         <a style="margin-left: 10px;" href="admin-panel.php">Admin Panel</a>
@@ -219,23 +219,23 @@ if (isset($_GET['order_id'])) {
 
     <div class="profile-content-container">
         <div class="profile-content-box">
-            <h2 style="color: black;">Sinun tiedot:</h2>
-            <p>Nimi: <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?> <?php echo htmlspecialchars($_SESSION['SESS_LAST_NAME']);?></p>
-            <p>Sähköposti: <?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?></p>
-            <p>Osoite: <?php echo htmlspecialchars($address); ?></p>
-            <p>Puhelinnumero: <?php echo htmlspecialchars($phoneNumber); ?></p>
-            <p>Käyttäjänimi: <?php echo htmlspecialchars($_SESSION['SESS_LOGIN']);?></p>
-            <a class="edit-btn" href="index.php?page=user-edit">Muuta tietojasi</a>
+            <h2 style="color: black;"><?= $current_lang['YourInfo']; ?></h2>
+            <p><?= $current_lang['FirstName']; ?>: <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?> <?php echo htmlspecialchars($_SESSION['SESS_LAST_NAME']);?></p>
+            <p><?= $current_lang['Email']; ?>: <?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?></p>
+            <p><?= $current_lang['Address']; ?>: <?php echo htmlspecialchars($address); ?></p>
+            <p><?= $current_lang['PhoneNmb']; ?>: <?php echo htmlspecialchars($phoneNumber); ?></p>
+            <p><?= $current_lang['User']; ?>: <?php echo htmlspecialchars($_SESSION['SESS_LOGIN']);?></p>
+            <a class="edit-btn" href="index.php?page=user-edit"><?= $current_lang['ChangeInfo']; ?></a>
         </div>
 
         <div class="profile-content-box">
-            <h2 style="color: black;">Tehdyt tilauksesi:</h2>
+            <h2 style="color: black;"><?= $current_lang['Orders']; ?>:</h2>
             <table class="orders-table" style="width: 100%; border-collapse: collapse; color: black;">
                 <thead>
                     <tr>
-                        <th>Tilauksen ID</th>
-                        <th>Kokonaishinta</th>
-                        <th>Päivämäärä</th>
+                        <th><?= $current_lang['OrderID']; ?></th>
+                        <th><?= $current_lang['Total']; ?></th>
+                        <th><?= $current_lang['Date']; ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -253,7 +253,7 @@ if (isset($_GET['order_id'])) {
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="4" style="text-align: center;">Ei tilauksia</td>
+                            <td colspan="4" style="text-align: center;"><?= $current_lang['NoOrders']; ?></td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

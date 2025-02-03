@@ -64,7 +64,7 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <form id="paymentForm" action="tilausKasittely.php?token=<?= htmlspecialchars($token)?>" method="POST">
     <div style="text-align: center;">
-        <h1>Tilaus vahvistus</h1>
+        <h1><?= $current_lang['OrderConfirm']; ?></h1>
 
         <?php if (empty($cart)): ?>
             <p>Ostoskorisi on tyhjä.</p>
@@ -76,57 +76,57 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
                     x <?= $item['quantity'] ?>
                 </p>
             <?php endforeach; ?>
-            <p>Kokonaishinta: €<?= number_format($totalPrice, 2) ?></p>
+            <p><?= $current_lang['Total']; ?>: €<?= number_format($totalPrice, 2) ?></p>
         <?php endif; ?>
 
         <div class="profile-content-box">
-            <label for="fname">Etunimi</label>
+            <label for="fname"><?= $current_lang['FirstName']; ?></label>
             <input class="resize" size="30" id="fname" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?>" readonly>
 
-            <label for="lname">Sukunimi</label>
+            <label for="lname"><?= $current_lang['LastName']; ?></label>
             <input class="resize" size="30" id="lname" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_LAST_NAME']);?>" readonly>
 
-            <label for="osoite">Osoite</label>
+            <label for="osoite"><?= $current_lang['Address']; ?></label>
             <input class="resize" size="30" id="osoite" type="text" value="<?php echo htmlspecialchars($address);?>" readonly>
 
-            <label for="sähköposti">Sähköpostiosoite</label>
+            <label for="sähköposti"><?= $current_lang['Email']; ?></label>
             <input class="resize" size="30" id="sähköposti" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?>" readonly>
 
-            <label for="puhelin">Puhelinnumero</label>
+            <label for="puhelin"><?= $current_lang['PhoneNmb']; ?></label>
             <input class="resize" size="30" id="puhelin" type="text" value="<?php echo htmlspecialchars($phoneNumber);?>" readonly>
 
-            <p>Onko kaikki tietosi oikein? Jos ei ole, voit muokata niitä <a href="index.php?page=user-edit">tästä</a>.</p>
+            <p> <?= $current_lang['CorrectInfo']; ?><a href="index.php?page=user-edit"><?= $current_lang['Here']; ?></a>.</p>
 
-            <h3>Valitse maksutapa</h3>
-            <input type="radio" name="choice" value="Kortti" onchange="toggleVisibility()" required> Kortti
-            <input type="radio" name="choice" value="Lasku" onchange="toggleVisibility()" required> Lasku
+            <h3><?= $current_lang['ChoosePayment']; ?></h3>
+            <input type="radio" name="choice" value="Kortti" onchange="toggleVisibility()" required> <?= $current_lang['Card']; ?>
+            <input type="radio" name="choice" value="Lasku" onchange="toggleVisibility()" required><?= $current_lang['Check']; ?>
             <br><br>
 
             <!-- Payment fields for Kortti -->
             <div id="contentOption1" class="hidden">
-                <label for="crdnmb">Korttinumero:</label>
+                <label for="crdnmb"><?= $current_lang['CardNumber']; ?>: </label>
                 <input id="crdnmb" name="crdnmb" type="text" minlength="16" maxlength="16" style="width: 200px; margin-bottom: 10px" oninput="validateDigits(event)">
 
                 <label for="cvv">CVV:</label>
                 <input id="cvv" name="cvv" type="text" minlength="3" maxlength="3" style="width: 25px; margin-bottom: 10px" oninput="validateDigits(event)">
 
-                <label for="expdate">Voimassaoloaika:</label>
+                <label for="expdate"><?= $current_lang['ExpirationDate']; ?>:</label>
                 <input id="expdate" name="expdate" type="month">
             </div>
 
             <!-- Payment fields for Lasku -->
             <div id="contentOption2" class="hidden">
-                <label for="lo">Syötä laskutusosoite:</label>
+                <label for="lo"><?= $current_lang['Address']; ?>:</label>
                 <input id="lo" name="lo" type="text" style="width: 200px;">
             </div>
 
-            <h4>Valitse toimitustapa</h4>
-            <input type="radio" name="choice2" value="Postitus" required> Postitus
-            <input type="radio" name="choice2" value="Nouto" required> Nouto myymälästä
+            <h4><?= $current_lang['Delivery']; ?></h4>
+            <input type="radio" name="choice2" value="Postitus" required> <?= $current_lang['Deliver']; ?>
+            <input type="radio" name="choice2" value="Nouto" required> <?= $current_lang['Fetch']; ?>
             <br><br>
 
             <!-- Submit Button -->
-            <button class="edit-btn" type="submit">Vahvista tilaus</button>
+            <button class="edit-btn" type="submit"><?= $current_lang['ConfirmOrder']; ?></button>
         </div>
     </div>
 </form>

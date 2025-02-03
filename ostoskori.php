@@ -276,9 +276,9 @@ $_SESSION['cart_total'] = $totalPrice;
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <body>
     <div class="cart">
-        <h1>Ostoskori</h1>
+        <h1><?= $current_lang['Cart']; ?></h1>
         <?php if (empty($cart)): ?>
-            <p>Ostoskorisi on tyhjä.</p>
+            <p><?= $current_lang['CartEmpty']; ?></p>
         <?php else: ?>
             <?php foreach ($cart as $index => $item): ?>
                 <div class="cart-item">
@@ -286,41 +286,40 @@ $_SESSION['cart_total'] = $totalPrice;
                         alt="<?= isset($item['name']) ? htmlspecialchars($item['name']) : 'Unknown Product' ?>">
                     <div class="cart-item-details">
                         <h3><?= isset($item['name']) ? htmlspecialchars($item['name']) : 'Unknown Product' ?></h3>
-                        <p>Hinta: €<?= isset($item['price']) ? number_format($item['price'], 2) : '0.00' ?></p>
-                        <p>Määrä: <?= isset($item['quantity']) ? htmlspecialchars($item['quantity']) : '0' ?></p>
-                        <p>Yhteensä:
+                        <p><?= $current_lang['price']; ?>: €<?= isset($item['price']) ? number_format($item['price'], 2) : '0.00' ?></p>
+                        <p><?= $current_lang['quantity']; ?>: <?= isset($item['quantity']) ? htmlspecialchars($item['quantity']) : '0' ?></p>
+                        <p><?= $current_lang['Total']; ?>:
                             €<?= isset($item['price']) && isset($item['quantity']) ? number_format($item['price'] * $item['quantity'], 2) : '0.00' ?>
                         </p>
                     </div>
 
                     <form method="POST" class="action-form">
                         <input type="hidden" name="index" value="<?= $index ?>">
-                        <button type="submit" name="remove" class="action-btn remove-btn">Poista</button>
-                        <button type="button" class="action-btn update-btn" onclick="openModal(<?= $index ?>)">Muuta
-                            määrää</button>
+                        <button type="submit" name="remove" class="action-btn remove-btn"><?= $current_lang['Remove']; ?></button>
+                        <button type="button" class="action-btn update-btn" onclick="openModal(<?= $index ?>)"><?= $current_lang['ChangeQuantity']; ?></button>
                     </form>
                 </div>
             <?php endforeach; ?>
 
 
             <div class="cart-total">
-                <p>Kokonaishinta: €<?= number_format($totalPrice, 2) ?></p>
+                <p><?= $current_lang['Total']; ?>: €<?= number_format($totalPrice, 2) ?></p>
             </div>
-            <a href="index.php?page=maksuForm" class="checkout-btn">Maksamaan</a>
+            <a href="index.php?page=maksuForm" class="checkout-btn"><?= $current_lang['Pay']; ?></a>
         <?php endif; ?>
     </div>
 
     <!-- Modal määrän muuttamiseen  -->
     <div class="modal" id="quantity-modal">
         <div class="modal-content">
-            <h3>Muuta määrää</h3>
+            <h3><?= $current_lang['ChangeQuantity']; ?></h3>
             <div class="quantity-buttons">
                 <button id="decrease-btn" onclick="updateQuantity(-1)" class="modal-btn">-</button>
                 <span id="quantity-display">1</span>
                 <button id="increase-btn" onclick="updateQuantity(1)" class="modal-btn">+</button>
             </div>
-            <button onclick="saveQuantity()" class="modal-btn">Tallenna määrä</button>
-            <button onclick="closeModal()" class="modal-btn">Sulje</button>
+            <button onclick="saveQuantity()" class="modal-btn"><?= $current_lang['Save']; ?></button>
+            <button onclick="closeModal()" class="modal-btn"><?= $current_lang['Close']; ?></button>
         </div>
     </div>
 
