@@ -44,6 +44,14 @@
     <title>Tuotteen muokkaus</title>
     <link href="style.css" rel="stylesheet">
 </head>
+<style>
+    @media (max-width: 480px) {
+        input {
+            width: 150px;
+        }
+   
+}
+</style>
 <body>
     <div style="text-align: center; color: white;">
         <h1>Tuotteen muokkaus</h1>

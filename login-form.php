@@ -94,6 +94,14 @@ if (isset($_SESSION['message'])) {
 	}
 }
 ?>
+<style>
+	@media (max-width: 480px) { 
+		form{
+			max-width: 100%;
+			margin-left: 0%;
+	}
+}
+</style>
 <body>
 <p>&nbsp;</p>
 <form id="loginForm" name="loginForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?page=<?php echo htmlspecialchars($_GET['page']); ?>">

@@ -116,6 +116,35 @@
         background-color: lightseagreen;
         transform: scale(1.1);
     }
+    @media (max-width: 768px) {
+    .adminproductview {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .adminproductview th, .adminproductview td {
+        font-size: 12px;
+        padding: 4px;
+    }
+    .admin-btn {
+        padding: 2px;
+    }
+    .analyticsPopup {
+    padding: 10px;
+    width: 300px;
+    height: 500px;
+}
+.analytictables th {
+        padding: 6px 10px;
+    }
+    .analytictables{
+        font-size: 12px;
+        margin: 10px auto;
+    }
+}
 </style>
 <body>
     <div style="text-align: center; color: white;">
