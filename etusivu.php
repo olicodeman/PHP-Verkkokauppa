@@ -15,8 +15,10 @@ if ($conn->connect_error) {
 // Fetch the 3 newest products with the correct language field for the name
 $products = [];
 $productNameColumn = ($lang === 'en') ? 'nimi_en' : 'nimi'; // Decide on the column based on language
+$productDescriptionColumn = ($lang === 'en') ? 'kuvaus_en' : 'kuvaus'; // Decide the column based on the language
 
-$sql = "SELECT id, $productNameColumn AS nimi, kuvaus, hinta, kuva, varastomäärä FROM tuotteet ORDER BY id DESC LIMIT 3";
+// Update your SQL query to fetch the description in the correct language
+$sql = "SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, hinta, kuva, varastomäärä FROM tuotteet ORDER BY id DESC LIMIT 3";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
@@ -231,55 +233,56 @@ $conn->close();
 </div>
 
 
-    <!-- Popup modal -->
-    <div class="overlay" id="overlay" onclick="hidePopup()"></div>
-    <div class="popup" id="popup">
-        <button type="button"
-            style="position: absolute; top: 10px; right: 10px; background: white; color: black; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;"
-            onclick="hidePopup(event)">×</button>
-        <img id="popup-img" src="" alt="Tuotekuva">
-        <h4 id="popup-title"></h4>
-        <p id="popup-description"></p>
-        <p><strong id="popup-price"></strong></p>
-        <p id="popup-stock"></p>
-        <!-- Määrä jota halutaan ostaa -->
-        <div class="keskita">
-            <label for="popup-quantity">
-                <?= $current_lang['quantity']; ?>
-            </label>
-            <input id="popup-quantity" type="number" min="1" value="1" step="1" onchange="updateSelectedQuantity()">
-        </div>
-
-        <!-- Lisätään ostoskoriin iconi -->
-        <div class="icon">
-            <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin"
-                onclick="addToCart()" style="width: 40px; height: 40px; cursor: pointer; margin-top: 10px;">
-        </div>
-        <div class="center-align">
-            <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu">
-                <?= $current_lang['leaveReview']; ?></a>
-
-                <div class="center-align">
-                    <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">
-                    <?= $current_lang['read_reviews']; ?></a>
-        </div>
-            </a>
-        </div>
+<!-- Popup modal -->
+<div class="overlay" id="overlay" onclick="hidePopup()"></div>
+<div class="popup" id="popup">
+    <button type="button"
+        style="position: absolute; top: 10px; right: 10px; background: white; color: black; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;"
+        onclick="hidePopup(event)">×</button>
+    <img id="popup-img" src="" alt="Tuotekuva">
+    <h4 id="popup-title"></h4>
+    <p id="popup-description"></p>
+    <p><strong id="popup-price"></strong></p>
+    <p id="popup-stock"></p>
+    <!-- Määrä jota halutaan ostaa -->
+    <div class="keskita">
+        <label for="popup-quantity">
+            <?= $current_lang['quantity']; ?>
+        </label>
+        <input id="popup-quantity" type="number" min="1" value="1" step="1" onchange="updateSelectedQuantity()">
     </div>
+
+    <!-- Lisätään ostoskoriin iconi -->
+    <div class="icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin" onclick="addToCart()"
+            style="width: 40px; height: 40px; cursor: pointer; margin-top: 10px;">
+    </div>
+    <div class="center-align">
+        <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu">
+            <?= $current_lang['leaveReview']; ?></a>
+
+        <div class="center-align">
+            <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">
+                <?= $current_lang['read_reviews']; ?></a>
+        </div>
+        </a>
+    </div>
+</div>
 
 </div>
 <div style="text-align: center; color: white; margin-top: 50px;">
     <h2><?= $current_lang['latest_reviews']; ?></h2>
 
     <a class="edit-btn" href="index.php?page=lisaaArvostelu">
-    <?= $current_lang['leaveReview']; ?></a>
+        <?= $current_lang['leaveReview']; ?></a>
     <div class="reviews-container">
         <?php if (!empty($reviews)): ?>
             <?php foreach ($reviews as $review): ?>
                 <div class="review">
                     <h4><?= htmlspecialchars($review['nimi']) ?> - <?= htmlspecialchars($review['tuote_nimi']) ?></h4>
                     <p><strong>
-                    <a><?= $current_lang['review_title']; ?></a></strong> <?= htmlspecialchars($review['otsikko']) ?></p>
+                            <a><?= $current_lang['review_title']; ?></a></strong> <?= htmlspecialchars($review['otsikko']) ?>
+                    </p>
                     <p><strong><a><?= $current_lang['review']; ?></a></strong> <?= htmlspecialchars($review['kommentti']) ?></p>
                     <p><strong><a><?= $current_lang['stars']; ?></a></strong> <?= str_repeat("★", $review['tähtiarvostelu']) ?>
                         <?= $review['tähtiarvostelu'] ?>/5

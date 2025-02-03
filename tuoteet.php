@@ -1,5 +1,16 @@
 <?php
 require_once('config.php');
+require_once('lang.php');
+session_start();
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'fi'; // Default to Finnish
+}
+if (isset($_GET['lang']) && in_array($_GET['lang'], ['en', 'fi'])) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
+
+
 
 try {
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_DATABASE . ";charset=utf8";
@@ -30,10 +41,13 @@ try {
     $categories = [];
 }
 
-try {
-    $stmt = $pdo->prepare("
+$lang = $_SESSION['lang']; // Haetaan kieli istunnosta
+$sql = "
     SELECT 
-        t.id, t.nimi, t.kuvaus, t.kuva, t.hinta, t.varastomäärä, 
+        t.id, 
+        " . ($lang == 'en' ? "t.nimi_en" : "t.nimi") . " AS nimi,
+        " . ($lang == 'en' ? "t.kuvaus_en" : "t.kuvaus") . " AS kuvaus,
+        t.kuva, t.hinta, t.varastomäärä,
         COALESCE(GROUP_CONCAT(k.nimi SEPARATOR ','), '') AS categories,
         COALESCE(AVG(a.arvosana), 0) AS avg_rating
     FROM tuotteet t
@@ -41,14 +55,12 @@ try {
     LEFT JOIN kategoriat k ON tk.kategoria_id = k.id
     LEFT JOIN arvostelut a ON t.id = a.tuote_id
     GROUP BY t.id
-");
+";
 
-    $stmt->execute();
-    $products = $stmt->fetchAll();
-} catch (PDOException $e) {
-    echo '<p class="error">Error fetching products: ' . $e->getMessage() . '</p>';
-    $products = [];
-}
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$products = $stmt->fetchAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -277,16 +289,16 @@ try {
 </script>
 
 <body>
-    <h1 style="text-align: center;">Tervetuloa Kitchen Gadget tuote sivulle! Katsaise tuotteita ja osta!</h1>
+    <h1 style="text-align: center;"><?= $current_lang['WelcomeProducts']; ?></h1>
     <br>
     <div class="search-bar-container">
-        <input type="text" id="searchInput" class="search-bar" placeholder="Etsi tuotteita...">
-        <button class="search-btn" onclick="searchProduct()">Hae</button>
+        <input type="text" id="searchInput" class="search-bar" placeholder="<?= $current_lang['SearchProduct']; ?>">
+        <button class="search-btn" onclick="searchProduct()"><?= $current_lang['Search']; ?></button>
     </div>
 
     <div class="category-container">
         <select id="categorySelect" class="category-select" onchange="filterByCategory()">
-            <option value="all">Kaikki kategoriat</option>
+            <option value="all"><?= $current_lang['allKategories']; ?></option>
             <?php foreach ($categories as $category): ?>
                 <option value="<?= htmlspecialchars($category['nimi']) ?>"><?= htmlspecialchars($category['nimi']) ?>
                 </option>
@@ -295,31 +307,41 @@ try {
     </div>
 
     <form>
-        <!-- Tuoteruudukko -->
-        <div class="product-grid">
-            <?php foreach ($products as $product): ?>
-                <div class="product" data-id="<?= htmlspecialchars($product['id']) ?>"
-                    data-categories="<?= htmlspecialchars($product['categories']) ?>"
-                    onclick="showPopup('<?= htmlspecialchars($product['id']) ?>', '<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
-                    <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
-                    <p style="color: gold;" class="name"><?= htmlspecialchars($product['nimi']) ?></p>
-                    <p class="rating">
-                        <?php
-                        $rating = round($product['avg_rating']); // Pyöristetään lähimpään kokonaislukuun
-                        for ($i = 1; $i <= 5; $i++) {
-                            if ($i <= $rating) {
-                                echo '★'; // Täytetty tähti
-                            } else {
-                                echo '☆'; // Tyhjä tähti
-                            }
+    <!-- Tuoteruudukko -->
+    <div class="product-grid">
+        <?php foreach ($products as $product): ?>
+            <div class="product" data-id="<?= htmlspecialchars($product['id']) ?>"
+                data-categories="<?= htmlspecialchars($product['categories']) ?>"
+                onclick="showPopup('<?= htmlspecialchars($product['id']) ?>', '<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
+                
+                <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
+
+                <!-- Product name -->
+                <p style="color: gold;" class="name"><?= htmlspecialchars($product['nimi']) ?></p>
+
+                <!-- Product description -->
+                <p class="description"><?= htmlspecialchars($product['kuvaus']) ?></p>
+
+                <!-- Product rating -->
+                <p class="rating">
+                    <?php
+                    $rating = round($product['avg_rating']); // Pyöristetään lähimpään kokonaislukuun
+                    for ($i = 1; $i <= 5; $i++) {
+                        if ($i <= $rating) {
+                            echo '★'; // Täytetty tähti
+                        } else {
+                            echo '☆'; // Tyhjä tähti
                         }
-                        ?>
-                    </p>
-                    <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </form>
+                    }
+                    ?>
+                </p>
+
+                <!-- Product price -->
+                <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</form>
 
     <!-- Tummennettu tausta -->
     <div class="overlay" id="overlay" onclick="hidePopup()"></div>
@@ -332,7 +354,7 @@ try {
         <p id="popup-varastomaara"></p>
         <!-- Määrä jota halutaan ostaa -->
         <div class="keskita">
-            <label for="popup-quantity">Määrä:</label>
+            <label for="popup-quantity"><?= $current_lang['quantity']; ?>:</label>
             <input id="popup-quantity" type="number" min="1" value="1" step="1" onchange="updateSelectedQuantity()">
         </div>
         <!-- Ostoskoriin lisääminen -->
@@ -341,13 +363,14 @@ try {
                 onclick="addToCartFromPopup()">
         </div>
         <div class="center-align">
-            <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu">Anna arvostelu</a>
+            <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu"><?= $current_lang['give_review']; ?></a>
             
         <div class="center-align">
-            <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">Lue arvosteluja</a>
+            <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu"><?= $current_lang['read_reviews']; ?></a>
         </div>
 
         <script>
+            
            function filterByCategory() {
             const selectedCategory = document.getElementById('categorySelect').value.toLowerCase();
             const products = document.querySelectorAll('.product');
