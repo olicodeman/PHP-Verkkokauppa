@@ -1,6 +1,10 @@
 <?php
-require_once('config.php');
+
 session_start();
+require_once('config.php');
+require 'lang.php';
+
+$current_lang = $lang[$_SESSION['lang']] ?? $lang['en'];  // Default to English
 
 // Yhdistetään tietokantaan
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
@@ -8,7 +12,7 @@ if ($conn->connect_error) {
     die("Tietokantayhteys epäonnistui: " . $conn->connect_error);
 }
 
-$message = '';  
+$message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Haetaan lomaketiedot
@@ -41,13 +45,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt) {
                 $stmt->bind_param('issssi', $tuote_id, $nimi, $sähköposti, $otsikko, $kommentti, $tähtiarvostelu);
                 if ($stmt->execute()) {
-                    $message = "<div class='message success'>Arvostelu tallennettu onnistuneesti! Kiitos palautteesta!</div>";
+                    $message = "<div class='message success'>{$current_lang['review_success']}</div>";
                 } else {
-                    $message = "<div class='message error'>Virhe tallentaessa arvostelua: " . $stmt->error . "</div>";
+                    $message = "<div class='message error'>{$current_lang['review_error']} " . $stmt->error . "</div>";
                 }
                 $stmt->close();
             } else {
-                $message = "<div class='message error'>Virhe tietokantakyselyssä: " . $conn->error . "</div>";
+                $message = "<div class='message error'>{$current_lang['db_query_error']} " . $conn->error . "</div>";
             }
         }
     }
@@ -62,7 +66,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arvostelu Tallennettu</title>
+    <title><?= $current_lang['SavedReview']; ?></title>
     <style>
         /* Basic Styling */
         body {
@@ -131,6 +135,36 @@ $conn->close();
         .form-buttons a {
             margin-top: 20px;
         }
+
+        .exciting-text {
+            font-size: 22px;
+            /* Larger text */
+            font-weight: bold;
+            /* Bold for better visibility */
+            color: white;
+            /* Bright color */
+            text-transform: uppercase;
+            /* Make it stand out */
+            text-decoration: none;
+            /* Remove underline */
+            padding: 10px 15px;
+            /* Spacing around text */
+            background: linear-gradient(45deg, rgbargb(7, 49, 94), rgb(24, 1, 173));
+            /* Vibrant gradient */
+            border-radius: 8px;
+            /* Smooth corners */
+            box-shadow: 0 0 10px rgba(218, 214, 255, 0.8);
+            /* Soft glowing effect */
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+
+        .exciting-text:hover {
+            transform: scale(1.1);
+            /* Slight zoom effect */
+            box-shadow: 0 0 20px rgb(255, 255, 255);
+            /* Stronger glow */
+        }
+        
     </style>
 </head>
 
@@ -141,11 +175,15 @@ $conn->close();
             <!-- Onnistunut tai virheviesti -->
             <?php if (!empty($message))
                 echo $message; ?>
+            <a href="index.php?page=arvosteluSivu&lang=<?= $_SESSION['lang']; ?>" class="exciting-text">
+                <?= $current_lang['read_reviews']; ?>
+            </a>
 
-            <div class="form-buttons">
-                <a class="edit-btn" href="index.php?page=arvosteluSivu">Lue arvosteluja täältä</a>
-                <a class="edit-btn" href="index.php">Etusivulle</a>
-            </div>
+            <a href="index.php?page=etusivu&lang=<?= $_SESSION['lang']; ?>" class="exciting-text">
+                <?= $current_lang['homepage']; ?>
+            </a>
+
+        </div>
         </div>
     </form>
 

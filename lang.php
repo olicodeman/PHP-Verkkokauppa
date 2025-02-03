@@ -46,7 +46,21 @@ $lang = [
         'User' => 'Username',
         'Adress' => 'Adress',
         'PhoneNmb' => 'Phone number',
-        'Register' => 'Register',
+        'ChooseProductS' => 'Choose product from menu',
+        'ChooseProduct' => '-- Choose product --',
+        'Comment' => 'Comment',
+        'SavedReview' => 'Your review has been saved!',
+        'review_success' => 'Review saved successfully! Thank you for your feedback!',
+        'review_error' => 'Error saving review: ',
+        'db_query_error' => 'Database query error: ',
+        'AllReviews' => 'All reviews ',
+        'FilterStar' => 'Filter reviews according to star rating: ',
+        'FilterProduct' => 'Filter according to product',
+        'AllProducts' => 'All products',
+        'writer' => 'Writer',
+        'date' => 'Date',
+
+        
     ],
     'fi' => [
         'homepage' => 'Etusivu',
@@ -78,11 +92,11 @@ $lang = [
         'Search' => 'Hae',
         'SearchProduct' => 'Hae tuotteita',
         'Stock' => 'Varastossa',
-        'emptystock' => 'Varasto thjä, täytämme mahdollisimman pian!',
+        'emptystock' => 'Varasto tyhjä, täytämme mahdollisimman pian!',
         'noAccount' => 'Eikö ole vielä tiliä?',
         'YesAccount' => 'Onko sinulla jo tili?',
         'PressHere' => 'Paina tästä',
-        'ToCreate' => ', jos haluat luoda tilin!!',
+        'ToCreate' => ', jos haluat luoda tilin!',
         'Login' => 'Käyttäjänimi',
         'Password' => 'Salasana',
         'CheckPassword' => 'Tarkista salasana',
@@ -93,19 +107,40 @@ $lang = [
         'User' => 'Käyttäjänimi',
         'Adress' => 'Osoite',
         'PhoneNmb' => 'Puhelinnumero',
-        'Register' => 'Registeröidy',
+        'ChooseProductS' => 'Valitse tuote valikosta',
+        'ChooseProduct' => '-- Valitse tuote --',
+        'Comment' => 'Kommentti',
+        'SavedReview' => 'Arvostelusi tallennettu!',
+        'review_success' => 'Arvostelu tallennettu onnistuneesti! Kiitos palautteesta!',
+        'review_error' => 'Virhe tallentaessa arvostelua: ',
+        'db_query_error' => 'Virhe tietokantakyselyssä: ',
+        'AllReviews' => 'Kaikki arvostelut ',
+        'FilterStar' => 'Suodata arvosteluja tähtiarvostelun mukaan: ',
+        'FilterProduct' => 'Suodata tuotteen mukaan: ',
+        'AllProducts' => 'Kaikki tuotteet',
+        'writer' => 'Kirjoittaja',
+        'date' => 'Päivämäärä',
 
+        
     ]
 ];
-
-// Current language selection (default to 'fi' if not specified)
-$active_language = 'fi'; // Change dynamically based on user selection
-$current_lang = $lang[$active_language];
+$active_language = $_SESSION['lang'] ?? 'fi'; // Default to 'fi' if not set
+$current_lang = $lang[$active_language] ?? $lang['fi']; // Fallback to 'fi'
 
 // Function to fetch translations
 function t($key)
 {
     global $current_lang;
-    return $current_lang[$key] ?? $key; // Return key itself if translation is missing
+    if (!isset($current_lang[$key])) {
+        error_log("Missing translation for key: " . $key);
+        return $key;
+    }
+    return $current_lang[$key];
 }
+if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $lang)) {
+    $_SESSION['lang'] = $_GET['lang'];
+    header("Location: " . $_SERVER['PHP_SELF']); // Refresh page
+    exit;
+}
+
 ?>

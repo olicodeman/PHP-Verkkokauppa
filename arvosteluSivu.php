@@ -1,5 +1,6 @@
 <?php
 require_once('config.php');
+require_once('lang.php');
 
 // Tietokantayhteys
 try {
@@ -81,6 +82,13 @@ try {
     echo '<p class="error">Virhe arvostelujen hakemisessa: ' . $e->getMessage() . '</p>';
     $reviews = [];
 }
+$productNameColumn = ($_SESSION['lang'] == 'en') ? 'nimi_en' : 'nimi';
+$productDescriptionColumn = ($_SESSION['lang'] == 'en') ? 'kuvaus_en' : 'kuvaus';
+
+$stmt = $pdo->prepare("SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, kuva, hinta, varastomäärä FROM tuotteet");
+$stmt->execute();
+$products = $stmt->fetchAll();
+
 ?>
 
 
@@ -274,13 +282,13 @@ try {
 
 <body>
     <div class="review-container">
-        <h1>Kaikki arvostelut</h1>
+        <h1><?= $current_lang['AllReviews']; ?></h1>
 
         <!-- Tähtiarvostelujenmukaan suodatus-->
         <div class="star-filter">
             <form method="GET" action="index.php">
                 <input type="hidden" name="page" value="arvosteluSivu">
-                <label>Suodata arvosteluja tähtiarvostelun mukaan:</label>
+                <label><?= $current_lang['FilterStar']; ?></label>
                 <div class="star-rating">
                     <input type="radio" id="star5" name="rating_filter" value="5" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '5' ? 'checked' : '' ?>>
                     <label for="star5">★</label>
@@ -293,7 +301,7 @@ try {
                     <input type="radio" id="star1" name="rating_filter" value="1" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '1' ? 'checked' : '' ?>>
                     <label for="star1">★</label>
                 </div>
-                <button type="submit">Hae</button>
+                <button type="submit"><?= $current_lang['Search']; ?></button>
             </form>
         </div>
 
@@ -303,17 +311,17 @@ try {
         <div class="product-filter">
             <form method="GET" action="index.php">
 
-                <label>Suodata tuotteen mukaan:</label>
+                <label><?= $current_lang['FilterProduct']; ?></label>
                 <input type="hidden" name="page" value="arvosteluSivu">
                 <select name="product_id" id="product_id" class="product-select">
-                    <option value="">Kaikki tuotteet</option>
+                    <option value=""><?= $current_lang['AllProducts']; ?></option>
                     <?php foreach ($products as $product): ?>
                         <option value="<?= $product['id'] ?>" <?= $product['id'] == $product_id ? 'selected' : '' ?>>
                             <?= htmlspecialchars($product['nimi']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
-                <button type="submit">Hae</button>
+                <button type="submit"><?= $current_lang['Search']; ?></button>
             </form>
         </div>
 
@@ -324,13 +332,13 @@ try {
                 <img class="product-image" src="<?= $product_details['kuva'] ?>"
                     alt="<?= htmlspecialchars($product_details['nimi']) ?>">
                 <p><?= htmlspecialchars($product_details['kuvaus']) ?></p>
-                <p>Hinta: €<?= number_format($product_details['hinta'], 2) ?></p>
+                <p><?= $current_lang['price']; ?><?= number_format($product_details['hinta'], 2) ?></p>
             </div>
         <?php endif; ?>
 
         <!-- Näytetään arvostelut-->
         <?php if (empty($reviews)): ?>
-            <h3>Ei arvosteluja. Anna arvostelu <a href="index.php?page=lisaaArvostelu">Tästä</a></h3>
+            <h3><?= $current_lang['no_reviews']; ?><?= $current_lang['give_review']; ?><a href="index.php?page=lisaaArvostelu">Tästä</a></h3>
         <?php else: ?>
             <?php foreach ($reviews as $review): ?>
                 <div class="review">
@@ -347,9 +355,9 @@ try {
                         ?>
                     </p>
                     <p><?= nl2br(htmlspecialchars($review['kommentti'])) ?></p>
-                    <p><em>Kirjoittaja: <?= htmlspecialchars($review['nimi']) ?>
+                    <p><em><?= $current_lang['writer']; ?>: <?= htmlspecialchars($review['nimi']) ?>
                             <br>
-                            Pvm <?= $review['luotu'] ?></em></p>
+                             <?= $current_lang['date']; ?>: <?= $review['luotu'] ?></em></p>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>

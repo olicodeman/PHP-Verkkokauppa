@@ -1,16 +1,22 @@
 <?php
-	session_start();
+// Start output buffering
+ob_start();
+
+// Start the session
+session_start();
 ?>
+
 <?php
-	if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) >0 ) {
-		echo '<ul class="err">';
-		foreach($_SESSION['ERRMSG_ARR'] as $msg) {
-			echo '<li>',$msg,'</li>'; 
-		}
-		echo '</ul>';
-		unset($_SESSION['ERRMSG_ARR']);
-	}
+if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) >0 ) {
+    echo '<ul class="err">';
+    foreach($_SESSION['ERRMSG_ARR'] as $msg) {
+        echo '<li>', $msg, '</li>'; 
+    }
+    echo '</ul>';
+    unset($_SESSION['ERRMSG_ARR']);
+}
 ?>
+
 <form id="loginForm" name="loginForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?page=<?php echo htmlspecialchars($_GET['page']); ?>">
   <table width="300" border="0" align="center" cellpadding="5" cellspacing="5">
     <tr>
@@ -47,124 +53,124 @@
   </table>
   <br>
 <p style="text-align: center;"><b><?= addslashes($current_lang['YesAccount']); ?></b></p>
-<p style="text-align: center;"><a href="index.php?page=login-form"><?= addslashes($current_lang['LogIn']); ?></a>
+<p style="text-align: center;"><a href="index.php?page=login-form"><?= addslashes($current_lang['LogIn']); ?></a></p>
 </form>
 
 <?php
-	//Include database connection details
-	require_once('config.php');
+// Include database connection details
+require_once('config.php');
 
-  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Registration handling code here
+// Registration handling code
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Array to store validation errors
+    $errmsg_arr = array();
+    // Validation error flag
+    $errflag = false;
 
-	
-	//Array to store validation errors
-	$errmsg_arr = array();
-	
-	//Validation error flag
-	$errflag = false;
-	
-	//Connect to mysql server
-	$link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD);
-	if(!$link) {
-		die('Failed to connect to server: ' . mysql_error());
-	}
-	
-	//Select database
-	$db = mysqli_select_db($link, DB_DATABASE);
-	if(!$db) {
-		die("Unable to select database");
-	}
-	
-	//Function to sanitize values received from the form. Prevents SQL injection
-	function clean($link, $str) {
-		$str = @trim($str);
-		return mysqli_real_escape_string($link, $str);
-	}
-	
-	//Sanitize the POST values
-	$fname = clean($link, $_POST['fname']);
-	$lname = clean($link, $_POST['lname']);
-	$email = clean($link, $_POST['email']);
-	$address = clean($link, $_POST['address']);
-	$number = clean($link, $_POST['number']);
-	$login = clean($link, $_POST['login']);
-	$password = clean($link, $_POST['password']);
-	$cpassword = clean($link, $_POST['cpassword']);
-	
-	//Input Validations
-	if($fname == '') {
-		$errmsg_arr[] = '<p><b style="color: red;">*</b> Etunimi puuttuu</p>';
-		$errflag = true;
-	}
-	if($lname == '') {
-		$errmsg_arr[] = '<p><b style="color: red;">*</b> Sukunimi puuttuu</p>';
-		$errflag = true;
-	}
-	if($email == '') {
-		$errmsg_arr[] = '<p><b style="color: red;">*</b> Sähköposti puuttuu</p>';
-		$errflag = true;
-	}
-	if($address == '') {
-		$errmsg_arr[] = '<p><b style="color: red;">*</b> Osoite puuttuu</p>';
-		$errflag = true;
-	}
-	if($number == '') {
-		$errmsg_arr[] = '<p><b style="color: red;">*</b> Puhelinnumero puuttuu</p>';
-		$errflag = true;
-	}
-	if($login == '') {
-		$errmsg_arr[] = '<p><b style="color: red;">*</b> Käyttäjätunnus puuttuu</p>';
-		$errflag = true;
-	}
-	if($password == '') {
-		$errmsg_arr[] = '<p><b style="color: red;">*</b> Salasana puuttuu</p>';
-		$errflag = true;
-	}
-	if($cpassword == '') {
-		$errmsg_arr[] = '<p><b style="color: red;">*</b> Salasanan varmistus puuttuu</p>';
-		$errflag = true;
-	}
-	if( strcmp($password, $cpassword) != 0 ) {
-		$errmsg_arr[] = '<p>Salansanat eivät ole samoja</p>';
-		$errflag = true;
-	}
-	
-	//Check for duplicate login ID
-	if($login != '') {
-		$qry = "SELECT * FROM Members WHERE username='$login'";
-		$result = mysqli_query($link, $qry);
-		if($result) {
-			if(mysqli_num_rows($result) > 0) {
-				$errmsg_arr[] = '<p style="text-align: center;">Tili tällä käyttäjätunnuksella on jo olemassa.<p>';
-				$errflag = true;
-			}
-			@mysqli_free_result($result);
-		}
-		else {
-			die("Query failed");
-		}
-	}
-	
-	//If there are input validations, redirect back to the registration form
-	if($errflag) {
-		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
-		session_write_close();
-		header("location: index.php?page=register-form");
-		exit();
-	}
+    // Connect to mysql server
+    $link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD);
+    if (!$link) {
+        die('Failed to connect to server: ' . mysql_error());
+    }
 
-	//Create INSERT query
-	$qry = "INSERT INTO Members(firstname, lastname, email, address, phonenumber, username, password) VALUES('$fname','$lname','$email', '$address', '$number', '$login','".md5($_POST['password'])."')";
-	$result = @mysqli_query($link, $qry);
+    // Select database
+    $db = mysqli_select_db($link, DB_DATABASE);
+    if (!$db) {
+        die("Unable to select database");
+    }
 
-	//Check whether the query was successful or not
-	if($result) {
-		header("location: index.php?page=register-success");
-		exit();
-	}else {
-		die("Query failed");
-	}
+    // Function to sanitize values received from the form. Prevents SQL injection
+    function clean($link, $str) {
+        $str = @trim($str);
+        return mysqli_real_escape_string($link, $str);
+    }
+
+    // Sanitize the POST values
+    $fname = clean($link, $_POST['fname']);
+    $lname = clean($link, $_POST['lname']);
+    $email = clean($link, $_POST['email']);
+    $address = clean($link, $_POST['address']);
+    $number = clean($link, $_POST['number']);
+    $login = clean($link, $_POST['login']);
+    $password = clean($link, $_POST['password']);
+    $cpassword = clean($link, $_POST['cpassword']);
+
+    // Input Validations
+    if($fname == '') {
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> Etunimi puuttuu</p>';
+        $errflag = true;
+    }
+    if($lname == '') {
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> Sukunimi puuttuu</p>';
+        $errflag = true;
+    }
+    if($email == '') {
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> Sähköposti puuttuu</p>';
+        $errflag = true;
+    }
+    if($address == '') {
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> Osoite puuttuu</p>';
+        $errflag = true;
+    }
+    if($number == '') {
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> Puhelinnumero puuttuu</p>';
+        $errflag = true;
+    }
+    if($login == '') {
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> Käyttäjätunnus puuttuu</p>';
+        $errflag = true;
+    }
+    if($password == '') {
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> Salasana puuttuu</p>';
+        $errflag = true;
+    }
+    if($cpassword == '') {
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> Salasanan varmistus puuttuu</p>';
+        $errflag = true;
+    }
+    if( strcmp($password, $cpassword) != 0 ) {
+        $errmsg_arr[] = '<p>Salasanat eivät ole samoja</p>';
+        $errflag = true;
+    }
+
+    // Check for duplicate login ID
+    if($login != '') {
+        $qry = "SELECT * FROM Members WHERE username='$login'";
+        $result = mysqli_query($link, $qry);
+        if($result) {
+            if(mysqli_num_rows($result) > 0) {
+                $errmsg_arr[] = '<p style="text-align: center;">Tili tällä käyttäjätunnuksella on jo olemassa.<p>';
+                $errflag = true;
+            }
+            @mysqli_free_result($result);
+        }
+        else {
+            die("Query failed");
+        }
+    }
+
+    // If there are input validations, redirect back to the registration form
+    if($errflag) {
+        $_SESSION['ERRMSG_ARR'] = $errmsg_arr;
+        session_write_close();
+        // Use header() for redirection
+        header("location: index.php?page=register-form");
+        exit();
+    }
+
+    // Create INSERT query
+    $qry = "INSERT INTO Members(firstname, lastname, email, address, phonenumber, username, password) VALUES('$fname','$lname','$email', '$address', '$number', '$login','".md5($_POST['password'])."')";
+    $result = @mysqli_query($link, $qry);
+
+    // Check whether the query was successful or not
+    if($result) {
+        header("location: index.php?page=register-success");
+        exit();
+    } else {
+        die("Query failed");
+    }
 }
-	
+
+// End output buffering and flush the output
+ob_end_flush();
 ?>

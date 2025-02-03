@@ -1,8 +1,10 @@
-
 <?php
 require_once('config.php');
 session_start();
 $IsLoggedIn = $_SESSION['loggedin'] ?? false;
+
+// Set the default language to 'en' or 'fi' based on user choice or session
+$lang = $_SESSION['lang'] ?? 'en'; // Default to English
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
 
@@ -10,9 +12,11 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch the 3 newest products
+// Fetch the 3 newest products with the correct language field for the name
 $products = [];
-$sql = "SELECT id, nimi, kuvaus, hinta, kuva, varastomäärä FROM tuotteet ORDER BY id DESC LIMIT 3";
+$productNameColumn = ($lang === 'en') ? 'nimi_en' : 'nimi'; // Decide on the column based on language
+
+$sql = "SELECT id, $productNameColumn AS nimi, kuvaus, hinta, kuva, varastomäärä FROM tuotteet ORDER BY id DESC LIMIT 3";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
@@ -31,7 +35,7 @@ if ($conn->connect_error) {
 
 // Hae uusimmat arvostelut (3 viimeisintä)
 $reviews = [];
-$sql = "SELECT r.id, r.nimi, r.otsikko, r.kommentti, r.tähtiarvostelu, r.luotu, t.nimi AS tuote_nimi 
+$sql = "SELECT r.id, r.nimi, r.otsikko, r.kommentti, r.tähtiarvostelu, r.luotu, t.$productNameColumn AS tuote_nimi 
         FROM arvostelut r
         JOIN tuotteet t ON r.tuote_id = t.id 
         ORDER BY r.luotu DESC LIMIT 3";
@@ -43,8 +47,6 @@ if ($result && $result->num_rows > 0) {
     }
 }
 $conn->close();
-?>
-
 ?>
 <style>
     /* Popup and overlay styles */
@@ -185,7 +187,6 @@ $conn->close();
         background-color: rgb(85, 85, 145);
     }
 </style>
-
 <div style="text-align: center; color: white;">
     <h1><?= $current_lang['title']; ?></h1>
     <h3><?= $current_lang['subtitle']; ?></h3>
@@ -227,7 +228,7 @@ $conn->close();
             <p><?= $current_lang['no_products']; ?></p>
         <?php endif; ?>
     </div>
-
+</div>
 
 
     <!-- Popup modal -->

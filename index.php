@@ -68,65 +68,67 @@
 </style>
 
 <body>
-    <?php
-    // Start session
-    session_start();
+<?php
+// Start session
+session_start();
 
-    // Include the language file
-    require 'lang.php';
+// Include the language file
+require 'lang.php';
 
-    // Set the default language to English
-    if (!isset($_SESSION['lang'])) {
-        $_SESSION['lang'] = 'en';
-    }
+// Set the default language to English
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'en';
+}
 
-    // Change language if the user selects one
-    if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $lang)) {
-        $_SESSION['lang'] = $_GET['lang'];
-    }
+// Change language if the user selects one
+if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $lang)) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
 
-    // Load the current language
-    $current_lang = $lang[$_SESSION['lang']];
+// Load the current language
+$current_lang = $lang[$_SESSION['lang']];
 
-    $IsLoggedIn = $_SESSION['loggedin'] ?? false;
-    session_write_close();
+// Ensure the user is logged in
+$IsLoggedIn = $_SESSION['loggedin'] ?? false;
+session_write_close();
 
-    // Navigointi scripti
-    $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm", "lisaaArvostelu", "arvosteluSivu");
-    $page = "etusivu";
-    if (isset($_GET['page']))
-        $page = $_GET['page'];
-    ?>
-    <!-- Navigointi valikko, joka muutuu pienellä näytöllä -->
-    <nav class="navbar">
-        <div class="menu-icon" onclick="toggleMenu()">☰</div>
-        <ul class="nav-links">
-            <li><a href="index.php?page=etusivu"
-                    class="<?= ($page == 'etusivu') ? 'active' : '' ?>"><?= $current_lang['homepage']; ?></a></li>
-            <li><a href="index.php?page=tuoteet"
-                    class="<?= ($page == 'tuoteet') ? 'active' : '' ?>"><?= $current_lang['products']; ?></a></li>
-            <?php if ($IsLoggedIn): ?>
-                <li><a href="index.php?page=profiili"
-                        class="<?= ($page == 'profiili') ? 'active' : '' ?>"><?= $current_lang['profile']; ?></a></li>
-                <li id="logout-link"><a href="index.php?page=logout"
-                        class="<?= ($page == 'logout') ? 'active' : '' ?>"><?= $current_lang['logout']; ?></a></li>
-            <?php else: ?>
-                <li><a href="index.php?page=login-form"
-                        class="<?= ($page == 'login-form') ? 'active' : '' ?>"><?= $current_lang['login']; ?></a></li>
-                <li><a href="index.php?page=register-form"
-                        class="<?= ($page == 'register-form') ? 'active' : '' ?>"><?= $current_lang['register']; ?></a></li>
-            <?php endif; ?>
-            <form method="get" class="language-switcher">
-                <input type="hidden" name="page" value="<?= $_GET['page'] ?? 'etusivu'; ?>">
-                <button type="submit" name="lang" value="en"
+// Define pages
+$pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm", "lisaaArvostelu", "arvosteluSivu", "submit_review");
+$page = "etusivu";
+
+// Check for current page in query parameters
+if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
+    $page = $_GET['page'];
+} else {
+    $page = 'etusivu';  // Default page
+}
+?>
+
+<nav class="navbar">
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <ul class="nav-links">
+        <li><a href="index.php?page=etusivu" class="<?= ($page == 'etusivu') ? 'active' : '' ?>"><?= $current_lang['homepage']; ?></a></li>
+        <li><a href="index.php?page=tuoteet" class="<?= ($page == 'tuoteet') ? 'active' : '' ?>"><?= $current_lang['products']; ?></a></li>
+        <?php if ($IsLoggedIn): ?>
+            <li><a href="index.php?page=profiili" class="<?= ($page == 'profiili') ? 'active' : '' ?>"><?= $current_lang['profile']; ?></a></li>
+            <li id="logout-link"><a href="index.php?page=logout" class="<?= ($page == 'logout') ? 'active' : '' ?>"><?= $current_lang['logout']; ?></a></li>
+        <?php else: ?>
+            <li><a href="index.php?page=login-form" class="<?= ($page == 'login-form') ? 'active' : '' ?>"><?= $current_lang['login']; ?></a></li>
+            <li><a href="index.php?page=register-form" class="<?= ($page == 'register-form') ? 'active' : '' ?>"><?= $current_lang['register']; ?></a></li>
+        <?php endif; ?>
+        
+        <!-- Language Switcher Form -->
+        <form method="get" class="language-switcher">
+            <input type="hidden" name="page" value="<?= $_GET['page'] ?? 'etusivu'; ?>"> <!-- Preserve current page -->
+            <button type="submit" name="lang" value="en"
                     class="lang-button <?= ($_SESSION['lang'] ?? 'en') === 'en' ? 'selected' : '' ?>">
-                    <img src="kuvat/englantilippu.png" alt="English" class="lang-icon">
-                </button>
-                <button type="submit" name="lang" value="fi"
+                <img src="kuvat/englantilippu.png" alt="English" class="lang-icon">
+            </button>
+            <button type="submit" name="lang" value="fi"
                     class="lang-button <?= ($_SESSION['lang'] ?? 'en') === 'fi' ? 'selected' : '' ?>">
-                    <img src="kuvat/suomenlippu.png" alt="Suomi" class="lang-icon">
-                </button>
-            </form>
+                <img src="kuvat/suomenlippu.png" alt="Suomi" class="lang-icon">
+            </button>
+        </form>
 
         </ul>
         <div class="nav-right">
@@ -143,7 +145,7 @@
 
     <?php
     // Navigointi scripti
-    $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm", "lisaaArvostelu", "arvosteluSivu");
+    $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm", "lisaaArvostelu", "arvosteluSivu",  "submit_review");
     $page = "etusivu";
     if (isset($_GET['page']))
         $page = $_GET['page'];

@@ -62,6 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Virhe tallentaessa arvostelua.";
     }
 }
+$productNameColumn = ($_SESSION['lang'] == 'en') ? 'nimi_en' : 'nimi';
+$productDescriptionColumn = ($_SESSION['lang'] == 'en') ? 'kuvaus_en' : 'kuvaus';
+
+$stmt = $pdo->prepare("SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, kuva, hinta, varastomäärä FROM tuotteet");
+$stmt->execute();
+$products = $stmt->fetchAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -161,9 +168,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <form action="submit_review.php" method="post">
-        <label for="product">Valitse tuote valikosta</label>
+        <label for="product"><?= $current_lang['ChooseProductS']; ?></label>
         <select name="tuote_id" id="product" onchange="fetchProductDetails(this.value)" required>
-            <option value="">-- Valitse tuote --</option>
+            <option value=""><?= $current_lang['ChooseProduct']; ?></option>
             <?php foreach ($products as $product): ?>
                 <option value="<?= htmlspecialchars($product['id']) ?>">
                     <?= htmlspecialchars($product['nimi']) ?>
@@ -175,16 +182,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- Tuotteen tiedot näkyy tässä -->
         </div>
 
-        <label for="nimi">Nimi:</label>
+        <label for="nimi"><?= $current_lang['FirstName']; ?>:</label>
         <input type="text" id="nimi" name="nimi" required>
 
-        <label for="sähköposti">Sähköposti:</label>
+        <label for="sähköposti"><?= $current_lang['Email']; ?>:</label>
         <input type="email" id="sähköposti" name="sähköposti" required>
 
-        <label for="otsikko">Otsikko:</label>
+        <label for="otsikko"><?= $current_lang['review_title']; ?></label>
         <input type="text" id="otsikko" name="otsikko" required>
 
-        <label for="kommentti">Kommentti:</label>
+        <label for="kommentti"><?= $current_lang['Comment']; ?>:</label>
         <textarea id="kommentti" name="kommentti" required></textarea>
 
         <div class="star-rating">
@@ -200,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="star1">★</label>
         </div>
 
-        <button type="submit">Lähetä arvostelu</button>
+        <button type="submit"><?= $current_lang['leaveReview']; ?></button>
     </form>
     <script>
         function fetchProductDetails(productId) {
@@ -209,8 +216,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 return;
             }
 
-            // Fetch product details from the backend
-            fetch('HaeTuoteTiedot.php?id=' + productId)
+            fetch('HaeTuoteTiedot.php?id=' + productId + '&lang=' + selectedLang)
+
                 .then(response => response.json())
                 .then(data => {
                     // Check if the image field is empty
@@ -230,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     document.getElementById('product-details').innerHTML = productDetailsHTML;
                 })
                 .catch(error => console.error('Error fetching product details:', error));
-        }
+
 
     </script>
 </body>
