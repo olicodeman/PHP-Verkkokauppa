@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 03.02.2025 klo 08:09
+-- Generation Time: 06.02.2025 klo 12:22
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -36,26 +36,29 @@ CREATE TABLE `arvostelut` (
   `kommentti` text NOT NULL,
   `tähtiarvostelu` int(1) NOT NULL,
   `luotu` timestamp NOT NULL DEFAULT current_timestamp(),
-  `arvosana` int(11) NOT NULL
+  `arvosana` int(11) NOT NULL,
+  `kieli` enum('fi','en') NOT NULL DEFAULT 'fi'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Vedos taulusta `arvostelut`
 --
 
-INSERT INTO `arvostelut` (`id`, `tuote_id`, `nimi`, `sähköposti`, `otsikko`, `kommentti`, `tähtiarvostelu`, `luotu`, `arvosana`) VALUES
-(20, 39, 'Roope', 'roop@gmail.com', 'Wokkipannu', 'Maukkaat wokkiruoat on tulleet tällä pannulla!', 4, '2025-01-16 11:47:37', 0),
-(21, 33, 'Saara', 'SaaraVuoko@email.com', 'Veitsinsetti', 'Kaikki veitset ovat todella hyviä ruoanlaitossa! Kestävä materiaalikin.', 4, '2025-01-20 07:11:04', 0),
-(22, 35, 'Johannes', 'JohannesKoivisto@hotmail.com', 'Teräskattila', 'Vahva kunnon teräs! Helppo tehdä ruokaa.', 5, '2025-01-20 07:27:16', 0),
-(23, 32, 'Pasi', 'PasiKauljumaa@gmail.com', 'Aterinsetti (hopeinen)', 'Tällä on monesti pidetty juhlia ja on ollut hyvä setti!', 3, '2025-01-20 07:33:14', 0),
-(24, 39, 'Sofi', 'SofiMaalima@hotmail.fi', 'Wokkipannu', 'Dietti lähtenyt hyvin käyntiin, kun on saanut tällä tehtyä maukasta wokkiruokaa!', 3, '2025-01-20 07:37:44', 0),
-(33, 26, 'Waltteri', 'WalterGamer898@gmail.com', 'Blender', 'Hinta laatu suhde ei ole hyvä!', 1, '2025-01-20 07:48:26', 0),
-(34, 27, 'Ellen', 'jajjajaja@kaaja.com', 'Uunin arvostelu', 'Tämä uuni on todella hyvä!!! Suosittelen uunia kaikille, jotka haluavat toimivan ja upean näköisen uunin mikä sopii joka sisustukseen. KIITOS', 5, '2025-01-23 06:14:12', 0),
-(35, 33, 'Johan Dealerson', 'DealJohan@email.com', 'Knife set', 'Really good and reliable! I recomend these.', 4, '2025-01-30 10:25:37', 0),
-(42, 28, 'Brian Smith', 'BrianSmith@email.com', 'Mikrowave', 'Very good micorwave warm foor in no time!', 4, '2025-01-30 10:48:55', 0),
-(43, 39, 'Katelyn Carlson', 'CarlsonKatlyn@gmail.com', 'Wok pan', 'absolutely MAGNIFICENT food!!', 5, '2025-01-30 11:12:21', 0),
-(55, 31, 'Seth Rockan', 'RockanSe@email.com', 'Cutlery set', 'really good for daily use! Beautiful design .', 4, '2025-01-30 11:46:47', 0),
-(56, 40, 'Fanni Luoja', 'FanniLuo@gmail.com', 'Moccamaster', 'Kallis mutta joka pennin arvoinen! Päivittäin hyvät kahvit.', 5, '2025-01-30 11:48:42', 0);
+INSERT INTO `arvostelut` (`id`, `tuote_id`, `nimi`, `sähköposti`, `otsikko`, `kommentti`, `tähtiarvostelu`, `luotu`, `arvosana`, `kieli`) VALUES
+(20, 39, 'Roope', 'roop@gmail.com', 'Wokkipannu', 'Maukkaat wokkiruoat on tulleet tällä pannulla!', 4, '2025-01-16 11:47:37', 0, 'fi'),
+(21, 33, 'Saara', 'SaaraVuoko@email.com', 'Veitsinsetti', 'Kaikki veitset ovat todella hyviä ruoanlaitossa! Kestävä materiaalikin.', 4, '2025-01-20 07:11:04', 0, 'fi'),
+(22, 35, 'Johannes', 'JohannesKoivisto@hotmail.com', 'Teräskattila', 'Vahva kunnon teräs! Helppo tehdä ruokaa.', 5, '2025-01-20 07:27:16', 0, 'fi'),
+(23, 32, 'Pasi', 'PasiKauljumaa@gmail.com', 'Aterinsetti (hopeinen)', 'Tällä on monesti pidetty juhlia ja on ollut hyvä setti!', 3, '2025-01-20 07:33:14', 0, 'fi'),
+(24, 39, 'Sofi', 'SofiMaalima@hotmail.fi', 'Wokkipannu', 'Dietti lähtenyt hyvin käyntiin, kun on saanut tällä tehtyä maukasta wokkiruokaa!', 3, '2025-01-20 07:37:44', 0, 'fi'),
+(33, 26, 'Waltteri', 'WalterGamer898@gmail.com', 'Blender', 'Hinta laatu suhde ei ole hyvä!', 1, '2025-01-20 07:48:26', 0, 'fi'),
+(34, 27, 'Ellen', 'jajjajaja@kaaja.com', 'Uunin arvostelu', 'Tämä uuni on todella hyvä!!! Suosittelen uunia kaikille, jotka haluavat toimivan ja upean näköisen uunin mikä sopii joka sisustukseen. KIITOS', 5, '2025-01-23 06:14:12', 0, 'fi'),
+(35, 33, 'Johan Dealerson', 'DealJohan@email.com', 'Knife set', 'Really good and reliable! I recomend these.', 4, '2025-01-30 10:25:37', 0, 'en'),
+(42, 28, 'Brian Smith', 'BrianSmith@email.com', 'Mikrowave', 'Very good micorwave warm foor in no time!', 4, '2025-01-30 10:48:55', 0, 'en'),
+(43, 39, 'Katelyn Carlson', 'CarlsonKatlyn@gmail.com', 'Wok pan', 'absolutely MAGNIFICENT food!!', 5, '2025-01-30 11:12:21', 0, 'fi'),
+(55, 31, 'Seth Rockan', 'RockanSe@email.com', 'Cutlery set', 'really good for daily use! Beautiful design .', 4, '2025-01-30 11:46:47', 0, 'en'),
+(56, 40, 'Fanni Luoja', 'FanniLuo@gmail.com', 'Moccamaster', 'Kallis mutta joka pennin arvoinen! Päivittäin hyvät kahvit.', 5, '2025-01-30 11:48:42', 0, 'fi'),
+(57, 31, 'Greg', 'GregWellington@gmail.cok', 'Cutlery set', 'Very good product. LOved it!', 4, '2025-02-06 06:54:18', 0, 'en'),
+(71, 33, 'Elisabeth', 'queen123dead@gmail.com', 'Review of knifesetting lols', 'A very mid product. I wouldn\\\'t buy this for anyone but if you need to get someone unalived, this is a good choice. :)', 2, '2025-02-06 10:29:14', 0, 'en');
 
 -- --------------------------------------------------------
 
@@ -65,17 +68,18 @@ INSERT INTO `arvostelut` (`id`, `tuote_id`, `nimi`, `sähköposti`, `otsikko`, `
 
 CREATE TABLE `kategoriat` (
   `id` int(11) NOT NULL,
-  `nimi` varchar(255) NOT NULL
+  `nimi` varchar(255) NOT NULL,
+  `nimi_en` varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Vedos taulusta `kategoriat`
 --
 
-INSERT INTO `kategoriat` (`id`, `nimi`) VALUES
-(1, 'Elektroniikka'),
-(2, 'Pannut ja kattilat'),
-(3, 'Pienet tuotteet');
+INSERT INTO `kategoriat` (`id`, `nimi`, `nimi_en`) VALUES
+(1, 'Elektroniikka', 'Electronics'),
+(2, 'Pannut ja kattilat', 'Pans and pots'),
+(3, 'Pienet tuotteet', 'Small products');
 
 -- --------------------------------------------------------
 
@@ -145,7 +149,11 @@ INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`, `
 (17, 2, 255.00, '2025-01-13 11:58:56', 'Lasku', 'Postitus'),
 (18, 3, 50.00, '2025-01-16 06:15:43', 'Lasku', 'Nouto'),
 (19, 3, 500.00, '2025-01-16 06:37:57', 'Lasku', 'Postitus'),
-(20, 3, 1500.00, '2025-01-20 10:39:44', 'Lasku', 'Nouto');
+(20, 3, 1500.00, '2025-01-20 10:39:44', 'Lasku', 'Nouto'),
+(21, 6, 600.00, '2025-02-03 12:20:52', 'Lasku', 'Postitus'),
+(22, 6, 300.00, '2025-02-06 06:44:21', 'Kortti', 'Postitus'),
+(23, 6, 300.00, '2025-02-06 06:50:18', 'Lasku', 'Nouto'),
+(24, 6, 50.00, '2025-02-06 06:53:15', 'Lasku', 'Nouto');
 
 -- --------------------------------------------------------
 
@@ -194,7 +202,11 @@ INSERT INTO `tilaus_tuotteet` (`order_id`, `product_id`, `quantity`, `price`) VA
 (17, 29, 3, 85.00),
 (18, 38, 1, 50.00),
 (19, 26, 1, 500.00),
-(20, 27, 1, 1500.00);
+(20, 27, 1, 1500.00),
+(21, 28, 1, 600.00),
+(22, 40, 1, 300.00),
+(23, 40, 1, 300.00),
+(24, 31, 1, 50.00);
 
 -- --------------------------------------------------------
 
@@ -252,9 +264,9 @@ CREATE TABLE `tuotteet` (
 INSERT INTO `tuotteet` (`id`, `nimi`, `nimi_en`, `kuvaus`, `kuvaus_en`, `hinta`, `kuva`, `varastomäärä`) VALUES
 (26, 'Blenderi', 'Blender', 'Vain sileitä smoothieita!', 'For smooth smoothies only!', 500.00, 'kuvat/blender.jpg', 4),
 (27, 'Uuni', 'Oven', 'Uuni jolla saat täyteläisen ja rapean tuloksen!', 'Oven that gives you a full and crisp result!', 1500.00, 'kuvat/uuni.png', 6),
-(28, 'mikroaaltouuni', 'Microwave', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 'Warm up your food fast and efficient!', 600.00, 'kuvat/mikroaaltouuni.jpg', 4),
+(28, 'mikroaaltouuni', 'Microwave', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 'Warm up your food fast and efficient!', 600.00, 'kuvat/mikroaaltouuni.jpg', 3),
 (29, 'Sauvasekoitin', 'Immersion blender', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 'Efficient immersion blender that gives you a smooth and spotless result!', 85.00, 'kuvat/sauvasekoitin.jpg', 5),
-(31, 'Aterin setti', 'Stainless Steel Cutlery Set', 'Ruostumaton teräs aterin setti. 10 kpl jokaista. Isot lusikat, pienet lusikat, haarukat, sekä veitset.', 'Stainless steel cutlery set. 10 pieces of each. Large spoons, small spoons, forks, and knives.', 50.00, 'kuvat/aterinsetti.jpg', 9),
+(31, 'Aterin setti', 'Stainless Steel Cutlery Set', 'Ruostumaton teräs aterin setti. 10 kpl jokaista. Isot lusikat, pienet lusikat, haarukat, sekä veitset.', 'Stainless steel cutlery set. 10 pieces of each. Large spoons, small spoons, forks, and knives.', 50.00, 'kuvat/aterinsetti.jpg', 8),
 (32, 'Aterin setti', 'Silver Cutlery Set', 'Hopeinen aterin setti. 5 kpl jokaista. Pienet lusikat, isot lusikat, haarukat ja veitset.', 'Silver cutlery set. 5 pieces of each. Small spoons, large spoons, forks, and knives.', 50.00, 'kuvat/HopeinenAterinsetti.jpg', 10),
 (33, 'Veitsisetti', 'Knife Set', '6 erilaista veitseä. 20-10cm pituus väli.', '6 different types of knives. 10-20 cm in length.', 20.00, 'kuvat/veitsisetti.jpg', 7),
 (34, 'Keittiövälinesetti', 'Kitchen tools', '14 eri keittiötarviketta. Lisäksi keittiövälinepidike.', '14 different kitchen tools. Additionally, a kitchen utensil holder.', 12.00, 'kuvat/keittiovalineet.jpg', 3),
@@ -262,7 +274,7 @@ INSERT INTO `tuotteet` (`id`, `nimi`, `nimi_en`, `kuvaus`, `kuvaus_en`, `hinta`,
 (36, 'Kattila', 'Non-stick pot', 'Musta kahvallinen kattila, tarttumaton pinta. Sisältää kannen.', 'Black pot with handle, non-stick surface. Includes lid.', 20.00, 'kuvat/kattilamusta.jpg', 10),
 (38, 'Valurauta paistinpannu', 'Iron frying pan', 'Valurauta paistinpannu 28cm. ', 'Cast iron frying pan 28cm', 50.00, 'kuvat/paistinpannu.jpg', 4),
 (39, 'Wokkipannu', 'Wok pan', 'Wokkipannu kasvisten paistoon!', 'Wok pan for frying vegetablesand other ingridients!', 52.00, 'kuvat/wokkipannu.jpg', 15),
-(40, 'Kahvinkeitin', 'Coffee maker', 'Moccamaster kahvinkeitin, maukkaat kahvit päivittäin!', 'Moccamaster coffee maker, delicious coffee daily!', 300.00, 'kuvat/moccamaster.jpg', 16);
+(40, 'Kahvinkeitin', 'Coffee maker', 'Moccamaster kahvinkeitin, maukkaat kahvit päivittäin!', 'Moccamaster coffee maker, delicious coffee daily!', 300.00, 'kuvat/moccamaster.jpg', 14);
 
 --
 -- Indexes for dumped tables
@@ -322,7 +334,7 @@ ALTER TABLE `tuotteet`
 -- AUTO_INCREMENT for table `arvostelut`
 --
 ALTER TABLE `arvostelut`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `kategoriat`
@@ -340,7 +352,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `tilaukset`
 --
 ALTER TABLE `tilaukset`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `tuotteet`
