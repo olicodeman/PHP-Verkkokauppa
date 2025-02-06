@@ -207,9 +207,16 @@ function t($key)
     }
     return $current_lang[$key];
 }
+
+// Handle language switching
 if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $lang)) {
     $_SESSION['lang'] = $_GET['lang'];
-    header("Location: " . $_SERVER['PHP_SELF']); // Refresh page
+
+    // Preserve the 'page' parameter, otherwise default to 'etusivu'
+    $current_page = $_GET['page'] ?? 'etusivu';
+    
+    // Redirect to the same page with the new language
+    header("Location: " . $_SERVER['PHP_SELF'] . "?page=" . $current_page);
     exit;
 }
 

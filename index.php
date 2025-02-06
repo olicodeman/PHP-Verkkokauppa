@@ -158,12 +158,25 @@ if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
     ?>
 
     <!-- Navigointi valikkon script toiminta pienellä näytöllä -->
-    <script>
-        function toggleMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('hidden');
-        }
-    </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const navLinks = document.querySelector('.nav-links');
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+
+    // Ensure nav is hidden initially on small screens
+    if (mediaQuery.matches) {
+      navLinks.classList.add('hidden'); 
+    }
+
+    // Toggle the menu on icon click
+    function toggleMenu() {
+      navLinks.classList.toggle('hidden');
+    }
+
+    document.querySelector('.menu-icon').addEventListener('click', toggleMenu);
+  });
+</script>
+
 </body>
 
 </html>
