@@ -82,10 +82,17 @@ $lang = [
         'CardNumber' => 'Card number',
         'ExpirationDate' => 'Expiration date',
         'Delivery' => 'Choose delivery method',
-        'Deliver' => 'Delivery',
+        'Deliver' => 'Shipping',
         'Fetch' => 'Fetch from a store',
         'ConfirmOrder' => 'Confirm order',
         'OrderConfirm' => 'Order confimation',
+        'AddedToCart' => 'Product added to cart!',
+        'BeforeCart' => 'Before adding to cart, log in.',
+        'NotEnoughProducts' => 'There is not enough products in stock',
+        'QuantityCanNotBe' => 'Quantity can not be zero or negative.',
+        'OrderConfirmed' => 'Your Order has been confirmed!',
+        'ThanksForOrdering' => 'Thank you for ordering from our store!',
+        'BackToHomepage' => 'Back to Homepage',
 
     ],
     'fi' => [
@@ -173,6 +180,13 @@ $lang = [
         'Fetch' => 'Nouto myymälästä',
         'ConfirmOrder' => 'Vahvista tilaus',
         'OrderConfirm' => ' Tilaus vahvistus',
+        'AddedToCart' => 'Tuote lisätty ostoskoriin!',
+        'BeforeCart' => 'Ennen ostoskoriin lisäämistä, kirjaudu sisään.',
+        'NotEnoughProducts' => 'Varastossa ei ole tarpeeksi tuotteita.',
+        'QuantityCanNotBe' => 'Määrä ei voi olla nolla tai negatiivinen.',
+        'OrderConfirmed' => 'Tilauksesi on vahvistettu!',
+        'ThanksForOrdering' => 'Kiitos tilauksestasi. ',
+        'BackToHomepage' => ' Takaisin etusivulle',
 
     ]
 ];

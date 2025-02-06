@@ -67,7 +67,7 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
         <h1><?= $current_lang['OrderConfirm']; ?></h1>
 
         <?php if (empty($cart)): ?>
-            <p>Ostoskorisi on tyhjä.</p>
+            <p><?= $current_lang['CartEmpty']; ?></p>
         <?php else: ?>
             <?php foreach ($cart as $item): ?>
                 <p>

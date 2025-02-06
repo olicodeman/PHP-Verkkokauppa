@@ -2,6 +2,7 @@
 
 require_once('auth.php');
 require_once('config.php');
+require_once('lang.php');
 
 $cart = $_SESSION['cart'] ?? [];
 $totalPrice = $_SESSION['cart_total'] ?? 0;
@@ -73,9 +74,9 @@ try {
     unset($_SESSION['cart']);
     unset($_SESSION['cart_total']);
 
-    echo "<h1>Tilauksesi on vahvistettu!</h1>";
-    echo "<h3>Kiitos tilauksestasi.</h3>";
-    echo "<a href='index.php'>Takaisin etusviulle</a>";
+    echo "<h1>" . $current_lang['OrderConfirmed'] . "</h1>";
+    echo "<h3>" . $current_lang['ThanksForOrdering'] . "</h3>";
+    echo "<a href='index.php'>" . $current_lang['BackToHomepage'] . "</a>";
 
 } catch (Exception $e) {
     // Peru transaktio virheen sattuessa

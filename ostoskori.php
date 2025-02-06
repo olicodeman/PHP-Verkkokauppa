@@ -346,11 +346,11 @@ $_SESSION['cart_total'] = $totalPrice;
             // Tarkistetaan varaston riittävyys 
             const stock = <?= json_encode(array_column($cart, 'stock')) ?>[currentIndex];
             if (currentQuantity + amount <= 0) {
-                alert('Määrä ei voi olla nolla tai negatiivinen.');
+                alert('<?= $current_lang['QuantityCanNotBe']; ?>');
                 return;
             }
             if (currentQuantity + amount > stock) {
-                alert('Varastossa ei ole tarpeeksi tuotetta. Täytämme varaston mahdollisimman pian!');
+                alert('<?= $current_lang['NotEnoughProducts']; ?>');
                 return;
             }
             quantityDisplay.textContent = currentQuantity + amount;

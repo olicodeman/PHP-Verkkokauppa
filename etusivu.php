@@ -314,8 +314,8 @@ $conn->close();
             popupTitle.textContent = title || "No title";
             popupDescription.textContent = description || "No description";
             popupImg.src = imageUrl || "";
-            popupPrice.textContent = "Hinta: €" + parseFloat(price).toFixed(2);
-            popupStock.textContent = "Varastossa: " + stock + " kpl";
+            popupPrice.textContent = "<?= $current_lang['price']; ?>: €" + parseFloat(price).toFixed(2);
+            popupStock.textContent = "<?= $current_lang['Stock']; ?>: " + stock + " kpl";
 
             // Set product ID for adding to cart
             document.getElementById('popup').setAttribute('data-product-id', id);
@@ -348,15 +348,15 @@ $conn->close();
         function addToCart() {
             // Haetaan tiedot popupista
             const title = document.getElementById('popup-title').textContent;
-            const price = document.getElementById('popup-price').textContent.replace('Hinta: €', '');
-            const stock = parseInt(document.getElementById('popup-stock').textContent.replace('Varastossa: ', '').replace(' kpl', ''), 10); // Convert stock to number
+            const price = document.getElementById('popup-price').textContent.replace('<?= $current_lang['price']; ?>: €', '');
+            const stock = parseInt(document.getElementById('popup-stock').textContent.replace('<?= $current_lang['Stock']; ?>: ', '').replace(' kpl', ''), 10); // Convert stock to number
             const quantity = parseInt(document.getElementById('popup-quantity').value, 10); // Get and parse quantity
             const productID = document.getElementById('popup').getAttribute('data-product-id');
             const imageUrl = document.getElementById('popup-img').src;
 
             // tarkistetaan ylittääkö määrä varaston.
             if (quantity > stock) {
-                alert('Varastossa ei ole tarpeeksi tuotteita.');
+                alert('<?= $current_lang['NotEnoughProducts']; ?>');
                 return;
             }
 
@@ -378,9 +378,9 @@ $conn->close();
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Tuote lisätty ostoskoriin!');
+                        alert('<?= $current_lang['AddedToCart']; ?>');
                     } else {
-                        alert('Ennen ostoskoriin lisäämistä, kirjaudu sisään.');
+                        alert('<?= $current_lang['BeforeCart']; ?>');
                     }
                 })
                 .catch(error => {
