@@ -11,9 +11,18 @@ try {
     die('Database connection failed: ' . $e->getMessage());
 }
 
-// Haetaan tuotteet tietokannasta
+// Set the language preference (get from form)
+$language = isset($_POST['kieli']) ? $_POST['kieli'] : 'fi'; // Default to Finnish if not set
+
+// Modify the query to fetch the appropriate fields based on the selected language
+$fieldName = $language === 'en' ? 'nimi_en' : 'nimi';
+$fieldDescription = $language === 'en' ? 'kuvaus_en' : 'kuvaus';
+$fieldPrice = 'hinta'; // Price is the same in both languages
+
+
+// Fetch the product details based on selected language
 try {
-    $stmt = $pdo->prepare("SELECT id, nimi, kuvaus, kuva, hinta, varastomäärä FROM tuotteet");
+    $stmt = $pdo->prepare("SELECT id, $fieldName AS nimi, $fieldDescription AS kuvaus, kuva, $fieldPrice AS hinta, varastomäärä FROM tuotteet");
     $stmt->execute();
     $products = $stmt->fetchAll();
 } catch (PDOException $e) {
@@ -21,14 +30,6 @@ try {
     $products = [];
 }
 
-try {
-    $categoryStmt = $pdo->prepare("SELECT id, nimi FROM kategoriat");
-    $categoryStmt->execute();
-    $categories = $categoryStmt->fetchAll();
-} catch (PDOException $e) {
-    echo '<p class="error">Error fetching categories: ' . $e->getMessage() . '</p>';
-    $categories = [];
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tuote_id = intval($_POST['tuote_id']);
@@ -37,9 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $otsikko = htmlspecialchars(trim($_POST['otsikko']));
     $kommentti = htmlspecialchars(trim($_POST['kommentti']));
     $tähtiarvostelu = intval($_POST['tähtiarvostelu']);
+    $kieli = htmlspecialchars(trim($_POST['kieli'])); // Get selected language
 
     // Tarkistetaan syötetyt asiat
-    if (empty($nimi) || empty($sähköposti) || empty($otsikko) || empty($kommentti) || empty($tähtiarvostelu) || empty($tuote_id)) {
+    if (empty($nimi) || empty($sähköposti) || empty($otsikko) || empty($kommentti) || empty($tähtiarvostelu) || empty($tuote_id) || empty($kieli)) {
         die("Täytä kaikki kentät.");
     }
 
@@ -53,21 +55,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Lisätään tuotearvostelu tietokantaan
-    $sql = "INSERT INTO arvostelut (tuote_id, nimi, sähköposti, otsikko, kommentti, tähtiarvostelu) 
-            VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO arvostelut (tuote_id, nimi, sähköposti, otsikko, kommentti, tähtiarvostelu, kieli) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $pdo->prepare($sql);
-    if ($stmt->execute([$tuote_id, $nimi, $sähköposti, $otsikko, $kommentti, $tähtiarvostelu])) {
+    if ($stmt->execute([$tuote_id, $nimi, $sähköposti, $otsikko, $kommentti, $tähtiarvostelu, $kieli])) {
         echo "Arvostelu tallennettu onnistuneesti!";
     } else {
         echo "Virhe tallentaessa arvostelua.";
     }
 }
-$productNameColumn = ($_SESSION['lang'] == 'en') ? 'nimi_en' : 'nimi';
-$productDescriptionColumn = ($_SESSION['lang'] == 'en') ? 'kuvaus_en' : 'kuvaus';
-
-$stmt = $pdo->prepare("SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, kuva, hinta, varastomäärä FROM tuotteet");
-$stmt->execute();
-$products = $stmt->fetchAll();
 
 ?>
 
@@ -90,7 +86,6 @@ $products = $stmt->fetchAll();
             color: rgb(45, 45, 102);
         }
 
-        /* Tähti arvostelu tyyli */
         .star-rating {
             display: flex;
             direction: row-reverse;
@@ -207,39 +202,53 @@ $products = $stmt->fetchAll();
             <label for="star1">★</label>
         </div>
 
+        <!-- Language radio buttons -->
+        <div>
+            <label for="kieli"><?= $current_lang['SelectLanguage']; ?>:</label>
+            <input type="radio" id="fi" name="kieli" value="fi" checked> Finnish
+            <input type="radio" id="en" name="kieli" value="en"> English
+        </div>
+
         <button type="submit"><?= $current_lang['leaveReview']; ?></button>
     </form>
     <script>
         function fetchProductDetails(productId) {
-            if (productId === '') {
-                document.getElementById('product-details').innerHTML = '';
+    const selectedLang = document.querySelector('input[name="kieli"]:checked').value;  // Get selected language (fi or en)
+    
+    if (productId === '') {
+        document.getElementById('product-details').innerHTML = '';
+        return;
+    }
+
+    // Fetch product details with the selected language parameter
+    fetch('HaeTuoteTiedot.php?id=' + productId + '&lang=' + selectedLang)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('product-details').innerHTML = `<p>${data.error}</p>`;
                 return;
             }
 
-            fetch('HaeTuoteTiedot.php?id=' + productId + '&lang=' + selectedLang)
+            const imageHTML = data.kuva
+                ? `<img class="product-image" src="${data.kuva}" alt="${data.nimi}">`
+                : '<p>No image available for this product.</p>';
 
-                .then(response => response.json())
-                .then(data => {
-                    // Check if the image field is empty
-                    const imageHTML = data.kuva
-                        ? `<img class="product-image" src="${data.kuva}" alt="${data.nimi}">`
-                        : '<p>No image available for this product.</p>';
-
-                    // Construct HTML for product details
-                    const productDetailsHTML = `
-            <div class="product-details">
-                <h2>${data.nimi}</h2>
-                ${imageHTML}
-                <p>${data.kuvaus}</p>
-                <p>Hinta: €${parseFloat(data.hinta).toFixed(2)}</p>
-            </div>
-        `;
-                    document.getElementById('product-details').innerHTML = productDetailsHTML;
-                })
-                .catch(error => console.error('Error fetching product details:', error));
-
+            // Construct HTML for product details
+            const productDetailsHTML = ` 
+                <div class="product-details">
+                    <h2>${data.nimi}</h2>
+                    ${imageHTML}
+                    <p>${data.kuvaus}</p>
+                    <p><?= $current_lang['price']; ?>: €${parseFloat(data.hinta).toFixed(2)}</p>
+                </div>
+            `;
+            document.getElementById('product-details').innerHTML = productDetailsHTML;
+        })
+        .catch(error => console.error('Error fetching product details:', error));
+}
 
     </script>
+    
 </body>
 
 </html>

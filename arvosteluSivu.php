@@ -18,6 +18,8 @@ try {
     $stmt = $pdo->prepare("SELECT id, nimi FROM tuotteet");
     $stmt->execute();
     $products = $stmt->fetchAll();
+    $lang_filter = isset($_GET['lang_filter']) ? $_GET['lang_filter'] : null;
+
 } catch (PDOException $e) {
     echo '<p class="error">Virhe tuotteiden hakemisessa: ' . $e->getMessage() . '</p>';
     $products = [];
@@ -59,35 +61,54 @@ if ($product_id) {
 $rating_filter = isset($_GET['rating_filter']) ? $_GET['rating_filter'] : null;
 
 try {
-    if ($product_id && $rating_filter) {
-        // Haetaan arvostelut tietylle tuotteelle ja tietyn tähtimäärityksen perusteella
-        $stmt = $pdo->prepare("SELECT * FROM arvostelut WHERE tuote_id = :product_id AND tähtiarvostelu = :rating_filter ORDER BY luotu DESC");
-        $stmt->bindParam(':product_id', $product_id);
-        $stmt->bindParam(':rating_filter', $rating_filter);
-    } elseif ($product_id) {
-        // Haetaan arvostelut tietylle tuotteelle
-        $stmt = $pdo->prepare("SELECT * FROM arvostelut WHERE tuote_id = :product_id ORDER BY luotu DESC");
-        $stmt->bindParam(':product_id', $product_id);
-    } elseif ($rating_filter) {
-        // Näytetään valitun tähden arvostelut
-        $stmt = $pdo->prepare("SELECT * FROM arvostelut WHERE tähtiarvostelu = :rating_filter ORDER BY luotu DESC");
-        $stmt->bindParam(':rating_filter', $rating_filter);
-    } else {
-        // Jos suodatusta ei ole, näytetään kaikki arvostelut
-        $stmt = $pdo->prepare("SELECT * FROM arvostelut ORDER BY luotu DESC");
+    $query = "SELECT * FROM arvostelut WHERE 1=1"; // Base query
+
+    // Filter by product if selected
+    if ($product_id) {
+        $query .= " AND tuote_id = :product_id";
     }
+
+    // Filter by rating if selected
+    if ($rating_filter) {
+        $query .= " AND tähtiarvostelu = :rating_filter";
+    }
+
+    // Filter by language if selected
+    if ($lang_filter) {
+        $query .= " AND kieli = :lang_filter";
+    }
+
+    $query .= " ORDER BY luotu DESC";
+
+    $stmt = $pdo->prepare($query);
+
+    // Bind parameters
+    if ($product_id) {
+        $stmt->bindParam(':product_id', $product_id);
+    }
+    if ($rating_filter) {
+        $stmt->bindParam(':rating_filter', $rating_filter);
+    }
+    if ($lang_filter) {
+        $stmt->bindParam(':lang_filter', $lang_filter);
+    }
+
     $stmt->execute();
     $reviews = $stmt->fetchAll();
 } catch (PDOException $e) {
     echo '<p class="error">Virhe arvostelujen hakemisessa: ' . $e->getMessage() . '</p>';
     $reviews = [];
 }
+
+// Dynamically select columns based on the language selected
 $productNameColumn = ($_SESSION['lang'] == 'en') ? 'nimi_en' : 'nimi';
 $productDescriptionColumn = ($_SESSION['lang'] == 'en') ? 'kuvaus_en' : 'kuvaus';
 
+// Fetch product information in the selected language
 $stmt = $pdo->prepare("SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, kuva, hinta, varastomäärä FROM tuotteet");
 $stmt->execute();
 $products = $stmt->fetchAll();
+
 
 ?>
 
@@ -277,6 +298,43 @@ $products = $stmt->fetchAll();
         label {
             color: white;
         }
+
+        .edit-btn {
+            margin-left: 40%;
+            background-color: #4545a6;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background-color: rgb(85, 85, 145);
+        }
+
+        /* Language Button Styling */
+        .lang-icon {
+            width: 30px;
+            /* Adjust size */
+            height: auto;
+            border-radius: 50%;
+            /* Make it rounded */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button img {
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        button:hover .lang-icon {
+            transform: scale(1.1);
+            /* Slightly enlarge on hover */
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 
@@ -305,6 +363,17 @@ $products = $stmt->fetchAll();
             </form>
         </div>
 
+        <form method="GET" action="index.php">
+            <input type="hidden" name="page" value="arvosteluSivu">
+            <label><?= $current_lang['FilterLanguage']; ?></label>
+            <button type="submit" name="lang_filter" value="fi">
+                <img src="kuvat/suomenlippu.png" alt="Suomi" class="lang-icon">
+            </button>
+            <button type="submit" name="lang_filter" value="en">
+                <img src="kuvat/englantilippu.png" alt="English" class="lang-icon">
+            </button>
+        </form>
+
 
 
         <!-- Suodatus tuotteen mukaan -->
@@ -328,17 +397,38 @@ $products = $stmt->fetchAll();
         <!-- Tuotteen tiedot-->
         <?php if ($product_details): ?>
             <div class="product-details">
-                <h2><?= htmlspecialchars($product_details['nimi']) ?></h2>
+                <h2>
+                    <?php
+                    if ($_SESSION['lang'] == 'en') {  // If the language is English
+                        echo htmlspecialchars($product_details['nimi_en']);  // English product name
+                    } else {
+                        echo htmlspecialchars($product_details['nimi']);  // Default product name (Finnish)
+                    }
+                    ?>
+                </h2>
                 <img class="product-image" src="<?= $product_details['kuva'] ?>"
-                    alt="<?= htmlspecialchars($product_details['nimi']) ?>">
-                <p><?= htmlspecialchars($product_details['kuvaus']) ?></p>
-                <p><?= $current_lang['price']; ?><?= number_format($product_details['hinta'], 2) ?></p>
+                    alt="<?= htmlspecialchars($_SESSION['lang'] == 'en' ? $product_details['nimi_en'] : $product_details['nimi']) ?>">
+                <p>
+                    <?php
+                    if ($_SESSION['lang'] == 'en') {  // If the language is English
+                        echo htmlspecialchars($product_details['kuvaus_en']);  // English description
+                    } else {
+                        echo htmlspecialchars($product_details['kuvaus']);  // Default description (Finnish)
+                    }
+                    ?>
+                </p>
+                <p><?= $current_lang['price']; ?>     <?= number_format($product_details['hinta'], 2) ?></p>
             </div>
         <?php endif; ?>
 
+
+        <a class="edit-btn" href="index.php?page=lisaaArvostelu">
+            <?= $current_lang['leaveReview']; ?></a>
+
         <!-- Näytetään arvostelut-->
         <?php if (empty($reviews)): ?>
-            <h3><?= $current_lang['no_reviews']; ?><?= $current_lang['give_review']; ?><a href="index.php?page=lisaaArvostelu">Tästä</a></h3>
+            <h3><?= $current_lang['no_reviews']; ?><?= $current_lang['give_review']; ?><a
+                    href="index.php?page=lisaaArvostelu">Tästä</a></h3>
         <?php else: ?>
             <?php foreach ($reviews as $review): ?>
                 <div class="review">
@@ -347,9 +437,9 @@ $products = $stmt->fetchAll();
                         <?php
                         for ($i = 1; $i <= 5; $i++) {
                             if ($i <= $review['tähtiarvostelu']) {
-                                echo '★'; 
+                                echo '★';
                             } else {
-                                echo '☆'; 
+                                echo '☆';
                             }
                         }
                         ?>
@@ -357,7 +447,7 @@ $products = $stmt->fetchAll();
                     <p><?= nl2br(htmlspecialchars($review['kommentti'])) ?></p>
                     <p><em><?= $current_lang['writer']; ?>: <?= htmlspecialchars($review['nimi']) ?>
                             <br>
-                             <?= $current_lang['date']; ?>: <?= $review['luotu'] ?></em></p>
+                            <?= $current_lang['date']; ?>: <?= $review['luotu'] ?></em></p>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>

@@ -93,6 +93,8 @@ $lang = [
         'OrderConfirmed' => 'Your Order has been confirmed!',
         'ThanksForOrdering' => 'Thank you for ordering from our store!',
         'BackToHomepage' => 'Back to Homepage',
+        'SelectLanguage' => 'Select language for your review',
+        'FilterLanguage' => 'Filter according to language',
 
     ],
     'fi' => [
@@ -187,6 +189,8 @@ $lang = [
         'OrderConfirmed' => 'Tilauksesi on vahvistettu!',
         'ThanksForOrdering' => 'Kiitos tilauksestasi. ',
         'BackToHomepage' => ' Takaisin etusivulle',
+        'SelectLanguage' => 'Valitse kieli arvostelullesi',
+        'FilterLanguage' => 'Suodata kielen mukaan',
 
     ]
 ];

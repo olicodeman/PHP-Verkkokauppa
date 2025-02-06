@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $otsikko = $conn->real_escape_string(trim($_POST['otsikko']));
     $kommentti = $conn->real_escape_string(trim($_POST['kommentti']));
     $tähtiarvostelu = intval($_POST['tähtiarvostelu']);
+    $kieli = isset($_POST['kieli']) && ($_POST['kieli'] === 'fi' || $_POST['kieli'] === 'en') ? $_POST['kieli'] : 'fi';
+
 
     // Varmistetaan, että kaikki tiedot ovat olemassa
     if (empty($nimi) || empty($sähköposti) || empty($otsikko) || empty($kommentti) || empty($tähtiarvostelu) || empty($tuote_id)) {
@@ -39,17 +41,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message = "<div class='message error'>Virhe: Tuote ei ole olemassa.</div>";
         } else {
             // Tallennetaan arvostelu tietokantaan
-            $sql = "INSERT INTO arvostelut (tuote_id, nimi, sähköposti, otsikko, kommentti, tähtiarvostelu) 
-                    VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO arvostelut (tuote_id, nimi, sähköposti, otsikko, kommentti, tähtiarvostelu, kieli) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             if ($stmt) {
-                $stmt->bind_param('issssi', $tuote_id, $nimi, $sähköposti, $otsikko, $kommentti, $tähtiarvostelu);
+                $stmt->bind_param('issssis', $tuote_id, $nimi, $sähköposti, $otsikko, $kommentti, $tähtiarvostelu, $kieli);
                 if ($stmt->execute()) {
                     $message = "<div class='message success'>{$current_lang['review_success']}</div>";
                 } else {
                     $message = "<div class='message error'>{$current_lang['review_error']} " . $stmt->error . "</div>";
                 }
                 $stmt->close();
+
+
             } else {
                 $message = "<div class='message error'>{$current_lang['db_query_error']} " . $conn->error . "</div>";
             }
@@ -164,7 +168,6 @@ $conn->close();
             box-shadow: 0 0 20px rgb(255, 255, 255);
             /* Stronger glow */
         }
-        
     </style>
 </head>
 
@@ -175,13 +178,15 @@ $conn->close();
             <!-- Onnistunut tai virheviesti -->
             <?php if (!empty($message))
                 echo $message; ?>
-            <a href="index.php?page=arvosteluSivu&lang=<?= $_SESSION['lang']; ?>" class="exciting-text">
-                <?= $current_lang['read_reviews']; ?>
-            </a>
+            < <div class="center-align">
+                <a class="exciting-text" id="register-btn" href="index.php?page=arvosteluSivu">
+                    <?= $current_lang['read_reviews']; ?></a>
+        </div>
+        <br><br>
 
-            <a href="index.php?page=etusivu&lang=<?= $_SESSION['lang']; ?>" class="exciting-text">
-                <?= $current_lang['homepage']; ?>
-            </a>
+        <a href="index.php?page=etusivu&lang=<?= $_SESSION['lang']; ?>" class="exciting-text">
+            <?= $current_lang['homepage']; ?>
+        </a>
 
         </div>
         </div>
