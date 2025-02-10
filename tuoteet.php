@@ -33,9 +33,15 @@ try {
 }
 
 try {
-    $categoryStmt = $pdo->prepare("SELECT id, nimi FROM kategoriat");
+    $lang = $_SESSION['lang']; // Get the language from the session
+
+    // Modify your category query to select the correct column based on the language
+    $categoryStmt = $pdo->prepare("
+        SELECT id, " . ($lang == 'en' ? "nimi_en" : "nimi") . " AS nimi 
+        FROM kategoriat
+    ");
     $categoryStmt->execute();
-    $categories = $categoryStmt->fetchAll();
+    $categories = $categoryStmt->fetchAll();    
 } catch (PDOException $e) {
     echo '<p class="error">Error fetching categories: ' . $e->getMessage() . '</p>';
     $categories = [];
@@ -48,7 +54,7 @@ $sql = "
         " . ($lang == 'en' ? "t.nimi_en" : "t.nimi") . " AS nimi,
         " . ($lang == 'en' ? "t.kuvaus_en" : "t.kuvaus") . " AS kuvaus,
         t.kuva, t.hinta, t.varastomäärä,
-        COALESCE(GROUP_CONCAT(k.nimi SEPARATOR ','), '') AS categories,
+        COALESCE(GROUP_CONCAT(" . ($lang == 'en' ? "k.nimi_en" : "k.nimi") . " SEPARATOR ','), '') AS categories,
         COALESCE(AVG(a.arvosana), 0) AS avg_rating
     FROM tuotteet t
     LEFT JOIN tuote_kategoria tk ON t.id = tk.tuote_id
@@ -297,14 +303,13 @@ $products = $stmt->fetchAll();
     </div>
 
     <div class="category-container">
-        <select id="categorySelect" class="category-select" onchange="filterByCategory()">
-            <option value="all"><?= $current_lang['allKategories']; ?></option>
-            <?php foreach ($categories as $category): ?>
-                <option value="<?= htmlspecialchars($category['nimi']) ?>"><?= htmlspecialchars($category['nimi']) ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+    <select id="categorySelect" class="category-select" onchange="filterByCategory()">
+        <option value="all"><?= $current_lang['allKategories']; ?></option>
+        <?php foreach ($categories as $category): ?>
+            <option value="<?= htmlspecialchars($category['nimi']) ?>"><?= htmlspecialchars($category['nimi']) ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
 
     <form>
     <!-- Tuoteruudukko -->
