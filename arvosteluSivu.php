@@ -335,6 +335,13 @@ $products = $stmt->fetchAll();
             /* Slightly enlarge on hover */
             box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
         }
+        .lang-icon {
+    width: 20px;  /* Adjust size */
+    height: auto;
+    margin-left: 10px; /* Adds spacing between text and flag */
+    vertical-align: middle;
+}
+
     </style>
 </head>
 
@@ -432,15 +439,18 @@ $products = $stmt->fetchAll();
         <?php else: ?>
             <?php foreach ($reviews as $review): ?>
                 <div class="review">
-                    <h3><?= htmlspecialchars($review['otsikko']) ?></h3>
+                    <h3>
+                        <?= htmlspecialchars($review['otsikko']) ?>
+                        <?php if ($review['kieli'] == 'fi'): ?>
+                            <img src="kuvat/suomenlippu.png" alt="Finnish" class="lang-icon">
+                        <?php elseif ($review['kieli'] == 'en'): ?>
+                            <img src="kuvat/englantilippu.png" alt="English" class="lang-icon">
+                        <?php endif; ?>
+                    </h3>
                     <p class="rating">Arvostelu:
                         <?php
                         for ($i = 1; $i <= 5; $i++) {
-                            if ($i <= $review['tähtiarvostelu']) {
-                                echo '★';
-                            } else {
-                                echo '☆';
-                            }
+                            echo ($i <= $review['tähtiarvostelu']) ? '★' : '☆';
                         }
                         ?>
                     </p>
@@ -450,6 +460,7 @@ $products = $stmt->fetchAll();
                             <?= $current_lang['date']; ?>: <?= $review['luotu'] ?></em></p>
                 </div>
             <?php endforeach; ?>
+
         <?php endif; ?>
 
     </div>

@@ -275,6 +275,8 @@ $conn->close();
 
     <a class="edit-btn" href="index.php?page=lisaaArvostelu">
         <?= $current_lang['leaveReview']; ?></a>
+        <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">
+                <?= $current_lang['read_reviews']; ?></a>
     <div class="reviews-container">
         <?php if (!empty($reviews)): ?>
             <?php foreach ($reviews as $review): ?>
