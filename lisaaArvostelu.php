@@ -11,24 +11,23 @@ try {
     die('Database connection failed: ' . $e->getMessage());
 }
 
-// Set the language preference (get from form)
-$language = isset($_POST['kieli']) ? $_POST['kieli'] : 'fi'; // Default to Finnish if not set
 
-// Modify the query to fetch the appropriate fields based on the selected language
+// Set the language preference from session or default to Finnish
+$language = isset($_SESSION['lang']) && $_SESSION['lang'] === 'en' ? 'en' : 'fi';
+
+// Choose the correct field based on language
 $fieldName = $language === 'en' ? 'nimi_en' : 'nimi';
-$fieldDescription = $language === 'en' ? 'kuvaus_en' : 'kuvaus';
-$fieldPrice = 'hinta'; // Price is the same in both languages
 
-
-// Fetch the product details based on selected language
+// Fetch the product details with the selected language
 try {
-    $stmt = $pdo->prepare("SELECT id, $fieldName AS nimi, $fieldDescription AS kuvaus, kuva, $fieldPrice AS hinta, varastomäärä FROM tuotteet");
+    $stmt = $pdo->prepare("SELECT id, $fieldName AS nimi FROM tuotteet");
     $stmt->execute();
     $products = $stmt->fetchAll();
 } catch (PDOException $e) {
     echo '<p class="error">Error fetching products: ' . $e->getMessage() . '</p>';
     $products = [];
 }
+
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -212,16 +211,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit"><?= $current_lang['leaveReview']; ?></button>
     </form>
     <script>
-        function fetchProductDetails(productId) {
-    const selectedLang = document.querySelector('input[name="kieli"]:checked').value;  // Get selected language (fi or en)
-    
-    if (productId === '') {
+       function fetchProductDetails(productId) {
+    if (!productId) {
         document.getElementById('product-details').innerHTML = '';
         return;
     }
 
-    // Fetch product details with the selected language parameter
-    fetch('HaeTuoteTiedot.php?id=' + productId + '&lang=' + selectedLang)
+    // Get the site-wide language from PHP
+    const currentLang = "<?= $_SESSION['lang'] ?? 'fi' ?>";  // Default to Finnish if not set
+
+    // Fetch product details using the selected product and current site language
+    fetch(`HaeTuoteTiedot.php?id=${productId}&lang=${currentLang}`)
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -233,8 +233,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ? `<img class="product-image" src="${data.kuva}" alt="${data.nimi}">`
                 : '<p>No image available for this product.</p>';
 
-            // Construct HTML for product details
-            const productDetailsHTML = ` 
+            // Display product details dynamically
+            const productDetailsHTML = `
                 <div class="product-details">
                     <h2>${data.nimi}</h2>
                     ${imageHTML}

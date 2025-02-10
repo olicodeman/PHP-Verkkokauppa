@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 06.02.2025 klo 12:22
+-- Generation Time: 06.02.2025 klo 12:40
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -54,7 +54,7 @@ INSERT INTO `arvostelut` (`id`, `tuote_id`, `nimi`, `sähköposti`, `otsikko`, `
 (34, 27, 'Ellen', 'jajjajaja@kaaja.com', 'Uunin arvostelu', 'Tämä uuni on todella hyvä!!! Suosittelen uunia kaikille, jotka haluavat toimivan ja upean näköisen uunin mikä sopii joka sisustukseen. KIITOS', 5, '2025-01-23 06:14:12', 0, 'fi'),
 (35, 33, 'Johan Dealerson', 'DealJohan@email.com', 'Knife set', 'Really good and reliable! I recomend these.', 4, '2025-01-30 10:25:37', 0, 'en'),
 (42, 28, 'Brian Smith', 'BrianSmith@email.com', 'Mikrowave', 'Very good micorwave warm foor in no time!', 4, '2025-01-30 10:48:55', 0, 'en'),
-(43, 39, 'Katelyn Carlson', 'CarlsonKatlyn@gmail.com', 'Wok pan', 'absolutely MAGNIFICENT food!!', 5, '2025-01-30 11:12:21', 0, 'fi'),
+(43, 39, 'Katelyn Carlson', 'CarlsonKatlyn@gmail.com', 'Wok pan', 'absolutely MAGNIFICENT food!!', 5, '2025-01-30 11:12:21', 0, 'en'),
 (55, 31, 'Seth Rockan', 'RockanSe@email.com', 'Cutlery set', 'really good for daily use! Beautiful design .', 4, '2025-01-30 11:46:47', 0, 'en'),
 (56, 40, 'Fanni Luoja', 'FanniLuo@gmail.com', 'Moccamaster', 'Kallis mutta joka pennin arvoinen! Päivittäin hyvät kahvit.', 5, '2025-01-30 11:48:42', 0, 'fi'),
 (57, 31, 'Greg', 'GregWellington@gmail.cok', 'Cutlery set', 'Very good product. LOved it!', 4, '2025-02-06 06:54:18', 0, 'en'),
