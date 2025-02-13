@@ -188,9 +188,14 @@ $conn->close();
     .edit-btn:hover {
         background-color: rgb(85, 85, 145);
     }
+    .KG{
+        width: 300px;
+    }
 </style>
+
 <div style="text-align: center; color: white;">
-    <h1><?= $current_lang['title']; ?></h1>
+    <br> <br>
+<img src="kuvat/KGiconi.png" alt="KG" class="KG">
     <h3><?= $current_lang['subtitle']; ?></h3>
     <p><?= $current_lang['description']; ?></p>
 

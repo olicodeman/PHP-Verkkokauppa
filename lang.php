@@ -110,7 +110,6 @@ $lang = [
         'pwdalert2' => 'Password successfully changed!',
         'pwdalert3' => 'An error occured while chaning password.',
         'TilauksenID' => 'ID',
-        'TilauksenID' => 'ID',
         'TotalPrice' => 'Total Price',
         'DMethod' => 'Delivery Method',
         'PMethod' => 'Payment Method',
