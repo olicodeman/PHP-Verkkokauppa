@@ -50,26 +50,37 @@ if (isset($_GET['order_id'])) {
     $orderId = intval($_GET['order_id']);  // Ensure it's a valid integer
 
     if ($orderId > 0) {
-        $orderQry = "SELECT order_id, order_date, total_price, Maksutapa, Toimitustapa FROM tilaukset WHERE order_id = ?";
+        $deliveryColumn = (isset($_SESSION['lang']) && $_SESSION['lang'] === 'en') ? "t.Toimitustapa_en" : "t.Toimitustapa";
+        $paymentColumn = (isset($_SESSION['lang']) && $_SESSION['lang'] === 'en') ? "t.Maksutapa_en" : "t.Maksutapa";
+
+        $orderQry = "SELECT order_id, order_date, total_price, $paymentColumn AS Maksutapa, $deliveryColumn AS Toimitustapa 
+                    FROM tilaukset t 
+                    WHERE order_id = ?";
+
         $stmt = mysqli_prepare($link, $orderQry);
         mysqli_stmt_bind_param($stmt, "i", $orderId);
         mysqli_stmt_execute($stmt);
         $orderResult = mysqli_stmt_get_result($stmt);
         $orderData = mysqli_fetch_assoc($orderResult);
 
+
         // Fetch the products for the selected order
-        $productQry = "SELECT op.quantity, op.price, p.nimi
-                       FROM tilaus_tuotteet op
-                       JOIN tuotteet p ON op.product_id = p.id
-                       WHERE op.order_id = ?";
+        $columnName = (isset($_SESSION['lang']) && $_SESSION['lang'] === 'en') ? 'nimi_en' : 'nimi';
+
+        $productQry = "SELECT op.quantity, op.price, p.$columnName AS nimi 
+                    FROM tilaus_tuotteet op
+                    JOIN tuotteet p ON op.product_id = p.id
+                    WHERE op.order_id = ?";
+
         $stmt = mysqli_prepare($link, $productQry);
         mysqli_stmt_bind_param($stmt, "i", $orderId);
         mysqli_stmt_execute($stmt);
         $productResult = mysqli_stmt_get_result($stmt);
 
         while ($product = mysqli_fetch_assoc($productResult)) {
-            $products[] = $product;
+            $products[] = $product;  // Store the result in the products array
         }
+
 
         mysqli_stmt_close($stmt);
     }
@@ -85,10 +96,20 @@ if (isset($_GET['order_id'])) {
     .profile-content-box {
         width: 48%;
         box-sizing: border-box;
-        padding: 20px;
         color: white;
-        border-radius: 8px;
         border: 1px solid black;
+    }
+    .profile-content-box2 {
+        width: 48%;
+        height: fit-content;
+        color: white;
+        border: 1px solid black;
+        background-color: white;
+        border-radius: 10px;
+        padding: 15px; 
+        max-width: 500px; 
+        margin: 20px auto; 
+        box-sizing: border-box;
     }
     .orders-table {
         width: 100%;
@@ -218,9 +239,9 @@ if (isset($_GET['order_id'])) {
     <?php endif; ?>
 
     <div class="profile-content-container">
-        <div class="profile-content-box">
+        <div class="profile-content-box2">
             <h2 style="color: black;"><?= $current_lang['YourInfo']; ?></h2>
-            <p><?= $current_lang['FirstName']; ?>: <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?> <?php echo htmlspecialchars($_SESSION['SESS_LAST_NAME']);?></p>
+            <p><?= $current_lang['FullName']; ?>: <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?> <?php echo htmlspecialchars($_SESSION['SESS_LAST_NAME']);?></p>
             <p><?= $current_lang['Email']; ?>: <?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?></p>
             <p><?= $current_lang['Address']; ?>: <?php echo htmlspecialchars($address); ?></p>
             <p><?= $current_lang['PhoneNmb']; ?>: <?php echo htmlspecialchars($phoneNumber); ?></p>
@@ -267,15 +288,15 @@ if (isset($_GET['order_id'])) {
     <div id="overlay" style="display: block;"></div>
     <div id="orderDetailsPopup" style="display: block;">
         <div class="popup-content">
-            <h3>Tilaustiedot</h3>
+            <h3><?= $current_lang['OrderDetails']; ?></h3>
             <table class="orders-table" style="width: 100%; border-collapse: collapse; color: black;">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Kokonaishinta</th>
-                        <th>Päivämäärä</th>
-                        <th>Maksutapa</th>
-                        <th>Toimitustapa</th>
+                        <th><?= $current_lang['TilauksenID']; ?></th>
+                        <th><?= $current_lang['TotalPrice']; ?></th>
+                        <th><?= $current_lang['Date']; ?></th>
+                        <th><?= $current_lang['PMethod']; ?></th>
+                        <th><?= $current_lang['DMethod']; ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -289,14 +310,14 @@ if (isset($_GET['order_id'])) {
                 </tbody>
             </table>
 
-            <h4>Tilatut tuotteet</h4>
+            <h4><?= $current_lang['OrderProducts']; ?></h4>
             <!-- Products Table -->
             <table class="orders-table" style="width: 100%; border-collapse: collapse; color: black;">
                 <thead>
                     <tr>
-                        <th>Tuote</th>
-                        <th>Kpl</th>
-                        <th>Hinta per kappale</th>
+                        <th><?= $current_lang['Product']; ?></th>
+                        <th><?= $current_lang['Amount']; ?></th>
+                        <th><?= $current_lang['PricePerProduct']; ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -310,7 +331,7 @@ if (isset($_GET['order_id'])) {
                 </tbody>
             </table>
             <br>
-            <button class="oc-btn" onclick="closePopup()">Sulje</button>
+            <button class="oc-btn" onclick="closePopup()"><?= $current_lang['Close']; ?></button>
         </div>
     </div>
 

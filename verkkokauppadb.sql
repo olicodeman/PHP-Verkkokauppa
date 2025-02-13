@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 06.02.2025 klo 12:40
+-- Generation Time: 13.02.2025 klo 12:03
 -- Palvelimen versio: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -104,7 +104,7 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`member_id`, `firstname`, `lastname`, `email`, `address`, `phonenumber`, `username`, `password`, `language`) VALUES
-(1, 'Teppo-sakari', 'Testiniemi', 'teppotestausta@jokuemail.com', 'jokukatu 9', '+123 45 67894', 'teppo5569', '827ccb0eea8a706c4c34a16891f84e7b', 'fi'),
+(1, 'Teppo-sakari', 'Testiniemi', 'teppotestausta@jokuemail.com', 'jokukatu 9', '+123 45 67894', 'teppo5569', '8359b10e30dfabd587a5661e52249101', 'fi'),
 (2, 'Thomasio', 'Testeringus', 'tomtester@somethinsmail.com', 'someplace street 15', '+123 456 7896', 'tomtesterXD56', 'cf9d344afc8a2061ce216ae59e691b9c', 'fi'),
 (3, 'Rianna', 'Sarajärvi', 's3sari00@students.osao.fi', 'koti', '345 67', 'Rianna', '6530e95e3fcf785ea9febde39f567630', 'fi'),
 (4, 'admin', 'admin', 'admin@adminemail.com', 'no', '+123 654 7891', 'admin', '1e783b87df681e37f6456f64cb9fadd8', 'fi'),
@@ -122,38 +122,40 @@ CREATE TABLE `tilaukset` (
   `total_price` decimal(10,2) NOT NULL,
   `order_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `Maksutapa` varchar(20) NOT NULL,
-  `Toimitustapa` varchar(20) NOT NULL
+  `Toimitustapa` varchar(20) NOT NULL,
+  `Maksutapa_en` varchar(20) NOT NULL,
+  `Toimitustapa_en` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Vedos taulusta `tilaukset`
 --
 
-INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`, `Maksutapa`, `Toimitustapa`) VALUES
-(1, 2, 685.00, '2024-12-19 10:46:00', 'Kortti', 'Nouto'),
-(2, 3, 85.00, '2025-01-09 06:39:59', 'Lasku', 'Nouto'),
-(3, 3, 70.00, '2025-01-09 09:13:03', 'Kortti', 'Nouto'),
-(4, 2, 655.00, '2025-01-09 11:17:17', 'Lasku', 'Nouto'),
-(5, 2, 2100.00, '2025-01-09 11:18:31', 'Kortti', 'Postitus'),
-(6, 2, 50.00, '2025-01-13 07:50:32', 'Lasku', 'Postitus'),
-(7, 2, 20.00, '2025-01-13 08:03:41', 'Kortti', 'Postitus'),
-(8, 2, 650.00, '2025-01-13 08:12:56', 'Lasku', 'Postitus'),
-(9, 2, 1500.00, '2025-01-13 08:51:35', 'Kortti', 'Postitus'),
-(10, 2, 85.00, '2025-01-13 08:53:43', 'Lasku', 'Nouto'),
-(11, 2, 155.00, '2025-01-13 08:55:32', 'Kortti', 'Postitus'),
-(12, 2, 1500.00, '2025-01-13 09:57:31', 'Lasku', 'Nouto'),
-(13, 2, 52.00, '2025-01-13 11:21:00', 'Kortti', 'Postitus'),
-(14, 2, 100.00, '2025-01-13 11:30:05', 'Lasku', 'Nouto'),
-(15, 2, 109.00, '2025-01-13 11:45:02', 'Kortti', 'Postitus'),
-(16, 2, 150.00, '2025-01-13 11:57:14', 'Kortti', 'Nouto'),
-(17, 2, 255.00, '2025-01-13 11:58:56', 'Lasku', 'Postitus'),
-(18, 3, 50.00, '2025-01-16 06:15:43', 'Lasku', 'Nouto'),
-(19, 3, 500.00, '2025-01-16 06:37:57', 'Lasku', 'Postitus'),
-(20, 3, 1500.00, '2025-01-20 10:39:44', 'Lasku', 'Nouto'),
-(21, 6, 600.00, '2025-02-03 12:20:52', 'Lasku', 'Postitus'),
-(22, 6, 300.00, '2025-02-06 06:44:21', 'Kortti', 'Postitus'),
-(23, 6, 300.00, '2025-02-06 06:50:18', 'Lasku', 'Nouto'),
-(24, 6, 50.00, '2025-02-06 06:53:15', 'Lasku', 'Nouto');
+INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`, `Maksutapa`, `Toimitustapa`, `Maksutapa_en`, `Toimitustapa_en`) VALUES
+(1, 2, 685.00, '2024-12-19 10:46:00', 'Kortti', 'Nouto', 'Card', 'Pickup'),
+(2, 3, 85.00, '2025-01-09 06:39:59', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
+(3, 3, 70.00, '2025-01-09 09:13:03', 'Kortti', 'Nouto', 'Card', 'Pickup'),
+(4, 2, 655.00, '2025-01-09 11:17:17', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
+(5, 2, 2100.00, '2025-01-09 11:18:31', 'Kortti', 'Postitus', 'Card', 'Posted'),
+(6, 2, 50.00, '2025-01-13 07:50:32', 'Lasku', 'Postitus', 'Bill', 'Posted'),
+(7, 2, 20.00, '2025-01-13 08:03:41', 'Kortti', 'Postitus', 'Card', 'Posted'),
+(8, 2, 650.00, '2025-01-13 08:12:56', 'Lasku', 'Postitus', 'Bill', 'Posted'),
+(9, 2, 1500.00, '2025-01-13 08:51:35', 'Kortti', 'Postitus', 'Card', 'Posted'),
+(10, 2, 85.00, '2025-01-13 08:53:43', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
+(11, 2, 155.00, '2025-01-13 08:55:32', 'Kortti', 'Postitus', 'Card', 'Posted'),
+(12, 2, 1500.00, '2025-01-13 09:57:31', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
+(13, 2, 52.00, '2025-01-13 11:21:00', 'Kortti', 'Postitus', 'Card', 'Posted'),
+(14, 2, 100.00, '2025-01-13 11:30:05', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
+(15, 2, 109.00, '2025-01-13 11:45:02', 'Kortti', 'Postitus', 'Card', 'Posted'),
+(16, 2, 150.00, '2025-01-13 11:57:14', 'Kortti', 'Nouto', 'Card', 'Pickup'),
+(17, 2, 255.00, '2025-01-13 11:58:56', 'Lasku', 'Postitus', 'Bill', 'Posted'),
+(18, 3, 50.00, '2025-01-16 06:15:43', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
+(19, 3, 500.00, '2025-01-16 06:37:57', 'Lasku', 'Postitus', 'Bill', 'Posted'),
+(20, 3, 1500.00, '2025-01-20 10:39:44', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
+(21, 6, 600.00, '2025-02-03 12:20:52', 'Lasku', 'Postitus', 'Bill', 'Posted'),
+(22, 6, 300.00, '2025-02-06 06:44:21', 'Kortti', 'Postitus', 'Card', 'Posted'),
+(23, 6, 300.00, '2025-02-06 06:50:18', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
+(24, 6, 50.00, '2025-02-06 06:53:15', 'Lasku', 'Nouto', 'Bill', 'Pickup');
 
 -- --------------------------------------------------------
 
