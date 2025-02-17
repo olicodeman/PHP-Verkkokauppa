@@ -24,6 +24,8 @@
         /* Remove extra padding */
         border: none;
         /* Remove any border */
+        background: none;
+        margin-top: -10px;
 
     }
 
@@ -35,7 +37,7 @@
         /* Remove button border */
         cursor: pointer;
         /* Pointer cursor for hover */
-        padding: 10px;
+        padding: 5px;
         /* Add padding for better click area */
         border-radius: 50%;
         /* Circular hover effect */
@@ -65,6 +67,15 @@
         margin-left: auto;
         /* Push cart icon to the far right */
     }
+    .company-logo {
+    width: 50px;  /* Adjust size */
+    height: auto;
+}
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
 </style>
 
 <body>
@@ -106,6 +117,9 @@ if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
 
 <nav class="navbar">
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <a href="index.php?page=etusivu" class="logo-link">
+        <img src="kuvat/kgiconi.png" alt="Company Logo" class="company-logo">
+    </a>
     <ul class="nav-links">
         <li><a href="index.php?page=etusivu" class="<?= ($page == 'etusivu') ? 'active' : '' ?>"><?= $current_lang['homepage']; ?></a></li>
         <li><a href="index.php?page=tuoteet" class="<?= ($page == 'tuoteet') ? 'active' : '' ?>"><?= $current_lang['products']; ?></a></li>

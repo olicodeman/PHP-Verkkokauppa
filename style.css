@@ -53,10 +53,10 @@ p, b {
 /*NavBar Tyyli */
 .navbar{
     background-color: rgb(45, 45, 102);
-    padding: 10px 20px;
+    padding: 5px 15px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: center;  /* Vertically align items */
+    justify-content: flex-start; /* Align all items to the left */
     position: sticky;
     z-index: 1000;
 }
@@ -337,6 +337,7 @@ p, b {
         border-radius: 50%;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        margin-top: -5px;
     }
     #logout-link {
         position: absolute; /* Position independently within the navbar */
@@ -352,5 +353,11 @@ p, b {
         .cart-icon {
             width: 25px;
             height: 25px;
+        }
+        .company-logo {
+            position: absolute;  /* Position the logo absolutely within the navbar */
+            left: 50%;  /* Center horizontally */
+            transform: translateX(-50%);  /* Adjust the logo's position to truly center */
+            margin-right: 0;  /* Remove any right margin */
         }
     }
