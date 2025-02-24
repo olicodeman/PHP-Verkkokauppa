@@ -8,69 +8,58 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <style>
-    /* Language Switcher Form */
+    /* Kielen vaihto form */
     .language-switcher {
         display: flex;
-        /* Align language icons horizontally */
         align-items: center;
-        /* Vertically align with nav links */
         gap: 10px;
-        /* Add space between the language buttons */
         margin-left: 20px;
-        /* Add spacing to the left of the form */
         margin: 0;
-        /* Remove extra margins */
         padding: 0;
-        /* Remove extra padding */
         border: none;
-        /* Remove any border */
         background: none;
         margin-top: -10px;
 
     }
 
-    /* Language Button */
+    /* Kieli napit */
     .language-switcher .lang-button {
         background: none;
-        /* Remove button background */
         border: none;
-        /* Remove button border */
         cursor: pointer;
-        /* Pointer cursor for hover */
         padding: 5px;
-        /* Add padding for better click area */
         border-radius: 50%;
-        /* Circular hover effect */
         transition: transform 0.2s ease, border 0.2s ease;
     }
 
+        /*hover efekti napeille */
     .language-switcher .lang-button:hover {
         transform: scale(1.1);
-        /* Enlarge on hover */
     }
 
+        /* Nähdään että nappia on painettu */
     .language-switcher .lang-button.selected {
         border: 2px solid #007bff;
-        /* Add border to highlight selection */
         box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-        /* Glow effect */
     }
 
-    /* Language Icon */
+    /* Kieli Iconi */
     .language-switcher .lang-icon {
         width: 30px;
         height: 30px;
     }
 
-    /* Ensure Cart Icon Stays Right-Aligned */
+    /*Pidetään ostoskori oikealla puolella */
     .navbar .icon {
         margin-left: auto;
-        /* Push cart icon to the far right */
     }
+    
+        /* Logon määritykset */
     .company-logo {
-    width: 50px;  /* Adjust size */
+    width: 50px; 
     height: auto;
 }
+
 .logo-link {
     display: flex;
     align-items: center;
@@ -80,41 +69,42 @@
 
 <body>
 <?php
-// Start session
+//Aloitetaan session
 session_start();
 
-// Include the language file
+// Liitettään käänökset
 require 'lang.php';
 
-// Set the default language to English
+// Aloituskieli asetetaan englanniksi
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'en';
 }
 
-// Change language if the user selects one
+// Muutetaan kieli jos käyttäjä valitsee
 if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $lang)) {
     $_SESSION['lang'] = $_GET['lang'];
 }
 
-// Load the current language
+// Päivitetään kieli
 $current_lang = $lang[$_SESSION['lang']];
 
-// Ensure the user is logged in
+// Varmistetaan että käyttäjä on kirjautuneena
 $IsLoggedIn = $_SESSION['loggedin'] ?? false;
 session_write_close();
 
-// Define pages
+// Määritellään sivut
 $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm", "lisaaArvostelu", "arvosteluSivu", "submit_review");
 $page = "etusivu";
 
-// Check for current page in query parameters
+// Tarkistetaan tämänhetkinen sivu query parametreillä
 if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
     $page = $_GET['page'];
 } else {
-    $page = 'etusivu';  // Default page
+    $page = 'etusivu';  //Oletus sivu
 }
 ?>
 
+        <!-- Navigointi valikko -->
 <nav class="navbar">
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
     <a href="index.php?page=etusivu" class="logo-link">
@@ -131,9 +121,9 @@ if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
             <li><a href="index.php?page=register-form" class="<?= ($page == 'register-form') ? 'active' : '' ?>"><?= $current_lang['register']; ?></a></li>
         <?php endif; ?>
         
-        <!-- Language Switcher Form -->
+        <!-- Kielen vaihto-->
         <form method="get" class="language-switcher">
-            <input type="hidden" name="page" value="<?= $_GET['page'] ?? 'etusivu'; ?>"> <!-- Preserve current page -->
+            <input type="hidden" name="page" value="<?= $_GET['page'] ?? 'etusivu'; ?>"> 
             <button type="submit" name="lang" value="en"
                     class="lang-button <?= ($_SESSION['lang'] ?? 'en') === 'en' ? 'selected' : '' ?>">
                 <img src="kuvat/englantilippu.png" alt="English" class="lang-icon">
@@ -147,6 +137,7 @@ if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
         </ul>
         <div class="nav-right">
 
+        <!-- Ostoskori -->
             <a href="index.php?page=ostoskori">
                 <div class="icon">
                     <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Ostoskori"

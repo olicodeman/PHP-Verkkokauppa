@@ -1,0 +1,251 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 Edg/133.0.0.0" version="26.0.15">
+  <diagram name="Sivu-1" id="Vy_fLqq48-HQMhHOVuX3">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-1" value="Käyttäjä" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="225" y="110" width="50" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-2" value="Käyttäjä rekisteröityy&amp;nbsp;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="190" y="200" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-3" value="Tietokanta" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="460" y="110" width="50" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-4" value="Ottaa vastaan rekisteröitymistiedot" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="354" y="200" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-5" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="320" y="240" as="sourcePoint" />
+            <mxPoint x="350" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-6" value="käyttäjä kirjautuu sisään" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="190" y="310" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-7" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="1SRjtpAf5rMxN8Zy4jaM-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="250" y="290" as="sourcePoint" />
+            <mxPoint x="360" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-12" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;Päästään etusivulle, jossa voi vaihtaa kieltä englannin ja suomen välillä, sekä katsoa kolme uusinta tuotetta ja arvostelua&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="187.5" y="420" width="125" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-13" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="1SRjtpAf5rMxN8Zy4jaM-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="250" y="400" as="sourcePoint" />
+            <mxPoint x="300" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-14" value="Antaa kolma uusinta tuoteta ja arvostelua" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="354" y="440" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-15" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="480" as="sourcePoint" />
+            <mxPoint x="320" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-16" value="Tuote sivu" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="255" y="569" width="80" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-18" value="arvostelu sivu" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="170" y="568" width="80" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-20" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;entryX=0;entryY=1;entryDx=0;entryDy=0;exitX=0.45;exitY=-0.043;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-18" target="1SRjtpAf5rMxN8Zy4jaM-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="230" y="510" as="sourcePoint" />
+            <mxPoint x="280" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-21" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;entryX=1;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-16" target="1SRjtpAf5rMxN8Zy4jaM-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="210" y="568" as="sourcePoint" />
+            <mxPoint x="216" y="532" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-22" value="&lt;p class=&quot;MsoNormal&quot;&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Asiakas pystyy lukea muiden arvosteluita ja suodattaa niitä&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;tuotteen tai arvostelun mukaan.&amp;nbsp; Mahdollista lisätä oma arvostelu&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;tuotteelle.&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;" style="ellipse;whiteSpace=wrap;html=1;perimeterSpacing=8;strokeWidth=1;align=center;flipV=1;flipH=1;direction=west;verticalAlign=middle;spacingTop=0;spacing=6;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="145" y="650" width="110" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-23" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.506;entryY=0.041;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="1SRjtpAf5rMxN8Zy4jaM-22">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="620" as="sourcePoint" />
+            <mxPoint x="280" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-25" value="&lt;p class=&quot;MsoNormal&quot;&gt;&lt;span style=&quot;line-height: 115%; font-family: Aptos, sans-serif;&quot;&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;pystyy suodattamaan kategorian tai seach-barin kautta. Katsoa tuotteen tiedot ja lisätä ostoskoriin&lt;/font&gt;&lt;/span&gt;&lt;/p&gt;" style="ellipse;whiteSpace=wrap;html=1;perimeterSpacing=8;strokeWidth=1;align=center;flipV=1;flipH=1;direction=west;verticalAlign=middle;spacingTop=0;spacing=6;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="260" y="650" width="110" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-27" value="Antaa tuote tiedot sivulle" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="390" y="650" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-28" value="Antaa arvostelut sivulle ja ottaa vastaan uuden arvostelun" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="389" y="700" width="90" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-29" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.4;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.915;entryY=0.297;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-27" target="1SRjtpAf5rMxN8Zy4jaM-25">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="230" y="650" as="sourcePoint" />
+            <mxPoint x="280" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-31" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.568;exitY=1.017;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-16">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="640" as="sourcePoint" />
+            <mxPoint x="300" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-35" value="Lisää tuotteen ostoskoriin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="275" y="800" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-36" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.494;exitY=0.911;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-25" target="1SRjtpAf5rMxN8Zy4jaM-35">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="230" y="770" as="sourcePoint" />
+            <mxPoint x="280" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-38" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-14" target="1SRjtpAf5rMxN8Zy4jaM-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="210" y="450" as="sourcePoint" />
+            <mxPoint x="260" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-39" value="&lt;span style=&quot;line-height: 115%; font-family: Aptos, sans-serif;&quot;&gt;&lt;font&gt;&amp;nbsp;Pystyy muokkaamaan määrää, jota haluaa ostaa. Näkee yhteishinnan, joka&amp;nbsp;tulee ostoksista.&amp;nbsp;&lt;/font&gt;&lt;/span&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="237.5" y="860" width="155" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-40" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="1SRjtpAf5rMxN8Zy4jaM-39">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="315" y="850" as="sourcePoint" />
+            <mxPoint x="390" y="860" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-41" value="Siirtyy maksamaan" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="130" y="870" width="90" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-42" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-39" target="1SRjtpAf5rMxN8Zy4jaM-41">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="340" y="950" as="sourcePoint" />
+            <mxPoint x="390" y="900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-43" value="&lt;span style=&quot;line-height: 115%; font-family: Aptos, sans-serif;&quot;&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;maksaako&lt;br&gt;laskulla vai kortilla.&amp;nbsp; Päättää onko postikuljetus vai kaupalle toimitus.&amp;nbsp;&lt;/font&gt;&lt;/span&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="130" y="940" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-44" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.3;exitY=0.964;exitDx=0;exitDy=0;entryX=0.193;entryY=0.088;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-41" target="1SRjtpAf5rMxN8Zy4jaM-43">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="340" y="950" as="sourcePoint" />
+            <mxPoint x="390" y="900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-45" value="Vahvistaa tilauksen" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="310" y="950" width="90" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-46" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-43" target="1SRjtpAf5rMxN8Zy4jaM-45">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="340" y="950" as="sourcePoint" />
+            <mxPoint x="390" y="900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-47" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-45" target="1SRjtpAf5rMxN8Zy4jaM-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="760" as="sourcePoint" />
+            <mxPoint x="190" y="710" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="355" y="1030" />
+              <mxPoint x="120" y="1030" />
+              <mxPoint x="120" y="480" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-48" value="Tallentaa tietokantaan tilauksen ja vähentää tuotteen." style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="420" y="870" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-49" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="1SRjtpAf5rMxN8Zy4jaM-48">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="970" as="sourcePoint" />
+            <mxPoint x="330" y="830" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="470" y="970" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-50" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.272;exitY=0.04;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-27" target="1SRjtpAf5rMxN8Zy4jaM-14">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="670" as="sourcePoint" />
+            <mxPoint x="330" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-51" value="" style="endArrow=none;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.59;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-48" target="1SRjtpAf5rMxN8Zy4jaM-28">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="810" as="sourcePoint" />
+            <mxPoint x="330" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-52" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;entryX=0.234;entryY=0.948;entryDx=0;entryDy=0;exitX=0.5;exitY=0.931;exitDx=0;exitDy=0;entryPerimeter=0;exitPerimeter=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-22" target="1SRjtpAf5rMxN8Zy4jaM-28">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="810" as="sourcePoint" />
+            <mxPoint x="330" y="760" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="200" y="780" />
+              <mxPoint x="370" y="780" />
+              <mxPoint x="410" y="780" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-54" value="Admin" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="650" y="110" width="50" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-55" value="Kirjautuu sisään" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="620" y="200" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-56" value="Pääsee admin näkymään, voi tarkastella ja muokata tuote tietoja." style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="620" y="310" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-57" value="Ottaa mahdolliset muutokset vastaan" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="460" y="360" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-58" value="Antaa tiedot adminille" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="460" y="270" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-59" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.024;entryY=0.309;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1.003;exitY=0.65;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-58" target="1SRjtpAf5rMxN8Zy4jaM-56">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="260" y="470" as="sourcePoint" />
+            <mxPoint x="310" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-60" value="" style="endArrow=classic;html=1;rounded=0;entryX=1.01;entryY=0.369;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.024;exitY=0.698;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-56" target="1SRjtpAf5rMxN8Zy4jaM-57">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="260" y="470" as="sourcePoint" />
+            <mxPoint x="310" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-61" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-55">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="260" y="470" as="sourcePoint" />
+            <mxPoint x="680" y="309" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-63" value="Voi lisätä uuden tuotteen" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="615" y="505" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-64" value="Tallentaa uuden tuotteen tietokantaan" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="460" y="505" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-65" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.558;entryY=0.004;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-56" target="1SRjtpAf5rMxN8Zy4jaM-63">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="260" y="470" as="sourcePoint" />
+            <mxPoint x="680" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1SRjtpAf5rMxN8Zy4jaM-66" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="1SRjtpAf5rMxN8Zy4jaM-63" target="1SRjtpAf5rMxN8Zy4jaM-64">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="260" y="470" as="sourcePoint" />
+            <mxPoint x="310" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -119,6 +119,7 @@ $lang = [
         'Amount' => 'Amount',
         'PricePerProduct' => 'Price Per Product',
     ],
+    //tuotteen käänökset
     'fi' => [
         'Welcome' => 'Tervetuloa',
         'homepage' => 'Etusivu',
@@ -238,10 +239,10 @@ $lang = [
         'PricePerProduct' => 'Hinta per kappale',
     ]
 ];
-$active_language = $_SESSION['lang'] ?? 'fi'; // Default to 'fi' if not set
-$current_lang = $lang[$active_language] ?? $lang['fi']; // Fallback to 'fi'
+$active_language = $_SESSION['lang'] ?? 'fi'; // Oletus on suomi jos ei ole muutoin valittu
+$current_lang = $lang[$active_language] ?? $lang['fi'];
 
-// Function to fetch translations
+// Funktio kielen valitesemiseen
 function t($key)
 {
     global $current_lang;
@@ -252,14 +253,13 @@ function t($key)
     return $current_lang[$key];
 }
 
-// Handle language switching
+// Käsietellään kielen vaihto
 if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $lang)) {
     $_SESSION['lang'] = $_GET['lang'];
 
-    // Preserve the 'page' parameter, otherwise default to 'etusivu'
     $current_page = $_GET['page'] ?? 'etusivu';
-    
-    // Redirect to the same page with the new language
+
+    // Ohjataan samalle sivulle valitulla kielellä
     header("Location: " . $_SERVER['PHP_SELF'] . "?page=" . $current_page);
     exit;
 }
