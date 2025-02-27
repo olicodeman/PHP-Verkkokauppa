@@ -12,13 +12,13 @@ try {
 }
 
 
-// Set the language preference from session or default to Finnish
+// Kieli valinta haetaan sessiosta tai laitetaan oletukseksi suomeksi
 $language = isset($_SESSION['lang']) && $_SESSION['lang'] === 'en' ? 'en' : 'fi';
 
-// Choose the correct field based on language
+// Valitaan käännösket valitun kielen mukaan
 $fieldName = $language === 'en' ? 'nimi_en' : 'nimi';
 
-// Fetch the product details with the selected language
+// Haetaan tiedot valitun kielen mukaan 
 try {
     $stmt = $pdo->prepare("SELECT id, $fieldName AS nimi FROM tuotteet");
     $stmt->execute();
@@ -201,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="star1">★</label>
         </div>
 
-        <!-- Language radio buttons -->
+        <!-- Kieli valinta napit-->
         <div>
             <label for="kieli"><?= $current_lang['SelectLanguage']; ?>:</label>
             <input type="radio" id="fi" name="kieli" value="fi" checked> Finnish
@@ -217,10 +217,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return;
     }
 
-    // Get the site-wide language from PHP
-    const currentLang = "<?= $_SESSION['lang'] ?? 'fi' ?>";  // Default to Finnish if not set
 
-    // Fetch product details using the selected product and current site language
+    const currentLang = "<?= $_SESSION['lang'] ?? 'fi' ?>";  // Oletuskieli on suomi
+
+    // Haetaan tuotteen tiedot valitun kielen mukaan
     fetch(`HaeTuoteTiedot.php?id=${productId}&lang=${currentLang}`)
         .then(response => response.json())
         .then(data => {
@@ -233,7 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ? `<img class="product-image" src="${data.kuva}" alt="${data.nimi}">`
                 : '<p>No image available for this product.</p>';
 
-            // Display product details dynamically
+            // Näytetään tuotteen tiedot dynaamisesti
             const productDetailsHTML = `
                 <div class="product-details">
                     <h2>${data.nimi}</h2>

@@ -13,3 +13,9 @@ A user-friendly online store built with PHP, featuring account management, produ
 <p>✅ Admin-paneeli: tuotteiden hallinta & raportit</p>
 <p>
 Admin panel: Manage products & view reports</p>
+
+<h2>Video</h2>
+<p>Video jossa esitellään nettisivustoa/Here is a video showing what it looks like:</p>
+<p>https://sharing.clickup.com/clip/p/t9012755601/da0b0ec1-0e52-43cc-bbbf-adcc9a62bf65/screen-recording-2025-02-17-14%3A48.webm</p>
+<h2>Admin:</h2>
+<p>https://sharing.clickup.com/clip/p/t9012755601/f5746c6d-679a-4e92-bf26-fa4c797ae9d4/screen-recording-2025-02-17-14%3A53.webm</p>

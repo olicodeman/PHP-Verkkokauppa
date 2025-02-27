@@ -63,17 +63,17 @@ $rating_filter = isset($_GET['rating_filter']) ? $_GET['rating_filter'] : null;
 try {
     $query = "SELECT * FROM arvostelut WHERE 1=1"; // Base query
 
-    // Filter by product if selected
+    // Suodatetaan tuotteen perusteella
     if ($product_id) {
         $query .= " AND tuote_id = :product_id";
     }
 
-    // Filter by rating if selected
+    // Suodatetaan arvostelun mukaan
     if ($rating_filter) {
         $query .= " AND tähtiarvostelu = :rating_filter";
     }
 
-    // Filter by language if selected
+    // Suodatetaan kielen mukaaan
     if ($lang_filter) {
         $query .= " AND kieli = :lang_filter";
     }
@@ -82,7 +82,7 @@ try {
 
     $stmt = $pdo->prepare($query);
 
-    // Bind parameters
+
     if ($product_id) {
         $stmt->bindParam(':product_id', $product_id);
     }
@@ -100,11 +100,11 @@ try {
     $reviews = [];
 }
 
-// Dynamically select columns based on the language selected
+// Valitaan columnit kielen mukaan
 $productNameColumn = ($_SESSION['lang'] == 'en') ? 'nimi_en' : 'nimi';
 $productDescriptionColumn = ($_SESSION['lang'] == 'en') ? 'kuvaus_en' : 'kuvaus';
 
-// Fetch product information in the selected language
+// Haetaan tuotteen tiedot valitun kielen mukaan
 $stmt = $pdo->prepare("SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, kuva, hinta, varastomäärä FROM tuotteet");
 $stmt->execute();
 $products = $stmt->fetchAll();
@@ -121,7 +121,6 @@ $products = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Reviews</title>
     <style>
-        /* General Styling */
         body {
             font-family: 'Trebuchet MS', Arial, sans-serif;
             margin: 0;
@@ -172,7 +171,6 @@ $products = $stmt->fetchAll();
             background-color: rgb(35, 35, 90);
         }
 
-        /* Review Styling */
         .review {
             background: rgb(45, 45, 102);
             color: white;
@@ -219,7 +217,7 @@ $products = $stmt->fetchAll();
 
         p {}
 
-        /* Product Details */
+        /* Tuotteen tiedot */
         .product-details {
             background: rgb(45, 45, 102);
             ;
@@ -230,7 +228,6 @@ $products = $stmt->fetchAll();
             width: 90%;
             padding: 20px;
             margin: 20px auto;
-            /* Center on the page */
             text-align: center;
         }
 
@@ -314,13 +311,10 @@ $products = $stmt->fetchAll();
             background-color: rgb(85, 85, 145);
         }
 
-        /* Language Button Styling */
         .lang-icon {
             width: 30px;
-            /* Adjust size */
             height: auto;
             border-radius: 50%;
-            /* Make it rounded */
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
@@ -332,16 +326,15 @@ $products = $stmt->fetchAll();
 
         button:hover .lang-icon {
             transform: scale(1.1);
-            /* Slightly enlarge on hover */
             box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
         }
-        .lang-icon {
-    width: 20px;  /* Adjust size */
-    height: auto;
-    margin-left: 10px; /* Adds spacing between text and flag */
-    vertical-align: middle;
-}
 
+        .lang-icon {
+            width: 20px;
+            height: auto;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 
@@ -370,6 +363,7 @@ $products = $stmt->fetchAll();
             </form>
         </div>
 
+        <!-- Suodatus kielen mukaan -->
         <form method="GET" action="index.php">
             <input type="hidden" name="page" value="arvosteluSivu">
             <label><?= $current_lang['FilterLanguage']; ?></label>
@@ -406,40 +400,45 @@ $products = $stmt->fetchAll();
             <div class="product-details">
                 <h2>
                     <?php
-                    if ($_SESSION['lang'] == 'en') {  // If the language is English
-                        echo htmlspecialchars($product_details['nimi_en']);  // English product name
+                    if ($_SESSION['lang'] == 'en') {  // Jos kieli on englanti
+                        echo htmlspecialchars($product_details['nimi_en']);  // Englannin kielinen tuotteen nimi
                     } else {
-                        echo htmlspecialchars($product_details['nimi']);  // Default product name (Finnish)
+                        echo htmlspecialchars($product_details['nimi']);  // Suomen kielinen tuotteen nimi
                     }
                     ?>
                 </h2>
+                <!-- Tuotteen kuva-->
                 <img class="product-image" src="<?= $product_details['kuva'] ?>"
                     alt="<?= htmlspecialchars($_SESSION['lang'] == 'en' ? $product_details['nimi_en'] : $product_details['nimi']) ?>">
                 <p>
                     <?php
-                    if ($_SESSION['lang'] == 'en') {  // If the language is English
-                        echo htmlspecialchars($product_details['kuvaus_en']);  // English description
+                    if ($_SESSION['lang'] == 'en') {  //Jos kilei on englanti
+                        echo htmlspecialchars($product_details['kuvaus_en']);  // Englanniksi tuotteen tiedot
                     } else {
-                        echo htmlspecialchars($product_details['kuvaus']);  // Default description (Finnish)
+                        echo htmlspecialchars($product_details['kuvaus']);  // Suomeksi tuotteen tiedot
                     }
                     ?>
                 </p>
+                <!-- Hinta-->
                 <p><?= $current_lang['price']; ?>     <?= number_format($product_details['hinta'], 2) ?></p>
             </div>
         <?php endif; ?>
 
-
+        <!-- Linkki arvostelun lisäämiseen-->
         <a class="edit-btn" href="index.php?page=lisaaArvostelu">
             <?= $current_lang['leaveReview']; ?></a>
 
         <!-- Näytetään arvostelut-->
         <?php if (empty($reviews)): ?>
-            <h3><?= $current_lang['no_reviews']; ?><?= $current_lang['give_review']; ?><a
-                    href="index.php?page=lisaaArvostelu">Tästä</a></h3>
+            <h3><?= $current_lang['no_reviews']; ?><?= $current_lang['give_review']; ?>
+                <!-- Arvostelun antaminen-->
+                <a href="index.php?page=lisaaArvostelu">Tästä</a>
+            </h3>
         <?php else: ?>
             <?php foreach ($reviews as $review): ?>
                 <div class="review">
                     <h3>
+                        <!-- Arvostelun tiedot-->
                         <?= htmlspecialchars($review['otsikko']) ?>
                         <?php if ($review['kieli'] == 'fi'): ?>
                             <img src="kuvat/suomenlippu.png" alt="Finnish" class="lang-icon">
@@ -447,6 +446,7 @@ $products = $stmt->fetchAll();
                             <img src="kuvat/englantilippu.png" alt="English" class="lang-icon">
                         <?php endif; ?>
                     </h3>
+                    <!-- Tähtiarvostelu-->
                     <p class="rating">Arvostelu:
                         <?php
                         for ($i = 1; $i <= 5; $i++) {
@@ -454,6 +454,7 @@ $products = $stmt->fetchAll();
                         }
                         ?>
                     </p>
+                    <!-- Arvostelun Kommentti, otsikko, kirjoittaja ja julkaisu aika-->
                     <p><?= nl2br(htmlspecialchars($review['kommentti'])) ?></p>
                     <p><em><?= $current_lang['writer']; ?>: <?= htmlspecialchars($review['nimi']) ?>
                             <br>

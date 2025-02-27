@@ -3,8 +3,8 @@ require_once('config.php');
 session_start();
 $IsLoggedIn = $_SESSION['loggedin'] ?? false;
 
-// Set the default language to 'en' or 'fi' based on user choice or session
-$lang = $_SESSION['lang'] ?? 'en'; // Default to English
+// 
+$lang = $_SESSION['lang'] ?? 'fi'; // Suomi oletuskielenä
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
 
@@ -12,12 +12,12 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch the 3 newest products with the correct language field for the name
+// Haetaan kolme uusinta tuotetta tietokannasta oiekilla käännöksillä
 $products = [];
-$productNameColumn = ($lang === 'en') ? 'nimi_en' : 'nimi'; // Decide on the column based on language
-$productDescriptionColumn = ($lang === 'en') ? 'kuvaus_en' : 'kuvaus'; // Decide the column based on the language
+$productNameColumn = ($lang === 'en') ? 'nimi_en' : 'nimi'; //Valitaan nimi kielen mukaan
+$productDescriptionColumn = ($lang === 'en') ? 'kuvaus_en' : 'kuvaus'; // Valitaan kuvaus kielen mukaan
 
-// Update your SQL query to fetch the description in the correct language
+// Päivitetään  SQL query hakemaan tuotteen tiedot myös oikealla kielellä 
 $sql = "SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, hinta, kuva, varastomäärä FROM tuotteet ORDER BY id DESC LIMIT 3";
 $result = $conn->query($sql);
 
@@ -51,7 +51,6 @@ if ($result && $result->num_rows > 0) {
 $conn->close();
 ?>
 <style>
-    /* Popup and overlay styles */
     .popup {
         display: none;
         position: fixed;
@@ -121,7 +120,6 @@ $conn->close();
         margin-top: 10px;
     }
 
-    /* Keskitetään määrä */
     .keskita label,
     .keskita input {
         max-width: 50px;
@@ -167,11 +165,8 @@ $conn->close();
     .center-align {
         display: flex;
         justify-content: center;
-        /* Keskittää vaakasuunnassa */
         align-items: center;
-        /* Keskittää pystysuunnassa */
         margin: 20px 0;
-        /* Lisää tilaa ylä- ja alapuolelle */
     }
 
     .edit-btn {
@@ -188,17 +183,19 @@ $conn->close();
     .edit-btn:hover {
         background-color: rgb(85, 85, 145);
     }
-    .KG{
+
+    .KG {
         width: 300px;
     }
 </style>
 
 <div style="text-align: center; color: white;">
     <br> <br>
-<img src="kuvat/KGiconi.png" alt="KG" class="KG">
+    <img src="kuvat/KGiconi.png" alt="KG" class="KG">
     <h3><?= $current_lang['subtitle']; ?></h3>
     <p><?= $current_lang['description']; ?></p>
 
+    <!-- Tarkistetaan onko käyttäjä kirjautuneena ja näytettään linkit jos ei ole-->
     <?php if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true): ?>
         <a style="margin-right: 10px;" id="login-btn" class="edit-btn" href="index.php?page=login-form">
             <?= $current_lang['login']; ?>
@@ -209,6 +206,7 @@ $conn->close();
     <?php endif; ?>
 
     <br><br>
+    <!-- Näytetään uusimmat tuotteet-->
     <h2><?= $current_lang['latest_products']; ?></h2>
     <div style="display: flex; justify-content: center; gap: 20px;">
         <?php if (!empty($products)): ?>
@@ -219,26 +217,26 @@ $conn->close();
                                     '<?= htmlspecialchars($product['kuva']) ?>', 
                                     '<?= $product['hinta'] ?>', 
                                     '<?= $product['varastomäärä'] ?>')">
-                    <!-- Display product image -->
+                    <!-- Tuotteen kuva -->
                     <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>"
                         style="width: 100%; height: auto; border-radius: 5px;">
 
-                    <!-- Product name in the selected language -->
+                    <!-- Tuotteen nimi valitulla kielellä -->
                     <h4 style="color: gold;"><?= htmlspecialchars($product['nimi']) ?></h4>
 
-                    <!-- Product price with translation for 'Price' -->
+                    <!-- Tuotteen hinta ja "hinta" käännös -->
                     <p><strong><?= $current_lang['price']; ?>:</strong> €<?= number_format($product['hinta'], 2) ?></p>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <!-- Message when no products are available -->
+            <!-- Ei tuotteita saatavailla ilmoitus -->
             <p><?= $current_lang['no_products']; ?></p>
         <?php endif; ?>
     </div>
 </div>
 
 
-<!-- Popup modal -->
+<!-- Popup modali. Näyettään tuotteen tiedot-->
 <div class="overlay" id="overlay" onclick="hidePopup()"></div>
 <div class="popup" id="popup">
     <button type="button"
@@ -257,15 +255,18 @@ $conn->close();
         <input id="popup-quantity" type="number" min="1" value="1" step="1" onchange="updateSelectedQuantity()">
     </div>
 
-    <!-- Lisätään ostoskoriin iconi -->
+    <!-- Ostoskori iconi -->
     <div class="icon">
         <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin" onclick="addToCart()"
             style="width: 40px; height: 40px; cursor: pointer; margin-top: 10px;">
     </div>
+    
+    <!-- Arvostelun lisäys nappi -->
     <div class="center-align">
         <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu">
             <?= $current_lang['leaveReview']; ?></a>
 
+    <!-- Arviostelujen lukemis nappi -->
         <div class="center-align">
             <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">
                 <?= $current_lang['read_reviews']; ?></a>
@@ -275,13 +276,14 @@ $conn->close();
 </div>
 
 </div>
+<!-- Näytetään uusimmat arvostelut -->
 <div style="text-align: center; color: white; margin-top: 50px;">
     <h2><?= $current_lang['latest_reviews']; ?></h2>
 
     <a class="edit-btn" href="index.php?page=lisaaArvostelu">
         <?= $current_lang['leaveReview']; ?></a>
-        <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">
-                <?= $current_lang['read_reviews']; ?></a>
+    <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">
+        <?= $current_lang['read_reviews']; ?></a>
     <div class="reviews-container">
         <?php if (!empty($reviews)): ?>
             <?php foreach ($reviews as $review): ?>
@@ -303,6 +305,7 @@ $conn->close();
     </div>
 
     <script>
+        //Pop upin tietojen määrittelly
         function showPopup(id, title, description, imageUrl, price, stock) {
             const popup = document.getElementById('popup');
             const overlay = document.getElementById('overlay');
@@ -317,20 +320,21 @@ $conn->close();
                 return;
             }
 
-            // Update popup content
+            // Päivitetään popup sisältöä
             popupTitle.textContent = title || "No title";
             popupDescription.textContent = description || "No description";
             popupImg.src = imageUrl || "";
             popupPrice.textContent = "<?= $current_lang['price']; ?>: €" + parseFloat(price).toFixed(2);
             popupStock.textContent = "<?= $current_lang['Stock']; ?>: " + stock + " kpl";
 
-            // Set product ID for adding to cart
+            // Asetetaan product ID ostoskoriin lisäämistä varten 
             document.getElementById('popup').setAttribute('data-product-id', id);
 
             const addToCartIcon = document.querySelector('.popup .icon img');
             const quantityInput = document.getElementById('popup-quantity');
             const quantityLabel = document.querySelector('.keskita label');
 
+            //Lisätään ostoskoriin ja jos tuotteita ei ole tarpeeksi annetaan ilmoitus
             if (stock == 0) {
                 quantityInput.style.display = 'none';
                 quantityLabel.style.display = 'none';
@@ -345,7 +349,7 @@ $conn->close();
                 addToCartIcon.onclick = function () { addToCart(); };
             }
 
-            // Show the popup and overlay
+            // Näytetään pop up
             popup.classList.add('show');
             overlay.classList.add('show');
         }
@@ -397,32 +401,32 @@ $conn->close();
         }
 
         function searchProduct() {
-            // Get the search input value
+            // Haetaan search input määrä
             const searchValue = document.getElementById('searchInput').value.toLowerCase();
 
-            // Get all product elements
+            // Haetaan kaikki tuotteen elementit
             const products = document.querySelectorAll('.product');
 
-            // Loop through all products
+            // Loop kaikkien tuotteiden läpi
             products.forEach(product => {
-                // Get the product name
+                // Haetaan tuotteen nimi
                 const productName = product.querySelector('.name').textContent.toLowerCase();
 
-                // Check if the product name matches the search value
+                // Tarkistetaan sopiiko tuotteen nimi hakukentään 
                 if (searchValue == "") {
                     product.style.display = 'block';
                 }
                 else if (productName.includes(searchValue)) {
-                    // Show the product if it matches
+                    // Näyettään tuote jos sopii
                     product.style.display = 'block';
                 } else {
-                    // Hide the product if it doesn't match
+                    //Piilotetaan jos ei
                     product.style.display = 'none';
                 }
             });
         }
 
-        // Hide the popup
+        // Piilotetaan popup
         function hidePopup() {
             const popup = document.getElementById('popup');
             const overlay = document.getElementById('overlay');
@@ -431,13 +435,13 @@ $conn->close();
         }
 
         function filterByCategory() {
-            const selectedCategory = document.getElementById('categorySelect').value.toLowerCase(); // Get selected category
-            const products = document.querySelectorAll('.product'); // All product elements
+            const selectedCategory = document.getElementById('categorySelect').value.toLowerCase(); // Haetaan valittu kategoria
+            const products = document.querySelectorAll('.product'); // Kaikki tuotteen elementit
 
             products.forEach(product => {
-                const productCategories = product.getAttribute('data-categories').toLowerCase(); // Get product categories
+                const productCategories = product.getAttribute('data-categories').toLowerCase(); // Haetaan tuotteen kategoriat
 
-                // Show or hide products based on selected category
+                // Näytetään tai piilotetaan kategorian perusteella
                 if (selectedCategory === "all" || productCategories.includes(selectedCategory)) {
                     product.style.display = 'block';
                 } else {
