@@ -8,8 +8,6 @@ $cart = $_SESSION['cart'] ?? [];
 $totalPrice = $_SESSION['cart_total'] ?? 0;
 $memberId = $_SESSION['SESS_MEMBER_ID'] ?? null;
 
-
-// Checks if order token exists after confirming order in payment form page
 if (!isset($_GET['token']) || !isset($_SESSION['order_token']) || $_GET['token'] !== $_SESSION['order_token']) {
     header('Location: index.php?page=error');
     exit();
@@ -17,60 +15,101 @@ if (!isset($_GET['token']) || !isset($_SESSION['order_token']) || $_GET['token']
 
 unset($_SESSION['order_token']);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
-    $paymentMethod = htmlspecialchars($_POST['choice']);
-    $deliveryMethod = htmlspecialchars($_POST['choice2']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get the raw values for payment and delivery methods from the radio buttons
+    $paymentMethod = htmlspecialchars($_POST['choice']); // 'Bill', 'card', etc.
+    $deliveryMethod = htmlspecialchars($_POST['choice2']); // 'pickup', 'posted', etc.
+    
+    // Define English equivalents for payment methods
+    $paymentMethodEn = '';
+    switch ($paymentMethod) {
+        case 'Kortti':
+            $paymentMethodEn = 'Card';
+            break;
+        case 'Lasku':
+            $paymentMethodEn = 'Bill';
+            break;
+        // Add more mappings if necessary
+        default:
+            $paymentMethodEn = 'Unknown';
+            break;
+    }
+
+    // Define English equivalents for delivery methods
+    $deliveryMethodEn = '';
+    switch ($deliveryMethod) {
+        case 'Nouto':
+            $deliveryMethodEn = 'Pickup';
+            break;
+        case 'Postitus':
+            $deliveryMethodEn = 'Posted';
+            break;
+        // Add more mappings if necessary
+        default:
+            $deliveryMethodEn = 'Unknown';
+            break;
+    }
 }
 
 // Yhteys tietokantaan
 $link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
-if(!$link) {
+if (!$link) {
     die('Failed to connect to database: ' . mysqli_connect_error());
 }
 
-//Select database
+// Select database
 $db = mysqli_select_db($link, DB_DATABASE);
-if(!$db) {
+if (!$db) {
     die("Unable to select database");
-} 
+}
+
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Enable detailed error reporting
 
 // Aloita transaktio
 mysqli_begin_transaction($link);
 
 try {
-    // Lisää tilaus tietokantaan
-    $query = "INSERT INTO tilaukset (member_id, total_price, order_date, Maksutapa, Toimitustapa) VALUES (?, ?, NOW(), ?, ?)";
+    // Insert into tilaukset table
+    $query = "INSERT INTO tilaukset (member_id, total_price, order_date, Maksutapa, Toimitustapa, Maksutapa_en, Toimitustapa_en) VALUES (?, ?, NOW(), ?, ?, ?, ?)";
     $stmt = mysqli_prepare($link, $query);
-    mysqli_stmt_bind_param($stmt, 'idss', $memberId, $totalPrice, $paymentMethod, $deliveryMethod);
-    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_param($stmt, 'idssss', $memberId, $totalPrice, $paymentMethod, $deliveryMethod, $paymentMethodEn, $deliveryMethodEn);
+    
+    if (!mysqli_stmt_execute($stmt)) {
+        echo "Error inserting into tilaukset: " . mysqli_stmt_error($stmt);
+    }
 
     // Hae juuri lisätyn tilauksen ID
     $orderId = mysqli_insert_id($link);
+    echo "Order ID: " . $orderId;
 
-    // Lisää tuotteet tilaukseen
+    // Add products to tilaus_tuotteet
     $query = "INSERT INTO tilaus_tuotteet (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
     $stmt = mysqli_prepare($link, $query);
 
-    
     foreach ($cart as $item) {
-       $quantity = $item['quantity'];
-       $price = $item['price'];
-       $productId = $item['id'];
+        $quantity = $item['quantity'];
+        $price = $item['price'];
+        $productId = $item['id'];
 
         mysqli_stmt_bind_param($stmt, 'iiid', $orderId, $productId, $quantity, $price);
-        mysqli_stmt_execute($stmt);
+        if (!mysqli_stmt_execute($stmt)) {
+            echo "Error inserting into tilaus_tuotteet: " . mysqli_stmt_error($stmt);
+        }
 
+        // Update stock
         $updateStockQuery = "UPDATE tuotteet SET varastomäärä = varastomäärä - ? WHERE id = ?";
         $updateStmt = mysqli_prepare($link, $updateStockQuery);
         mysqli_stmt_bind_param($updateStmt, 'ii', $quantity, $productId);
-        mysqli_stmt_execute($updateStmt);
+        if (!mysqli_stmt_execute($updateStmt)) {
+            echo "Error updating stock: " . mysqli_stmt_error($updateStmt);
+        }
         mysqli_stmt_close($updateStmt);
     }
 
-    // Vahvista transaktio
+    // Commit transaction
     mysqli_commit($link);
 
-    // Tyhjennä ostoskori
+    // Clear cart
     unset($_SESSION['cart']);
     unset($_SESSION['cart_total']);
 
@@ -79,14 +118,15 @@ try {
     echo "<a href='index.php'>" . $current_lang['BackToHomepage'] . "</a>";
 
 } catch (Exception $e) {
-    // Peru transaktio virheen sattuessa
+    // Rollback transaction in case of error
     mysqli_rollback($link);
     echo "Tilausta ei voitu tallentaa: " . $e->getMessage();
 }
 
-// Sulje yhteys
+// Close connection
 mysqli_close($link);
 ?>
+
 
 
 <style>
