@@ -37,7 +37,7 @@ if ($conn->connect_error) {
 
 // Hae uusimmat arvostelut (3 viimeisintÃ¤)
 $reviews = [];
-$sql = "SELECT r.id, r.nimi, r.otsikko, r.kommentti, r.tÃ¤htiarvostelu, r.luotu, t.$productNameColumn AS tuote_nimi 
+$sql = "SELECT r.id, r.nimi, r.otsikko, r.kommentti, r.tähtiarvostelu, r.luotu, t.$productNameColumn AS tuote_nimi 
         FROM arvostelut r
         JOIN tuotteet t ON r.tuote_id = t.id 
         ORDER BY r.luotu DESC LIMIT 3";
@@ -328,8 +328,8 @@ $conn->close();
                             <a><?= $current_lang['review_title']; ?></a></strong> <?= htmlspecialchars($review['otsikko']) ?>
                     </p>
                     <p><strong><a><?= $current_lang['review']; ?></a></strong> <?= htmlspecialchars($review['kommentti']) ?></p>
-                    <p><strong><a><?= $current_lang['stars']; ?></a></strong> <?= str_repeat("â˜…", $review['tÃ¤htiarvostelu']) ?>
-                        <?= $review['tÃ¤htiarvostelu'] ?>/5
+                    <p><strong><a><?= $current_lang['stars']; ?></a></strong> <?= str_repeat("â˜…", $review['tähtiarvostelu']) ?>
+                        <?= $review['tähtiarvostelu'] ?>/5
                     </p>
                     <p><em><?= $current_lang['publish_date']; ?><?= date('d.m.Y', strtotime($review['luotu'])) ?></em></p>
                 </div>
