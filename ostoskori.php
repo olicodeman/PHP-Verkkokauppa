@@ -6,15 +6,15 @@ $cart = $_SESSION['cart'] ?? []; // Noudetaan ostoskori sessiosta
 if (isset($_POST['remove'])) {
     $indexToRemove = intval($_POST['index']); //haetaan tuotteen indexi
     unset($cart[$indexToRemove]); //tuotteen poisto
-    $_SESSION['cart'] = array_values($cart); //päivitetään sessio ja korjataan indexit
+    $_SESSION['cart'] = array_values($cart); //pÃ¤ivitetÃ¤Ã¤n sessio ja korjataan indexit
 }
 
-// Päivitetään varastomäärä
+// PÃ¤ivitetÃ¤Ã¤n varastomÃ¤Ã¤rÃ¤
 if (isset($_POST['update_quantity']) && isset($_POST['index'])) {
     $indexToUpdate = intval($_POST['index']);
     $newQuantity = intval($_POST['quantity']);
 
-    // päivitetään määrä ostoskorissa
+    // pÃ¤ivitetÃ¤Ã¤n mÃ¤Ã¤rÃ¤ ostoskorissa
     $cart[$indexToUpdate]['quantity'] = $newQuantity;
     $_SESSION['cart'] = $cart;
 }
@@ -22,7 +22,7 @@ if (isset($_POST['update_quantity']) && isset($_POST['index'])) {
 // Lasketaan kokonaishinta
 $totalPrice = 0;
 foreach ($cart as $item) {
-    // Varmistetaan, että 'price' ja 'quantity' ovat asetettuina
+    // Varmistetaan, ettÃ¤ 'price' ja 'quantity' ovat asetettuina
     if (isset($item['price']) && isset($item['quantity'])) {
         $totalPrice += $item['price'] * $item['quantity'];
     }
@@ -147,7 +147,7 @@ $_SESSION['cart_total'] = $totalPrice;
             gap: 10px;
         }
 
-        /* tyyli määrän näyttämiseen */
+        /* tyyli mÃ¤Ã¤rÃ¤n nÃ¤yttÃ¤miseen */
         #quantity-display {
             font-size: 1.2em;
             font-weight: bold;
@@ -182,7 +182,7 @@ $_SESSION['cart_total'] = $totalPrice;
             background-color: #218838;
         }
 
-        /* Action Form: napit vierekkäin*/
+        /* Action Form: napit vierekkÃ¤in*/
         .action-form {
             display: flex;
             justify-content: space-between;
@@ -286,10 +286,10 @@ $_SESSION['cart_total'] = $totalPrice;
                         alt="<?= isset($item['name']) ? htmlspecialchars($item['name']) : 'Unknown Product' ?>">
                     <div class="cart-item-details">
                         <h3><?= isset($item['name']) ? htmlspecialchars($item['name']) : 'Unknown Product' ?></h3>
-                        <p><?= $current_lang['price']; ?>: €<?= isset($item['price']) ? number_format($item['price'], 2) : '0.00' ?></p>
+                        <p><?= $current_lang['price']; ?>: â‚¬<?= isset($item['price']) ? number_format($item['price'], 2) : '0.00' ?></p>
                         <p><?= $current_lang['quantity']; ?>: <?= isset($item['quantity']) ? htmlspecialchars($item['quantity']) : '0' ?></p>
                         <p><?= $current_lang['Total']; ?>:
-                            €<?= isset($item['price']) && isset($item['quantity']) ? number_format($item['price'] * $item['quantity'], 2) : '0.00' ?>
+                            â‚¬<?= isset($item['price']) && isset($item['quantity']) ? number_format($item['price'] * $item['quantity'], 2) : '0.00' ?>
                         </p>
                     </div>
 
@@ -303,13 +303,13 @@ $_SESSION['cart_total'] = $totalPrice;
 
 
             <div class="cart-total">
-                <p><?= $current_lang['Total']; ?>: €<?= number_format($totalPrice, 2) ?></p>
+                <p><?= $current_lang['Total']; ?>: â‚¬<?= number_format($totalPrice, 2) ?></p>
             </div>
             <a href="index.php?page=maksuForm" class="checkout-btn"><?= $current_lang['Pay']; ?></a>
         <?php endif; ?>
     </div>
 
-    <!-- Modal määrän muuttamiseen  -->
+    <!-- Modal mÃ¤Ã¤rÃ¤n muuttamiseen  -->
     <div class="modal" id="quantity-modal">
         <div class="modal-content">
             <h3><?= $current_lang['ChangeQuantity']; ?></h3>
@@ -324,10 +324,10 @@ $_SESSION['cart_total'] = $totalPrice;
     </div>
 
     <script>
-        //Määritellään muuttuja nykyiselle indeksille
+        //MÃ¤Ã¤ritellÃ¤Ã¤n muuttuja nykyiselle indeksille
         let currentIndex = null;
 
-        //näyttää modalin ja asettaa tuotteen valitun määrän
+        //nÃ¤yttÃ¤Ã¤ modalin ja asettaa tuotteen valitun mÃ¤Ã¤rÃ¤n
         function openModal(index) {
             currentIndex = index;
             const quantity = <?= json_encode(array_column($cart, 'quantity')) ?>[currentIndex];
@@ -338,12 +338,12 @@ $_SESSION['cart_total'] = $totalPrice;
         function closeModal() {
             document.getElementById('quantity-modal').style.display = 'none';
         }
-        //päivitetään tuotteen määrä tarkistamalla varasto ja nykyisen määrän
+        //pÃ¤ivitetÃ¤Ã¤n tuotteen mÃ¤Ã¤rÃ¤ tarkistamalla varasto ja nykyisen mÃ¤Ã¤rÃ¤n
         function updateQuantity(amount) {
             const quantityDisplay = document.getElementById('quantity-display');
             let currentQuantity = parseInt(quantityDisplay.textContent);
 
-            // Tarkistetaan varaston riittävyys 
+            // Tarkistetaan varaston riittÃ¤vyys 
             const stock = <?= json_encode(array_column($cart, 'stock')) ?>[currentIndex];
             if (currentQuantity + amount <= 0) {
                 alert('<?= $current_lang['QuantityCanNotBe']; ?>');
@@ -355,7 +355,7 @@ $_SESSION['cart_total'] = $totalPrice;
             }
             quantityDisplay.textContent = currentQuantity + amount;
         }
-        //tallentaa päivitetyn määrän palvelimelle lähettämällä lomakkeen
+        //tallentaa pÃ¤ivitetyn mÃ¤Ã¤rÃ¤n palvelimelle lÃ¤hettÃ¤mÃ¤llÃ¤ lomakkeen
         function saveQuantity() {
             const newQuantity = parseInt(document.getElementById('quantity-display').textContent);
             const form = document.createElement('form');
@@ -365,7 +365,7 @@ $_SESSION['cart_total'] = $totalPrice;
             inputIndex.value = currentIndex;
             form.appendChild(inputIndex);
 
-            //lisätään tarvittavat tiedot lomakkeeseen
+            //lisÃ¤tÃ¤Ã¤n tarvittavat tiedot lomakkeeseen
             const inputQuantity = document.createElement('input');
             inputQuantity.name = 'quantity';
             inputQuantity.value = newQuantity;
@@ -376,7 +376,7 @@ $_SESSION['cart_total'] = $totalPrice;
             inputUpdateQuantity.value = 'true';
             form.appendChild(inputUpdateQuantity);
 
-            //lähettää lomakkeen
+            //lÃ¤hettÃ¤Ã¤ lomakkeen
             document.body.appendChild(form);
             form.submit();
         }

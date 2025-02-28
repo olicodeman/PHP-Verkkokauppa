@@ -24,7 +24,7 @@ try {
 
 // Haetaan tuotteet tietokannasta
 try {
-    $stmt = $pdo->prepare("SELECT id, nimi, kuvaus, kuva, hinta, varastomäärä FROM tuotteet");
+    $stmt = $pdo->prepare("SELECT id, nimi, kuvaus, kuva, hinta, varastomaara FROM tuotteet");
     $stmt->execute();
     $products = $stmt->fetchAll();
 } catch (PDOException $e) {
@@ -53,7 +53,7 @@ $sql = "
         t.id, 
         " . ($lang == 'en' ? "t.nimi_en" : "t.nimi") . " AS nimi,
         " . ($lang == 'en' ? "t.kuvaus_en" : "t.kuvaus") . " AS kuvaus,
-        t.kuva, t.hinta, t.varastomäärä,
+        t.kuva, t.hinta, t.varastomaara,
         COALESCE(GROUP_CONCAT(" . ($lang == 'en' ? "k.nimi_en" : "k.nimi") . " SEPARATOR ','), '') AS categories,
         COALESCE(AVG(a.arvosana), 0) AS avg_rating
     FROM tuotteet t
@@ -77,7 +77,7 @@ $products = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitchen Gadget Tuotesivu</title>
     <style>
-        /* tuote ikkunan määritykset*/
+        /* tuote ikkunan mÃ¤Ã¤ritykset*/
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -96,7 +96,7 @@ $products = $stmt->fetchAll();
             background-color: darkslateblue;
             transition: transform 0.3s, background-color 0.3s;
             padding: 20px;
-            /* Lisää vähän tilaa ympärille */
+            /* LisÃ¤Ã¤ vÃ¤hÃ¤n tilaa ympÃ¤rille */
         }
 
         .product:hover {
@@ -108,7 +108,7 @@ $products = $stmt->fetchAll();
             width: 100%;
             height: auto;
             object-fit: cover;
-            /* Varmistaa, että kuva täyttää alueen ilman venyttämistä */
+            /* Varmistaa, ettÃ¤ kuva tÃ¤yttÃ¤Ã¤ alueen ilman venyttÃ¤mistÃ¤ */
             background-color: slateblue;
         }
 
@@ -246,7 +246,7 @@ $products = $stmt->fetchAll();
             margin-top: 10px;
         }
 
-        /* Keskitetään määrä */
+        /* KeskitetÃ¤Ã¤n mÃ¤Ã¤rÃ¤ */
         .keskita label,
         .keskita input {
             max-width: 50px;
@@ -256,11 +256,11 @@ $products = $stmt->fetchAll();
         .center-align {
             display: flex;
             justify-content: center;
-            /* Keskittää vaakasuunnassa */
+            /* KeskittÃ¤Ã¤ vaakasuunnassa */
             align-items: center;
-            /* Keskittää pystysuunnassa */
+            /* KeskittÃ¤Ã¤ pystysuunnassa */
             margin: 20px 0;
-            /* Lisää tilaa ylä- ja alapuolelle */
+            /* LisÃ¤Ã¤ tilaa ylÃ¤- ja alapuolelle */
         }
 
         .edit-btn {
@@ -283,6 +283,30 @@ $products = $stmt->fetchAll();
     margin: 5px 0;
 }
 
+/* Adjust the popup width on smaller screens */
+@media (max-width: 768px) {
+    .popup {
+        width: 95%; /* Increase width on smaller screens */
+        max-width: 450px; /* Make it larger while maintaining some limits */
+    }
+.product-grid {
+        width: 90%; /* Product grid stays wider */
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Bigger products */
+    }
+form {
+    width: 100%;
+    max-width: 350px; /* Adjust as needed */
+    margin: 0 auto; /* Centers the form */
+}
+
+}
+
+/* Adjust the product grid for larger product display on smaller screens */
+@media (max-width: 600px) {
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Increase size of products */
+    }
+}
     </style>
 </head>
 <script>
@@ -317,7 +341,7 @@ $products = $stmt->fetchAll();
         <?php foreach ($products as $product): ?>
             <div class="product" data-id="<?= htmlspecialchars($product['id']) ?>"
                 data-categories="<?= htmlspecialchars($product['categories']) ?>"
-                onclick="showPopup('<?= htmlspecialchars($product['id']) ?>', '<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
+                onclick="showPopup('<?= htmlspecialchars($product['id']) ?>', '<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomaara']) ?>')">
                 
                 <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
 
@@ -330,19 +354,19 @@ $products = $stmt->fetchAll();
                 <!-- Product rating -->
                 <p class="rating">
                     <?php
-                    $rating = round($product['avg_rating']); // Pyöristetään lähimpään kokonaislukuun
+                    $rating = round($product['avg_rating']); // PyÃ¶ristetÃ¤Ã¤n lÃ¤himpÃ¤Ã¤n kokonaislukuun
                     for ($i = 1; $i <= 5; $i++) {
                         if ($i <= $rating) {
-                            echo '★'; // Täytetty tähti
+                            echo 'â˜…'; // TÃ¤ytetty tÃ¤hti
                         } else {
-                            echo '☆'; // Tyhjä tähti
+                            echo 'â˜†'; // TyhjÃ¤ tÃ¤hti
                         }
                     }
                     ?>
                 </p>
 
                 <!-- Product price -->
-                <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
+                <p class="price">â‚¬<?= number_format($product['hinta'], 2) ?></p>
             </div>
         <?php endforeach; ?>
     </div>
@@ -351,20 +375,20 @@ $products = $stmt->fetchAll();
     <!-- Tummennettu tausta -->
     <div class="overlay" id="overlay" onclick="hidePopup()"></div>
     <div class="popup" id="popup">
-        <button type="button" class="close-btn" onclick="hidePopup(event)">×</button>
+        <button type="button" class="close-btn" onclick="hidePopup(event)">Ã—</button>
         <img id="popup-img" src="" alt="Tuotteen kuva">
         <h2 id="popup-title"></h2>
         <p id="popup-description"></p>
         <p id="popup-price"></p>
         <p id="popup-varastomaara"></p>
-        <!-- Määrä jota halutaan ostaa -->
+        <!-- MÃ¤Ã¤rÃ¤ jota halutaan ostaa -->
         <div class="keskita">
             <label for="popup-quantity"><?= $current_lang['quantity']; ?>:</label>
             <input id="popup-quantity" type="number" min="1" value="1" step="1" onchange="updateSelectedQuantity()">
         </div>
-        <!-- Ostoskoriin lisääminen -->
+        <!-- Ostoskoriin lisÃ¤Ã¤minen -->
         <div class="icon">
-            <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin"
+            <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="LisÃ¤Ã¤ ostoskoriin"
                 onclick="addToCartFromPopup()">
         </div>
         <div class="center-align">
@@ -406,45 +430,45 @@ $products = $stmt->fetchAll();
         });
     }
 
-            // näytetään tuote popup
+            // nÃ¤ytetÃ¤Ã¤n tuote popup
             function showPopup(id, title, description, imageUrl, price, stock) {
                 // popup yksityiskohdat
                 document.getElementById('popup-title').textContent = title;
                 document.getElementById('popup-description').textContent = description;
                 document.getElementById('popup-img').src = imageUrl;
-                document.getElementById('popup-price').textContent = "<?= $current_lang['price']; ?>: €" + parseFloat(price).toFixed(2);
+                document.getElementById('popup-price').textContent = "<?= $current_lang['price']; ?>: â‚¬" + parseFloat(price).toFixed(2);
                 document.getElementById('popup-varastomaara').textContent = "<?= $current_lang['Stock']; ?>: " + stock + " kpl";
 
-                // Asetetaan tuote ID ostoskoriinlisäämistä varten 
+                // Asetetaan tuote ID ostoskoriinlisÃ¤Ã¤mistÃ¤ varten 
                 document.getElementById('popup').setAttribute('data-product-id', id);
 
-                // Tarkistetaan varasto ja päivitetään popup sen mukaan 
-                const addToCartIcon = document.querySelector('.popup .icon img'); // Lisää ostoskoriin icon
-                const quantityInput = document.getElementById('popup-quantity'); // Määrä joka on asetettu 
+                // Tarkistetaan varasto ja pÃ¤ivitetÃ¤Ã¤n popup sen mukaan 
+                const addToCartIcon = document.querySelector('.popup .icon img'); // LisÃ¤Ã¤ ostoskoriin icon
+                const quantityInput = document.getElementById('popup-quantity'); // MÃ¤Ã¤rÃ¤ joka on asetettu 
                 const quantityLabel = document.querySelector('.keskita label');
 
                 if (stock == 0) {
-                    // Varaston määrä on 0, piilotetaan kohtia jos näin
-                    quantityInput.style.display = 'none'; // piilotetaan määrä
-                    quantityLabel.style.display = 'none'; // Piilotetaan määrän label
-                    const stockMessageElement = document.getElementById('popup-varastomaara'); // Näytetään varastotyhjä viesti
-                    stockMessageElement.innerHTML = `<span style="color: red;">Varasto tyhjä</span>, täytämme sen mahdollisimman pian!`;
+                    // Varaston mÃ¤Ã¤rÃ¤ on 0, piilotetaan kohtia jos nÃ¤in
+                    quantityInput.style.display = 'none'; // piilotetaan mÃ¤Ã¤rÃ¤
+                    quantityLabel.style.display = 'none'; // Piilotetaan mÃ¤Ã¤rÃ¤n label
+                    const stockMessageElement = document.getElementById('popup-varastomaara'); // NÃ¤ytetÃ¤Ã¤n varastotyhjÃ¤ viesti
+                    stockMessageElement.innerHTML = `<span style="color: red;">Varasto tyhjÃ¤</span>, tÃ¤ytÃ¤mme sen mahdollisimman pian!`;
 
 
-                    // Muutetaan kuva ja laitetaan niin ettei sitä voida klikata
+                    // Muutetaan kuva ja laitetaan niin ettei sitÃ¤ voida klikata
                     addToCartIcon.src = "https://img.icons8.com/?size=100&id=7850&format=png&color=FFFFFF"; // muutetaan kuva 
                     addToCartIcon.onclick = null; //Ei voi klikata
                 } else {
-                    // Varastossa on tuote joten näytetään määrä ja miten paljon asiakas haluaa tilata
-                    quantityInput.style.display = 'block'; // Näytetään määrä jota voidaan valita
-                    quantityLabel.style.display = 'block'; // Näytetään määrä
+                    // Varastossa on tuote joten nÃ¤ytetÃ¤Ã¤n mÃ¤Ã¤rÃ¤ ja miten paljon asiakas haluaa tilata
+                    quantityInput.style.display = 'block'; // NÃ¤ytetÃ¤Ã¤n mÃ¤Ã¤rÃ¤ jota voidaan valita
+                    quantityLabel.style.display = 'block'; // NÃ¤ytetÃ¤Ã¤n mÃ¤Ã¤rÃ¤
 
-                    // Muokataan kuva toiminnalliseksi ja laitetaan alkuperäinen kuva
+                    // Muokataan kuva toiminnalliseksi ja laitetaan alkuperÃ¤inen kuva
                     addToCartIcon.src = "https://cdn-icons-png.flaticon.com/512/6713/6713719.png";
                     addToCartIcon.onclick = function () { addToCartFromPopup(); }; // toiminnallinen klikkaus
                 }
 
-                // näytetään popup ja overlay
+                // nÃ¤ytetÃ¤Ã¤n popup ja overlay
                 document.getElementById('popup').classList.add('show');
                 document.getElementById('overlay').classList.add('show');
             }
@@ -461,10 +485,10 @@ $products = $stmt->fetchAll();
                 hidePopup(); // piilotetaan popup kun painetaan poistumista
             });
 
-            //lisätään tuote ostoskoriin popupista
+            //lisÃ¤tÃ¤Ã¤n tuote ostoskoriin popupista
             function addToCartFromPopup() {
                 const title = document.getElementById('popup-title').textContent;
-                const price = document.getElementById('popup-price').textContent.replace('<?= $current_lang['price']; ?>: €', '');
+                const price = document.getElementById('popup-price').textContent.replace('<?= $current_lang['price']; ?>: â‚¬', '');
                 const stock = parseInt(document.getElementById('popup-varastomaara').textContent.replace('<?= $current_lang['Stock']; ?>: ', '').replace(' kpl', ''), 10);
                 const quantity = parseInt(document.getElementById('popup-quantity').value, 10);
                 const productID = document.getElementById('popup').getAttribute('data-product-id');
@@ -499,7 +523,7 @@ $products = $stmt->fetchAll();
                     })
                     .catch(error => {
                         console.error('Virhe:', error);
-                        alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
+                        alert('Yhteysvirhe. YritÃ¤ myÃ¶hemmin uudelleen.');
                     });
             }
         </script>

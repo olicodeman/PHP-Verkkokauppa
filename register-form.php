@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Start output buffering
 ob_start();
 
@@ -104,8 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Connect to mysql server
     $link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD);
     if (!$link) {
-        die('Failed to connect to server: ' . mysql_error());
-    }
+    die('Failed to connect to server: ' . mysqli_connect_error());
+}
 
     // Select database
     $db = mysqli_select_db($link, DB_DATABASE);
@@ -139,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errflag = true;
     }
     if($email == '') {
-        $errmsg_arr[] = '<p><b style="color: red;">*</b> Sähköposti puuttuu</p>';
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> SÃ¤hkÃ¶posti puuttuu</p>';
         $errflag = true;
     }
     if($address == '') {
@@ -151,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errflag = true;
     }
     if($login == '') {
-        $errmsg_arr[] = '<p><b style="color: red;">*</b> Käyttäjätunnus puuttuu</p>';
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> KÃ¤yttÃ¤jÃ¤tunnus puuttuu</p>';
         $errflag = true;
     }
     if($password == '') {
@@ -163,17 +166,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errflag = true;
     }
     if( strcmp($password, $cpassword) != 0 ) {
-        $errmsg_arr[] = '<p>Salasanat eivät ole samoja</p>';
+        $errmsg_arr[] = '<p>Salasanat eivÃ¤t ole samoja</p>';
         $errflag = true;
     }
 
     // Check for duplicate login ID
     if($login != '') {
-        $qry = "SELECT * FROM Members WHERE username='$login'";
+        $qry = "SELECT * FROM members WHERE username='$login'";
         $result = mysqli_query($link, $qry);
         if($result) {
             if(mysqli_num_rows($result) > 0) {
-                $errmsg_arr[] = '<p style="text-align: center;">Tili tällä käyttäjätunnuksella on jo olemassa.<p>';
+                $errmsg_arr[] = '<p style="text-align: center;">Tili tÃ¤llÃ¤ kÃ¤yttÃ¤jÃ¤tunnuksella on jo olemassa.<p>';
                 $errflag = true;
             }
             @mysqli_free_result($result);
@@ -193,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Create INSERT query
-    $qry = "INSERT INTO Members(firstname, lastname, email, address, phonenumber, username, password) VALUES('$fname','$lname','$email', '$address', '$number', '$login','".md5($_POST['password'])."')";
+    $qry = "INSERT INTO members(firstname, lastname, email, address, phonenumber, username, password) VALUES('$fname','$lname','$email', '$address', '$number', '$login','".md5($_POST['password'])."')";
     $result = @mysqli_query($link, $qry);
 
     // Check whether the query was successful or not

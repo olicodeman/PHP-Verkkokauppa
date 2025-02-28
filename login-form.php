@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 
 if (isset($_SESSION['message'])) {
@@ -22,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	//Connect to mysql server
 	$link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD);
 	if (!$link) {
-		die('Failed to connect to server: ' . mysql_error());
+		die('Failed to connect to server: ' . mysqli_connect_error());
 	}
 
 	//Valitaan tietokanta
@@ -42,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$login = clean($link, $_POST['login']);
 	$password = clean($link, $_POST['password']);
 
-	//Tietojen täyttö
+	//Tietojen tÃ¤yttÃ¶
 	if ($login == '') {
 		$errmsg_arr[] = 'Login ID missing';
 		$errflag = true;
@@ -61,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 
 	//Luodaan query
-	$qry = "SELECT * FROM Members WHERE username='$login' AND password='" . md5($_POST['password']) . "'";
+	$qry = "SELECT * FROM members WHERE username='$login' AND password='" . md5($_POST['password']) . "'";
 	$result = mysqli_query($link, $qry);
 
 	//Tarkistetaan oliko query onnistunut
@@ -85,9 +88,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				exit();
 			}
 		} else {
-			$_SESSION['message'] = "Kirjautuminen epäonnistunut";
+			$_SESSION['message'] = "Kirjautuminen epÃ¤onnistunut";
 			header("location: index.php?page=login-form");
-			echo "Kirjautuminen epäonnistunut";
+			echo "Kirjautuminen epÃ¤onnistunut";
 			exit();
 		}
 	} else {

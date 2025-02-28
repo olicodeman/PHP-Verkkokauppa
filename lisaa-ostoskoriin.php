@@ -7,13 +7,13 @@ ini_set('log_errors', 1);
 ini_set('error_log', '/path/to/php-error.log');
 
 try {
-    // Tarkistetaan onko käyttäjä kirjautuneena
+    // Tarkistetaan onko kÃ¤yttÃ¤jÃ¤ kirjautuneena
     if (!isset($_SESSION['SESS_MEMBER_ID'])) {
-        echo json_encode(['success' => false, 'message' => 'Ennen ostoskoriin lisäämistä, kirjaudu sisään.']);
+        echo json_encode(['success' => false, 'message' => 'Ennen ostoskoriin lisÃ¤Ã¤mistÃ¤, kirjaudu sisÃ¤Ã¤n.']);
         exit;
     }
 
-    // Varmistetaan että ostoskori on toiminnassa
+    // Varmistetaan ettÃ¤ ostoskori on toiminnassa
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
@@ -32,7 +32,7 @@ try {
     $stock = intval($data['stock']);
     $imageURL = htmlspecialchars($data['image']);
     $quantity = isset($data['quantity']) && is_numeric($data['quantity']) && $data['quantity'] > 0
-        ? min(intval($data['quantity']), $stock) // Käytetään pienempää määrää quantityn ja stockin välillä 
+        ? min(intval($data['quantity']), $stock) // KÃ¤ytetÃ¤Ã¤n pienempÃ¤Ã¤ mÃ¤Ã¤rÃ¤Ã¤ quantityn ja stockin vÃ¤lillÃ¤ 
         : 1;
 
 
@@ -46,14 +46,14 @@ try {
     $found = false;
     foreach ($_SESSION['cart'] as &$item) {
         if ($item['id'] === $productID) {
-            // Jos tuote on jo ostoskorissa, päivitä määrä
-            $item['quantity'] = min($item['quantity'] + $quantity, $stock); // käyetään tuotteen tämänhetkistä määrää
+            // Jos tuote on jo ostoskorissa, pÃ¤ivitÃ¤ mÃ¤Ã¤rÃ¤
+            $item['quantity'] = min($item['quantity'] + $quantity, $stock); // kÃ¤yetÃ¤Ã¤n tuotteen tÃ¤mÃ¤nhetkistÃ¤ mÃ¤Ã¤rÃ¤Ã¤
             $found = true;
             break;
         }
     }
 
-    // jos tuote ei ole jo ostoskorissa, lisätään se
+    // jos tuote ei ole jo ostoskorissa, lisÃ¤tÃ¤Ã¤n se
     if (!$found) {
         $_SESSION['cart'][] = [
             'id' => $productID,
@@ -65,13 +65,13 @@ try {
         ];
     }
 
-    // lasketaan yhteensä hinta uuelleen
+    // lasketaan yhteensÃ¤ hinta uuelleen
     $_SESSION['cart_total'] = array_reduce($_SESSION['cart'], function ($carry, $item) {
         return $carry + ($item['price'] * $item['quantity']);
     }, 0);
 
     // onnistunut ilmoitus
-    echo json_encode(['success' => true, 'message' => 'Tuote lisätty ostoskoriin.']);
+    echo json_encode(['success' => true, 'message' => 'Tuote lisÃ¤tty ostoskoriin.']);
 } catch (Exception $e) {
     // Virheilmoitus
     echo json_encode(['success' => false, 'message' => 'Palvelinvirhe: ' . $e->getMessage()]);

@@ -2,7 +2,7 @@
 require_once("auth.php");
 require_once("config.php");
 
-//Varmistetaan että ollaan kirjautuneena adminina
+//Varmistetaan ettÃ¤ ollaan kirjautuneena adminina
 $login = $_SESSION['SESS_LOGIN'];
 
 //Jos ei ole admin saadaan error
@@ -26,7 +26,7 @@ if (!$db) {
 $qry = "SELECT * FROM tuotteet";
 $result = mysqli_query($link, $qry);
 
-$qry = "SELECT id, nimi, varastomäärä FROM tuotteet WHERE varastomäärä = 3 OR varastomäärä < 3 ORDER BY varastomäärä ASC";
+$qry = "SELECT id, nimi, varastomaara FROM tuotteet WHERE varastomaara = 3 OR varastomaara < 3 ORDER BY varastomaara ASC";
 $result2 = mysqli_query($link, $qry);
 
 $qry = "SELECT tt.product_id, 
@@ -164,28 +164,28 @@ $result4 = mysqli_query($link, $qry);
 
 <body>
     <div style="text-align: center; color: white;">
-        <h1>Ylläpitäjä paneli</h1>
+        <h1>YllÃ¤pitÃ¤jÃ¤ paneli</h1>
         <a href="index.php?page=logout">Kirjaudu ulos</a> | <a href="index.php?page=profiili">Verkkokauppa</a>
         <br><br>
         <a onclick="showAnalytics()" style="cursor: pointer;" class="reports-btn">Raportit ja analytiikka</a>
         <h3>Muokkaa tai poista tuotteita verkkokaupasta</h3>
         <?php
 
-        //Näytetään tuotteen tiedot taulukossa. Poisto ja muokkaus mahdollisuus.
+        //NÃ¤ytetÃ¤Ã¤n tuotteen tiedot taulukossa. Poisto ja muokkaus mahdollisuus.
         if ($result && mysqli_num_rows($result) > 0) {
             echo '<table border="1" cellpadding="10" cellspacing="5" class="adminproductview">';
-            echo '<tr><th>Tuote ID</th><th>Nimi</th><th>Kuvaus</th><th>Hinta</th><th>Varastomäärä</th><th>Toiminnot</th></tr>';
+            echo '<tr><th>Tuote ID</th><th>Nimi</th><th>Kuvaus</th><th>Hinta</th><th>Varastomaara</th><th>Toiminnot</th></tr>';
             while ($row = mysqli_fetch_assoc($result)) {
                 echo '<tr>';
                 echo '<td>' . htmlspecialchars($row['id']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['nimi']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['kuvaus']) . '</td>';
-                echo '<td>' . htmlspecialchars($row['hinta']) . ' €</td>';
-                echo '<td>' . htmlspecialchars($row['varastomäärä']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['hinta']) . ' â‚¬</td>';
+                echo '<td>' . htmlspecialchars($row['varastomaara']) . '</td>';
                 echo '<td>';
                 echo '<a href="edit-tuote.php?id=' . $row['id'] . '" class="admin-btn">Muokkaa</a> ';
                 echo ' | ';
-                echo '<a href="poista-tuote.php?id=' . $row['id'] . '" class="admin-btn" onclick="return confirm(\'Haluatko varmasti poistaa tämän tuotteen?\')">Poista</a>';
+                echo '<a href="poista-tuote.php?id=' . $row['id'] . '" class="admin-btn" onclick="return confirm(\'Haluatko varmasti poistaa tÃ¤mÃ¤n tuotteen?\')">Poista</a>';
                 echo '</tr>';
             }
             echo '</table>';
@@ -194,22 +194,22 @@ $result4 = mysqli_query($link, $qry);
         }
         ?>
         <br>
-        <!-- Tuotteen lisäys nappi -->
-        <a style="margin-bottom: 20px;" href="lisaa-tuote.php" class="edit-btn">Lisää tuotteita</a>
+        <!-- Tuotteen lisÃ¤ys nappi -->
+        <a style="margin-bottom: 20px;" href="lisaa-tuote.php" class="edit-btn">LisÃ¤Ã¤ tuotteita</a>
     </div>
 
     <!-- Myynti ja raportti analytiikkan tarkistus -->
     <div id="overlay">
         <div id="analytics" class="analyticsPopup">
-            <a style="color: white; background-color: darkslateblue;" class="close-btn" onclick="closeAnalytics()">×</a>
+            <a style="color: white; background-color: darkslateblue;" class="close-btn" onclick="closeAnalytics()">Ã—</a>
             <h2>Myynti raportit ja analytiikka</h2>
-            <h3>Myydyimmät tuotteet</h3>
+            <h3>MyydyimmÃ¤t tuotteet</h3>
             <?php if ($result3 && mysqli_num_rows($result3) > 0): ?>
                 <table border="1" cellpadding="10" cellspacing="5" class="analytictables">
                     <tr>
                         <th>ID</th>
                         <th>Nimi</th>
-                        <th>Myyty määrä</th>
+                        <th>Myyty mÃ¤Ã¤rÃ¤</th>
                         <th>Kokonaismyynti</th>
                     </tr>
                     <?php while ($row = mysqli_fetch_assoc($result3)): ?>
@@ -217,17 +217,17 @@ $result4 = mysqli_query($link, $qry);
                             <td><?= htmlspecialchars($row['product_id']) ?></td>
                             <td><?= htmlspecialchars($row['nimi']) ?></td>
                             <td><?= htmlspecialchars($row['total_sold']) ?></td>
-                            <td><?= number_format(htmlspecialchars($row['total_revenue']), 2) ?> €</td>
+                            <td><?= number_format(htmlspecialchars($row['total_revenue']), 2) ?> â‚¬</td>
                         </tr>
                     <?php endwhile; ?>
                 </table>
             <?php endif; ?>
-            <h3>Tilausmäärä per tuotekatgoria</h3>
+            <h3>TilausmÃ¤Ã¤rÃ¤ per tuotekatgoria</h3>
             <?php if ($result4 && mysqli_num_rows($result4) > 0): ?>
                 <table border="1" cellpadding="10" cellspacing="5" class="analytictables">
                     <tr>
                         <th>Nimi</th>
-                        <th>Tilausmäärä</th>
+                        <th>TilausmÃ¤Ã¤rÃ¤</th>
                     </tr>
                     <?php while ($row = mysqli_fetch_assoc($result4)): ?>
                         <tr>
@@ -243,13 +243,13 @@ $result4 = mysqli_query($link, $qry);
                     <tr>
                         <th>ID</th>
                         <th>Nimi</th>
-                        <th>Varastomäärä</th>
+                        <th>Varastomaara</th>
                     </tr>
                     <?php while ($row = mysqli_fetch_assoc($result2)): ?>
                         <tr>
                             <td><?= htmlspecialchars($row['id']) ?></td>
                             <td><?= htmlspecialchars($row['nimi']) ?></td>
-                            <td style="color: red; font-weight: bold;"><?= htmlspecialchars($row['varastomäärä']) ?></td>
+                            <td style="color: red; font-weight: bold;"><?= htmlspecialchars($row['varastomaara']) ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </table>

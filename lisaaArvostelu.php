@@ -15,7 +15,7 @@ try {
 // Kieli valinta haetaan sessiosta tai laitetaan oletukseksi suomeksi
 $language = isset($_SESSION['lang']) && $_SESSION['lang'] === 'en' ? 'en' : 'fi';
 
-// Valitaan käännösket valitun kielen mukaan
+// Valitaan kÃ¤Ã¤nnÃ¶sket valitun kielen mukaan
 $fieldName = $language === 'en' ? 'nimi_en' : 'nimi';
 
 // Haetaan tiedot valitun kielen mukaan 
@@ -33,15 +33,15 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tuote_id = intval($_POST['tuote_id']);
     $nimi = htmlspecialchars(trim($_POST['nimi']));
-    $sähköposti = htmlspecialchars(trim($_POST['sähköposti']));
+    $sÃ¤hkÃ¶posti = htmlspecialchars(trim($_POST['sÃ¤hkÃ¶posti']));
     $otsikko = htmlspecialchars(trim($_POST['otsikko']));
     $kommentti = htmlspecialchars(trim($_POST['kommentti']));
-    $tähtiarvostelu = intval($_POST['tähtiarvostelu']);
+    $tÃ¤htiarvostelu = intval($_POST['tÃ¤htiarvostelu']);
     $kieli = htmlspecialchars(trim($_POST['kieli'])); // Get selected language
 
-    // Tarkistetaan syötetyt asiat
-    if (empty($nimi) || empty($sähköposti) || empty($otsikko) || empty($kommentti) || empty($tähtiarvostelu) || empty($tuote_id) || empty($kieli)) {
-        die("Täytä kaikki kentät.");
+    // Tarkistetaan syÃ¶tetyt asiat
+    if (empty($nimi) || empty($sÃ¤hkÃ¶posti) || empty($otsikko) || empty($kommentti) || empty($tÃ¤htiarvostelu) || empty($tuote_id) || empty($kieli)) {
+        die("TÃ¤ytÃ¤ kaikki kentÃ¤t.");
     }
 
     // Tarkistetaan onko tuote tietokannassa
@@ -53,15 +53,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Virhe: Tuote ei ole olemassa.");
     }
 
-    // Lisätään tuotearvostelu tietokantaan
-    $sql = "INSERT INTO arvostelut (tuote_id, nimi, sähköposti, otsikko, kommentti, tähtiarvostelu, kieli) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $pdo->prepare($sql);
-    if ($stmt->execute([$tuote_id, $nimi, $sähköposti, $otsikko, $kommentti, $tähtiarvostelu, $kieli])) {
-        echo "Arvostelu tallennettu onnistuneesti!";
-    } else {
-        echo "Virhe tallentaessa arvostelua.";
-    }
+    // LisÃ¤tÃ¤Ã¤n tuotearvostelu tietokantaan
+// Insert review into the database
+$sql = "INSERT INTO arvostelut (tuote_id, nimi, sähköposti, otsikko, kommentti, tähtiarvostelu, kieli) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)";
+$stmt = $pdo->prepare($sql);
+if ($stmt->execute([$tuote_id, $nimi, $sahkoposti, $otsikko, $kommentti, $tahtiarvostelu, $kieli])) {
+    echo "Arvostelu tallennettu onnistuneesti!";
+} else {
+    echo "Virhe tallennettaessa arvostelua.";
+}
 }
 
 ?>
@@ -173,14 +174,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </select>
 
         <div id="product-details">
-            <!-- Tuotteen tiedot näkyy tässä -->
+            <!-- Tuotteen tiedot nÃ¤kyy tÃ¤ssÃ¤ -->
         </div>
 
         <label for="nimi"><?= $current_lang['FirstName']; ?>:</label>
         <input type="text" id="nimi" name="nimi" required>
 
-        <label for="sähköposti"><?= $current_lang['Email']; ?>:</label>
-        <input type="email" id="sähköposti" name="sähköposti" required>
+        <label for="sÃ¤hkÃ¶posti"><?= $current_lang['Email']; ?>:</label>
+        <input type="email" id="sÃ¤hkÃ¶posti" name="sÃ¤hkÃ¶posti" required>
 
         <label for="otsikko"><?= $current_lang['review_title']; ?></label>
         <input type="text" id="otsikko" name="otsikko" required>
@@ -189,16 +190,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <textarea id="kommentti" name="kommentti" required></textarea>
 
         <div class="star-rating">
-            <input type="radio" id="star5" name="tähtiarvostelu" value="5" required>
-            <label for="star5">★</label>
-            <input type="radio" id="star4" name="tähtiarvostelu" value="4">
-            <label for="star4">★</label>
-            <input type="radio" id="star3" name="tähtiarvostelu" value="3">
-            <label for="star3">★</label>
-            <input type="radio" id="star2" name="tähtiarvostelu" value="2">
-            <label for="star2">★</label>
-            <input type="radio" id="star1" name="tähtiarvostelu" value="1">
-            <label for="star1">★</label>
+            <input type="radio" id="star5" name="tÃ¤htiarvostelu" value="5" required>
+            <label for="star5">â˜…</label>
+            <input type="radio" id="star4" name="tÃ¤htiarvostelu" value="4">
+            <label for="star4">â˜…</label>
+            <input type="radio" id="star3" name="tÃ¤htiarvostelu" value="3">
+            <label for="star3">â˜…</label>
+            <input type="radio" id="star2" name="tÃ¤htiarvostelu" value="2">
+            <label for="star2">â˜…</label>
+            <input type="radio" id="star1" name="tÃ¤htiarvostelu" value="1">
+            <label for="star1">â˜…</label>
         </div>
 
         <!-- Kieli valinta napit-->
@@ -233,13 +234,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ? `<img class="product-image" src="${data.kuva}" alt="${data.nimi}">`
                 : '<p>No image available for this product.</p>';
 
-            // Näytetään tuotteen tiedot dynaamisesti
+            // NÃ¤ytetÃ¤Ã¤n tuotteen tiedot dynaamisesti
             const productDetailsHTML = `
                 <div class="product-details">
                     <h2>${data.nimi}</h2>
                     ${imageHTML}
                     <p>${data.kuvaus}</p>
-                    <p><?= $current_lang['price']; ?>: €${parseFloat(data.hinta).toFixed(2)}</p>
+                    <p><?= $current_lang['price']; ?>: â‚¬${parseFloat(data.hinta).toFixed(2)}</p>
                 </div>
             `;
             document.getElementById('product-details').innerHTML = productDetailsHTML;

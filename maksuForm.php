@@ -26,7 +26,7 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 		die("Unable to select database");
 	}
 
-	$qry = "SELECT address, phonenumber FROM Members WHERE member_id = " . intval($_SESSION['SESS_MEMBER_ID']);
+	$qry = "SELECT address, phonenumber FROM members WHERE member_id = " . intval($_SESSION['SESS_MEMBER_ID']);
 	$result = mysqli_query($link, $qry);
 	
 	if ($result) {
@@ -38,45 +38,66 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 
 
 <body>
-	<style>
-.hidden {
-    display: none;
-}
-@media (max-width: 500px) {
+	<style>@media (max-width: 600px) {
     .resize {
-        width: 175px;  
-        font-size: 12px;
+        width: 85%;  
+        font-size: 14px;
+        padding: 8px;
     }
     #lo, #crdnmb {
-        width: 175px !important;
+        width: 85% !important;
     }
 }
+
 @media (max-width: 400px) {
     .resize {
-        width: 150px;  
-        font-size: 10px;
+        width: 90%;
+        font-size: 12px;
+        padding: 6px;
     }
     #lo, #crdnmb {
-        width: 160px !important;
+        width: 90% !important;
     }
 }
+
+@media (max-width: 500px) {
+    form {
+        width: 600px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    form {
+        width: 95%;
+    }
+}.hidden {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    #contentOption1, #contentOption2 {
+        width: 100%;
+    }
+}
+
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <form id="paymentForm" action="tilausKasittely.php?token=<?= htmlspecialchars($token)?>" method="POST">
     <div style="text-align: center;">
         <h1><?= $current_lang['OrderConfirm']; ?></h1>
-
+<input type="hidden" id="Maksutapa_en" name="Maksutapa_en">
         <?php if (empty($cart)): ?>
             <p><?= $current_lang['CartEmpty']; ?></p>
         <?php else: ?>
             <?php foreach ($cart as $item): ?>
                 <p>
                     <?= htmlspecialchars($item['name']) ?> - 
-                    €<?= number_format($item['price'], 2) ?> 
+                    â‚¬<?= number_format($item['price'], 2) ?> 
                     x <?= $item['quantity'] ?>
                 </p>
             <?php endforeach; ?>
-            <p><?= $current_lang['Total']; ?>: €<?= number_format($totalPrice, 2) ?></p>
+            <p><?= $current_lang['Total']; ?>: â‚¬<?= number_format($totalPrice, 2) ?></p>
         <?php endif; ?>
 
         <div class="profile-content-box">
@@ -89,8 +110,8 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
             <label for="osoite"><?= $current_lang['Address']; ?></label>
             <input class="resize" size="30" id="osoite" type="text" value="<?php echo htmlspecialchars($address);?>" readonly>
 
-            <label for="sähköposti"><?= $current_lang['Email']; ?></label>
-            <input class="resize" size="30" id="sähköposti" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?>" readonly>
+            <label for="sÃ¤hkÃ¶posti"><?= $current_lang['Email']; ?></label>
+            <input class="resize" size="30" id="sÃ¤hkÃ¶posti" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?>" readonly>
 
             <label for="puhelin"><?= $current_lang['PhoneNmb']; ?></label>
             <input class="resize" size="30" id="puhelin" type="text" value="<?php echo htmlspecialchars($phoneNumber);?>" readonly>
@@ -125,6 +146,7 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
             <input type="radio" name="choice2" value="Nouto" required> <?= $current_lang['Fetch']; ?>
             <br><br>
 
+
             <!-- Submit Button -->
             <button class="edit-btn" type="submit"><?= $current_lang['ConfirmOrder']; ?></button>
         </div>
@@ -134,6 +156,7 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 
 
 <script>
+
    function toggleVisibility() {
     var option1 = document.querySelector('input[name="choice"][value="Kortti"]:checked');
     var option2 = document.querySelector('input[name="choice"][value="Lasku"]:checked');
@@ -143,17 +166,26 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
         document.getElementById('contentOption1').classList.remove('hidden');
         document.getElementById('contentOption2').classList.add('hidden');
         
+        // Set Maksutapa_en value for Kortti
+        document.getElementById('Maksutapa_en').value = 'Card';
+        
         // Remove 'required' from 'Lasku' fields
         document.getElementById('lo').removeAttribute('required');
     } else if (option2) {
         document.getElementById('contentOption1').classList.add('hidden');
         document.getElementById('contentOption2').classList.remove('hidden');
         
+        // Set Maksutapa_en value for Lasku
+        document.getElementById('Maksutapa_en').value = 'Invoice';
+        
         // Add 'required' to 'Lasku' fields
         document.getElementById('lo').setAttribute('required', 'required');
     } else {
         document.getElementById('contentOption1').classList.add('hidden');
         document.getElementById('contentOption2').classList.add('hidden');
+        
+        // Clear Maksutapa_en value if no payment method is selected
+        document.getElementById('Maksutapa_en').value = '';
     }
 }
 	window.onload = toggleVisibility;
@@ -172,14 +204,14 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
         var cvv = document.getElementById('cvv').value;
         var expDate = document.getElementById('expdate').value;
         if (!cardNumber || !cvv || !expDate) {
-            alert('Täytä kaikki kortin tiedot.');
+            alert('TÃ¤ytÃ¤ kaikki kortin tiedot.');
             event.preventDefault();
             return false;
         }
     } else if (paymentMethodSelected.value === 'Lasku') {
         var billingAddress = document.getElementById('lo').value;
         if (document.getElementById('contentOption2').style.display !== 'none' && !billingAddress) {
-            alert('Syötä laskuosoite.');
+            alert('SyÃ¶tÃ¤ laskuosoite.');
             event.preventDefault();
             return false;
         }

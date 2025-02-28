@@ -1,8 +1,14 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 require_once('auth.php');
 require_once('config.php');
 require_once('lang.php');
+
+// Define the language code from the session or default to 'en'
+$langCode = $_SESSION['langCode'] ?? 'en'; // Default to 'en' if not set in session
+$current_lang = $lang[$langCode] ?? $lang['en']; // Default to 'en' if language is not found
 
 $cart = $_SESSION['cart'] ?? [];
 $totalPrice = $_SESSION['cart_total'] ?? 0;
@@ -17,37 +23,43 @@ unset($_SESSION['order_token']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the raw values for payment and delivery methods from the radio buttons
-    $paymentMethod = htmlspecialchars($_POST['choice']); // 'Bill', 'card', etc.
-    $deliveryMethod = htmlspecialchars($_POST['choice2']); // 'pickup', 'posted', etc.
-    
-    // Define English equivalents for payment methods
-    $paymentMethodEn = '';
-    switch ($paymentMethod) {
-        case 'Kortti':
-            $paymentMethodEn = 'Card';
-            break;
-        case 'Lasku':
-            $paymentMethodEn = 'Bill';
-            break;
-        // Add more mappings if necessary
-        default:
-            $paymentMethodEn = 'Unknown';
-            break;
-    }
+    if (isset($_POST['choice']) && isset($_POST['choice2'])) {
+        $paymentMethod = htmlspecialchars($_POST['choice']); // 'Bill', 'card', etc.
+        $deliveryMethod = htmlspecialchars($_POST['choice2']); // 'pickup', 'posted', etc.
+        
+        // Define English equivalents for payment methods
+        $paymentMethodEn = '';
+        switch ($paymentMethod) {
+            case 'Kortti':
+                $paymentMethodEn = 'Card';
+                break;
+            case 'Lasku':
+                $paymentMethodEn = 'Bill';
+                break;
+            // Handle more cases or set a default
+            default:
+                $paymentMethodEn = 'Unknown';  // Ensure a valid fallback value
+                break;
+        }
 
-    // Define English equivalents for delivery methods
-    $deliveryMethodEn = '';
-    switch ($deliveryMethod) {
-        case 'Nouto':
-            $deliveryMethodEn = 'Pickup';
-            break;
-        case 'Postitus':
-            $deliveryMethodEn = 'Posted';
-            break;
-        // Add more mappings if necessary
-        default:
-            $deliveryMethodEn = 'Unknown';
-            break;
+        // Define English equivalents for delivery methods
+        $deliveryMethodEn = '';
+        switch ($deliveryMethod) {
+            case 'Nouto':
+                $deliveryMethodEn = 'Pickup';
+                break;
+            case 'Postitus':
+                $deliveryMethodEn = 'Posted';
+                break;
+            // Handle more cases or set a default
+            default:
+                $deliveryMethodEn = 'Unknown';  // Ensure a valid fallback value
+                break;
+        }
+    } else {
+        // Handle missing payment or delivery method
+        echo "Payment or delivery method is missing.";
+        exit(); // Or redirect to an error page
     }
 }
 
@@ -56,6 +68,9 @@ $link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
 if (!$link) {
     die('Failed to connect to database: ' . mysqli_connect_error());
 }
+
+// Ensure UTF-8 encoding for database connection
+mysqli_set_charset($link, 'utf8');
 
 // Select database
 $db = mysqli_select_db($link, DB_DATABASE);
@@ -75,7 +90,7 @@ try {
     mysqli_stmt_bind_param($stmt, 'idssss', $memberId, $totalPrice, $paymentMethod, $deliveryMethod, $paymentMethodEn, $deliveryMethodEn);
     
     if (!mysqli_stmt_execute($stmt)) {
-        echo "Error inserting into tilaukset: " . mysqli_stmt_error($stmt);
+        throw new Exception('Error inserting into tilaukset: ' . mysqli_stmt_error($stmt));
     }
 
     // Hae juuri lisätyn tilauksen ID
@@ -93,15 +108,15 @@ try {
 
         mysqli_stmt_bind_param($stmt, 'iiid', $orderId, $productId, $quantity, $price);
         if (!mysqli_stmt_execute($stmt)) {
-            echo "Error inserting into tilaus_tuotteet: " . mysqli_stmt_error($stmt);
+            throw new Exception('Error inserting into tilaus_tuotteet: ' . mysqli_stmt_error($stmt));
         }
 
         // Update stock
-        $updateStockQuery = "UPDATE tuotteet SET varastomäärä = varastomäärä - ? WHERE id = ?";
+        $updateStockQuery = "UPDATE tuotteet SET varastomaara = varastomaara - ? WHERE id = ?";
         $updateStmt = mysqli_prepare($link, $updateStockQuery);
         mysqli_stmt_bind_param($updateStmt, 'ii', $quantity, $productId);
         if (!mysqli_stmt_execute($updateStmt)) {
-            echo "Error updating stock: " . mysqli_stmt_error($updateStmt);
+            throw new Exception('Error updating stock: ' . mysqli_stmt_error($updateStmt));
         }
         mysqli_stmt_close($updateStmt);
     }
@@ -127,14 +142,11 @@ try {
 mysqli_close($link);
 ?>
 
-
-
 <style>
     body {
-    background-image: url('https://live.staticflickr.com/8230/8410882716_2604e5af6b_b.jpg');
-    text-align: center;
-    color: white;
-    margin-top: 100px;
+        background-image: url('https://live.staticflickr.com/8230/8410882716_2604e5af6b_b.jpg');
+        text-align: center;
+        color: white;
+        margin-top: 100px;
     }
-
 </style>

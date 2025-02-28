@@ -10,7 +10,7 @@ if (!$link) {
 }
 
 // Fetch user details
-$qry = "SELECT address, phonenumber FROM Members WHERE member_id = ?";
+$qry = "SELECT address, phonenumber FROM members WHERE member_id = ?";
 $stmt = mysqli_prepare($link, $qry);
 mysqli_stmt_bind_param($stmt, "i", $_SESSION['SESS_MEMBER_ID']);  // Bind the session member ID as an integer
 
@@ -302,7 +302,7 @@ if (isset($_GET['order_id'])) {
                 <tbody>
                     <tr>
                         <td><?php echo htmlspecialchars($orderData['order_id']); ?></td>
-                        <td><?php echo htmlspecialchars($orderData['total_price']); ?> €</td>
+                        <td><?php echo htmlspecialchars($orderData['total_price']); ?> â‚¬</td>
                         <td><?php echo htmlspecialchars($orderData['order_date']); ?></td>
                         <td><?php echo htmlspecialchars($orderData['Maksutapa']); ?></td>
                         <td><?php echo htmlspecialchars($orderData['Toimitustapa']); ?></td>
@@ -325,7 +325,7 @@ if (isset($_GET['order_id'])) {
                         <tr>
                             <td><?php echo htmlspecialchars($product['nimi']); ?></td>
                             <td><?php echo htmlspecialchars($product['quantity']); ?></td>
-                            <td><?php echo htmlspecialchars($product['price']); ?> €</td>
+                            <td><?php echo htmlspecialchars($product['price']); ?> â‚¬</td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

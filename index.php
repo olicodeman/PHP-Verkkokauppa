@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KG Keittiövälineet</title>
+    <title>KG KeittiÃ¶vÃ¤lineet</title>
     <link href="style.css" rel="stylesheet">
 </head>
 <style>
@@ -37,7 +37,7 @@
         transform: scale(1.1);
     }
 
-        /* Nähdään että nappia on painettu */
+        /* NÃ¤hdÃ¤Ã¤n ettÃ¤ nappia on painettu */
     .language-switcher .lang-button.selected {
         border: 2px solid #007bff;
         box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
@@ -49,12 +49,12 @@
         height: 30px;
     }
 
-    /*Pidetään ostoskori oikealla puolella */
+    /*PidetÃ¤Ã¤n ostoskori oikealla puolella */
     .navbar .icon {
         margin-left: auto;
     }
     
-        /* Logon määritykset */
+        /* Logon mÃ¤Ã¤ritykset */
     .company-logo {
     width: 50px; 
     height: auto;
@@ -65,6 +65,55 @@
     align-items: center;
     text-decoration: none;
 }
+/* Navigointipalkin perusasetukset */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+
+}
+
+/* Navigointilista */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+
+/* Menu-kuvake (hamburger) */
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+}
+
+/* Piilotetaan valikko pienillä näytöillä */
+@media screen and (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .menu-icon {
+        display: block;
+    }
+}
+
 </style>
 
 <body>
@@ -72,7 +121,7 @@
 //Aloitetaan session
 session_start();
 
-// Liitettään käänökset
+// LiitettÃ¤Ã¤n kÃ¤Ã¤nÃ¶kset
 require 'lang.php';
 
 // Aloituskieli asetetaan englanniksi
@@ -80,23 +129,23 @@ if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'en';
 }
 
-// Muutetaan kieli jos käyttäjä valitsee
+// Muutetaan kieli jos kÃ¤yttÃ¤jÃ¤ valitsee
 if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $lang)) {
     $_SESSION['lang'] = $_GET['lang'];
 }
 
-// Päivitetään kieli
+// PÃ¤ivitetÃ¤Ã¤n kieli
 $current_lang = $lang[$_SESSION['lang']];
 
-// Varmistetaan että käyttäjä on kirjautuneena
+// Varmistetaan ettÃ¤ kÃ¤yttÃ¤jÃ¤ on kirjautuneena
 $IsLoggedIn = $_SESSION['loggedin'] ?? false;
 session_write_close();
 
-// Määritellään sivut
+// MÃ¤Ã¤ritellÃ¤Ã¤n sivut
 $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm", "lisaaArvostelu", "arvosteluSivu", "submit_review");
 $page = "etusivu";
 
-// Tarkistetaan tämänhetkinen sivu query parametreillä
+// Tarkistetaan tÃ¤mÃ¤nhetkinen sivu query parametreillÃ¤
 if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
     $page = $_GET['page'];
 } else {
@@ -106,9 +155,9 @@ if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
 
         <!-- Navigointi valikko -->
 <nav class="navbar">
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <div class="menu-icon" onclick="toggleMenu()">â˜°</div>
     <a href="index.php?page=etusivu" class="logo-link">
-        <img src="kuvat/kgiconi.png" alt="Company Logo" class="company-logo">
+        <img src="kuvat/KGiconi.png" alt="Company Logo" class="company-logo">
     </a>
     <ul class="nav-links">
         <li><a href="index.php?page=etusivu" class="<?= ($page == 'etusivu') ? 'active' : '' ?>"><?= $current_lang['homepage']; ?></a></li>
@@ -162,26 +211,16 @@ if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
     }
     ?>
 
-    <!-- Navigointi valikkon script toiminta pienellä näytöllä -->
+    <!-- Navigointi valikkon script toiminta pienellÃ¤ nÃ¤ytÃ¶llÃ¤ -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
+    const menuIcon = document.querySelector('.menu-icon');
     const navLinks = document.querySelector('.nav-links');
-    const mediaQuery = window.matchMedia("(max-width: 768px)");
 
-    // Ensure nav is hidden initially on small screens
-    if (mediaQuery.matches) {
-      navLinks.classList.add('hidden'); 
-    }
-
-    // Toggle the menu on icon click
-    function toggleMenu() {
-      navLinks.classList.toggle('hidden');
-    }
-
-    document.querySelector('.menu-icon').addEventListener('click', toggleMenu);
-  });
+    menuIcon.addEventListener('click', function () {
+        navLinks.classList.toggle('active');
+    });
+});
 </script>
 
 </body>
-
-</html>

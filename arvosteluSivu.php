@@ -10,10 +10,10 @@ try {
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 } catch (PDOException $e) {
-    die('Tietokantayhteyden muodostaminen epäonnistui: ' . $e->getMessage());
+    die('Tietokantayhteyden muodostaminen epÃ¤onnistui: ' . $e->getMessage());
 }
 
-// Haetaan tuotteet pudotusvalikon täyttämiseksi
+// Haetaan tuotteet pudotusvalikon tÃ¤yttÃ¤miseksi
 try {
     $stmt = $pdo->prepare("SELECT id, nimi FROM tuotteet");
     $stmt->execute();
@@ -57,7 +57,7 @@ if ($product_id) {
     }
 }
 
-// Lisätty uusi osio tähdenarvostelun suodatukselle
+// LisÃ¤tty uusi osio tÃ¤hdenarvostelun suodatukselle
 $rating_filter = isset($_GET['rating_filter']) ? $_GET['rating_filter'] : null;
 
 try {
@@ -70,7 +70,7 @@ try {
 
     // Suodatetaan arvostelun mukaan
     if ($rating_filter) {
-        $query .= " AND tähtiarvostelu = :rating_filter";
+        $query .= " AND tÃ¤htiarvostelu = :rating_filter";
     }
 
     // Suodatetaan kielen mukaaan
@@ -105,7 +105,7 @@ $productNameColumn = ($_SESSION['lang'] == 'en') ? 'nimi_en' : 'nimi';
 $productDescriptionColumn = ($_SESSION['lang'] == 'en') ? 'kuvaus_en' : 'kuvaus';
 
 // Haetaan tuotteen tiedot valitun kielen mukaan
-$stmt = $pdo->prepare("SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, kuva, hinta, varastomäärä FROM tuotteet");
+$stmt = $pdo->prepare("SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, kuva, hinta, varastomaara FROM tuotteet");
 $stmt->execute();
 $products = $stmt->fetchAll();
 
@@ -261,7 +261,7 @@ $products = $stmt->fetchAll();
             border-radius: 5px;
         }
 
-        /* Tähdille css */
+        /* TÃ¤hdille css */
         .star-filter {
             text-align: center;
             margin-bottom: 20px;
@@ -342,22 +342,22 @@ $products = $stmt->fetchAll();
     <div class="review-container">
         <h1><?= $current_lang['AllReviews']; ?></h1>
 
-        <!-- Tähtiarvostelujenmukaan suodatus-->
+        <!-- TÃ¤htiarvostelujenmukaan suodatus-->
         <div class="star-filter">
             <form method="GET" action="index.php">
                 <input type="hidden" name="page" value="arvosteluSivu">
                 <label><?= $current_lang['FilterStar']; ?></label>
                 <div class="star-rating">
                     <input type="radio" id="star5" name="rating_filter" value="5" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '5' ? 'checked' : '' ?>>
-                    <label for="star5">★</label>
+                    <label for="star5">â˜…</label>
                     <input type="radio" id="star4" name="rating_filter" value="4" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '4' ? 'checked' : '' ?>>
-                    <label for="star4">★</label>
+                    <label for="star4">â˜…</label>
                     <input type="radio" id="star3" name="rating_filter" value="3" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '3' ? 'checked' : '' ?>>
-                    <label for="star3">★</label>
+                    <label for="star3">â˜…</label>
                     <input type="radio" id="star2" name="rating_filter" value="2" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '2' ? 'checked' : '' ?>>
-                    <label for="star2">★</label>
+                    <label for="star2">â˜…</label>
                     <input type="radio" id="star1" name="rating_filter" value="1" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '1' ? 'checked' : '' ?>>
-                    <label for="star1">★</label>
+                    <label for="star1">â˜…</label>
                 </div>
                 <button type="submit"><?= $current_lang['Search']; ?></button>
             </form>
@@ -424,15 +424,15 @@ $products = $stmt->fetchAll();
             </div>
         <?php endif; ?>
 
-        <!-- Linkki arvostelun lisäämiseen-->
+        <!-- Linkki arvostelun lisÃ¤Ã¤miseen-->
         <a class="edit-btn" href="index.php?page=lisaaArvostelu">
             <?= $current_lang['leaveReview']; ?></a>
 
-        <!-- Näytetään arvostelut-->
+        <!-- NÃ¤ytetÃ¤Ã¤n arvostelut-->
         <?php if (empty($reviews)): ?>
             <h3><?= $current_lang['no_reviews']; ?><?= $current_lang['give_review']; ?>
                 <!-- Arvostelun antaminen-->
-                <a href="index.php?page=lisaaArvostelu">Tästä</a>
+                <a href="index.php?page=lisaaArvostelu">TÃ¤stÃ¤</a>
             </h3>
         <?php else: ?>
             <?php foreach ($reviews as $review): ?>
@@ -446,11 +446,11 @@ $products = $stmt->fetchAll();
                             <img src="kuvat/englantilippu.png" alt="English" class="lang-icon">
                         <?php endif; ?>
                     </h3>
-                    <!-- Tähtiarvostelu-->
+                    <!-- TÃ¤htiarvostelu-->
                     <p class="rating">Arvostelu:
                         <?php
                         for ($i = 1; $i <= 5; $i++) {
-                            echo ($i <= $review['tähtiarvostelu']) ? '★' : '☆';
+                            echo ($i <= $review['tÃ¤htiarvostelu']) ? 'â˜…' : 'â˜†';
                         }
                         ?>
                     </p>
