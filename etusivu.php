@@ -18,7 +18,7 @@ $productNameColumn = ($lang === 'en') ? 'nimi_en' : 'nimi'; // Valitaan nimi kie
 $productDescriptionColumn = ($lang === 'en') ? 'kuvaus_en' : 'kuvaus'; // Valitaan kuvaus kielen mukaan
 
 // Päivitetään SQL query hakemaan tuotteen tiedot myös oikealla kielellä 
-$sql = "SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, hinta, kuva, varastomaara FROM tuotteet ORDER BY id DESC LIMIT 3";
+$sql = "SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, hinta, kuva, varastomäärä FROM tuotteet ORDER BY id DESC LIMIT 3";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
@@ -251,7 +251,7 @@ $conn->close();
                                     '<?= htmlspecialchars($product['kuvaus']) ?>', 
                                     '<?= htmlspecialchars($product['kuva']) ?>', 
                                     '<?= $product['hinta'] ?>', 
-                                    '<?= $product['varastomaara'] ?>')">
+                                    '<?= $product['varastomäärä'] ?>')">
                     <!-- Tuotteen kuva -->
                     <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>"
                         style="width: 100%; height: auto; border-radius: 5px;">

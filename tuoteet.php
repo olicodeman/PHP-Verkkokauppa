@@ -24,7 +24,7 @@ try {
 
 // Haetaan tuotteet tietokannasta
 try {
-    $stmt = $pdo->prepare("SELECT id, nimi, kuvaus, kuva, hinta, varastomaara FROM tuotteet");
+    $stmt = $pdo->prepare("SELECT id, nimi, kuvaus, kuva, hinta, varastomäärä FROM tuotteet");
     $stmt->execute();
     $products = $stmt->fetchAll();
 } catch (PDOException $e) {
@@ -53,7 +53,7 @@ $sql = "
         t.id, 
         " . ($lang == 'en' ? "t.nimi_en" : "t.nimi") . " AS nimi,
         " . ($lang == 'en' ? "t.kuvaus_en" : "t.kuvaus") . " AS kuvaus,
-        t.kuva, t.hinta, t.varastomaara,
+        t.kuva, t.hinta, t.varastomäärä,
         COALESCE(GROUP_CONCAT(" . ($lang == 'en' ? "k.nimi_en" : "k.nimi") . " SEPARATOR ','), '') AS categories,
         COALESCE(AVG(a.arvosana), 0) AS avg_rating
     FROM tuotteet t
@@ -341,7 +341,7 @@ form {
         <?php foreach ($products as $product): ?>
             <div class="product" data-id="<?= htmlspecialchars($product['id']) ?>"
                 data-categories="<?= htmlspecialchars($product['categories']) ?>"
-                onclick="showPopup('<?= htmlspecialchars($product['id']) ?>', '<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomaara']) ?>')">
+                onclick="showPopup('<?= htmlspecialchars($product['id']) ?>', '<?= htmlspecialchars($product['nimi']) ?>', '<?= htmlspecialchars($product['kuvaus']) ?>', '<?= htmlspecialchars($product['kuva']) ?>', '<?= htmlspecialchars($product['hinta']) ?>', '<?= htmlspecialchars($product['varastomäärä']) ?>')">
                 
                 <img src="<?= htmlspecialchars($product['kuva']) ?>" alt="<?= htmlspecialchars($product['nimi']) ?>">
 
@@ -380,7 +380,7 @@ form {
         <h2 id="popup-title"></h2>
         <p id="popup-description"></p>
         <p id="popup-price"></p>
-        <p id="popup-varastomaara"></p>
+        <p id="popup-varastomäärä"></p>
         <!-- Määrä jota halutaan ostaa -->
         <div class="keskita">
             <label for="popup-quantity"><?= $current_lang['quantity']; ?>:</label>
@@ -437,7 +437,7 @@ form {
                 document.getElementById('popup-description').textContent = description;
                 document.getElementById('popup-img').src = imageUrl;
                 document.getElementById('popup-price').textContent = "<?= $current_lang['price']; ?>: €" + parseFloat(price).toFixed(2);
-                document.getElementById('popup-varastomaara').textContent = "<?= $current_lang['Stock']; ?>: " + stock + " kpl";
+                document.getElementById('popup-varastomäärä').textContent = "<?= $current_lang['Stock']; ?>: " + stock + " kpl";
 
                 // Asetetaan tuote ID ostoskoriinlisäämistä varten 
                 document.getElementById('popup').setAttribute('data-product-id', id);
@@ -451,7 +451,7 @@ form {
                     // Varaston määrä on 0, piilotetaan kohtia jos näin
                     quantityInput.style.display = 'none'; // piilotetaan määrä
                     quantityLabel.style.display = 'none'; // Piilotetaan määrän label
-                    const stockMessageElement = document.getElementById('popup-varastomaara'); // Näytetään varastotyhjä viesti
+                    const stockMessageElement = document.getElementById('popup-varastomäärä'); // Näytetään varastotyhjä viesti
                     stockMessageElement.innerHTML = `<span style="color: red;">Varasto tyhjä</span>, täytämme sen mahdollisimman pian!`;
 
 
@@ -489,7 +489,7 @@ form {
             function addToCartFromPopup() {
                 const title = document.getElementById('popup-title').textContent;
                 const price = document.getElementById('popup-price').textContent.replace('<?= $current_lang['price']; ?>: €', '');
-                const stock = parseInt(document.getElementById('popup-varastomaara').textContent.replace('<?= $current_lang['Stock']; ?>: ', '').replace(' kpl', ''), 10);
+                const stock = parseInt(document.getElementById('popup-varastomäärä').textContent.replace('<?= $current_lang['Stock']; ?>: ', '').replace(' kpl', ''), 10);
                 const quantity = parseInt(document.getElementById('popup-quantity').value, 10);
                 const productID = document.getElementById('popup').getAttribute('data-product-id');
                 const imageUrl = document.getElementById('popup-img').src;

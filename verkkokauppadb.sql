@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 13.02.2025 klo 12:03
+-- Generation Time: 10.03.2025 klo 12:33
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,7 +36,7 @@ CREATE TABLE `arvostelut` (
   `kommentti` text NOT NULL,
   `tähtiarvostelu` int(1) NOT NULL,
   `luotu` timestamp NOT NULL DEFAULT current_timestamp(),
-  `arvosana` int(11) NOT NULL,
+  `arvosana` int(11) DEFAULT 0,
   `kieli` enum('fi','en') NOT NULL DEFAULT 'fi'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -105,10 +105,11 @@ CREATE TABLE `members` (
 
 INSERT INTO `members` (`member_id`, `firstname`, `lastname`, `email`, `address`, `phonenumber`, `username`, `password`, `language`) VALUES
 (1, 'Teppo-sakari', 'Testiniemi', 'teppotestausta@jokuemail.com', 'jokukatu 9', '+123 45 67894', 'teppo5569', '8359b10e30dfabd587a5661e52249101', 'fi'),
-(2, 'Thomasio', 'Testeringus', 'tomtester@somethinsmail.com', 'someplace street 15', '+123 456 7896', 'tomtesterXD56', 'cf9d344afc8a2061ce216ae59e691b9c', 'fi'),
+(2, 'Thomasio', 'Testeringus', 'tomtester@somethinsmail.com', 'someplace street 15', '+123 456 7896', 'tomtesterXD', 'cf9d344afc8a2061ce216ae59e691b9c', 'fi'),
 (3, 'Rianna', 'Sarajärvi', 's3sari00@students.osao.fi', 'koti', '345 67', 'Rianna', '6530e95e3fcf785ea9febde39f567630', 'fi'),
 (4, 'admin', 'admin', 'admin@adminemail.com', 'no', '+123 654 7891', 'admin', '1e783b87df681e37f6456f64cb9fadd8', 'fi'),
-(6, 'Greg', 'Wellington', 'GregWellington@gmail.cok', 'Home', '12345', 'GregWell', '646c490db8f1951b717be6816af287e0', 'fi');
+(6, 'Greg', 'Wellington', 'GregWellington@gmail.cok', 'Home', '12345', 'GregWell', '646c490db8f1951b717be6816af287e0', 'fi'),
+(8, 'test', 'test', 'test@gmail.com', 'test', '12345', 'test', '098f6bcd4621d373cade4e832627b4f6', 'fi');
 
 -- --------------------------------------------------------
 
@@ -155,7 +156,10 @@ INSERT INTO `tilaukset` (`order_id`, `member_id`, `total_price`, `order_date`, `
 (21, 6, 600.00, '2025-02-03 12:20:52', 'Lasku', 'Postitus', 'Bill', 'Posted'),
 (22, 6, 300.00, '2025-02-06 06:44:21', 'Kortti', 'Postitus', 'Card', 'Posted'),
 (23, 6, 300.00, '2025-02-06 06:50:18', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
-(24, 6, 50.00, '2025-02-06 06:53:15', 'Lasku', 'Nouto', 'Bill', 'Pickup');
+(24, 6, 50.00, '2025-02-06 06:53:15', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
+(36, 8, 30.00, '2025-02-27 09:58:50', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
+(37, 8, 1200.00, '2025-02-28 06:36:24', 'Lasku', 'Nouto', 'Bill', 'Pickup'),
+(38, 8, 300.00, '2025-02-28 08:08:59', 'Kortti', 'Postitus', 'Card', 'Posted');
 
 -- --------------------------------------------------------
 
@@ -208,7 +212,10 @@ INSERT INTO `tilaus_tuotteet` (`order_id`, `product_id`, `quantity`, `price`) VA
 (21, 28, 1, 600.00),
 (22, 40, 1, 300.00),
 (23, 40, 1, 300.00),
-(24, 31, 1, 50.00);
+(24, 31, 1, 50.00),
+(36, 35, 2, 15.00),
+(37, 28, 2, 600.00),
+(38, 40, 1, 300.00);
 
 -- --------------------------------------------------------
 
@@ -256,7 +263,7 @@ CREATE TABLE `tuotteet` (
   `kuvaus_en` text DEFAULT NULL,
   `hinta` decimal(10,2) NOT NULL,
   `kuva` varchar(255) DEFAULT NULL,
-  `varastomäärä` int(11) DEFAULT 0
+  `varastomäärä` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -266,17 +273,17 @@ CREATE TABLE `tuotteet` (
 INSERT INTO `tuotteet` (`id`, `nimi`, `nimi_en`, `kuvaus`, `kuvaus_en`, `hinta`, `kuva`, `varastomäärä`) VALUES
 (26, 'Blenderi', 'Blender', 'Vain sileitä smoothieita!', 'For smooth smoothies only!', 500.00, 'kuvat/blender.jpg', 4),
 (27, 'Uuni', 'Oven', 'Uuni jolla saat täyteläisen ja rapean tuloksen!', 'Oven that gives you a full and crisp result!', 1500.00, 'kuvat/uuni.png', 6),
-(28, 'mikroaaltouuni', 'Microwave', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 'Warm up your food fast and efficient!', 600.00, 'kuvat/mikroaaltouuni.jpg', 3),
+(28, 'mikroaaltouuni', 'Microwave', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 'Warm up your food fast and efficient!', 600.00, 'kuvat/mikroaaltouuni.jpg', 1),
 (29, 'Sauvasekoitin', 'Immersion blender', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 'Efficient immersion blender that gives you a smooth and spotless result!', 85.00, 'kuvat/sauvasekoitin.jpg', 5),
 (31, 'Aterin setti', 'Stainless Steel Cutlery Set', 'Ruostumaton teräs aterin setti. 10 kpl jokaista. Isot lusikat, pienet lusikat, haarukat, sekä veitset.', 'Stainless steel cutlery set. 10 pieces of each. Large spoons, small spoons, forks, and knives.', 50.00, 'kuvat/aterinsetti.jpg', 8),
 (32, 'Aterin setti', 'Silver Cutlery Set', 'Hopeinen aterin setti. 5 kpl jokaista. Pienet lusikat, isot lusikat, haarukat ja veitset.', 'Silver cutlery set. 5 pieces of each. Small spoons, large spoons, forks, and knives.', 50.00, 'kuvat/HopeinenAterinsetti.jpg', 10),
 (33, 'Veitsisetti', 'Knife Set', '6 erilaista veitseä. 20-10cm pituus väli.', '6 different types of knives. 10-20 cm in length.', 20.00, 'kuvat/veitsisetti.jpg', 7),
 (34, 'Keittiövälinesetti', 'Kitchen tools', '14 eri keittiötarviketta. Lisäksi keittiövälinepidike.', '14 different kitchen tools. Additionally, a kitchen utensil holder.', 12.00, 'kuvat/keittiovalineet.jpg', 3),
-(35, 'Kattila', 'Stainless steel pot', 'Kiiltävä teräskattila.', 'Shiny stainless steel pot.', 15.00, 'kuvat/kattila.jpg', 6),
+(35, 'Teräs Kattila', 'Stainless steel pot', 'Kiiltävä teräskattila.', 'Shiny stainless steel pot.', 15.00, 'kuvat/kattila.jpg', 4),
 (36, 'Kattila', 'Non-stick pot', 'Musta kahvallinen kattila, tarttumaton pinta. Sisältää kannen.', 'Black pot with handle, non-stick surface. Includes lid.', 20.00, 'kuvat/kattilamusta.jpg', 10),
 (38, 'Valurauta paistinpannu', 'Iron frying pan', 'Valurauta paistinpannu 28cm. ', 'Cast iron frying pan 28cm', 50.00, 'kuvat/paistinpannu.jpg', 4),
 (39, 'Wokkipannu', 'Wok pan', 'Wokkipannu kasvisten paistoon!', 'Wok pan for frying vegetablesand other ingridients!', 52.00, 'kuvat/wokkipannu.jpg', 15),
-(40, 'Kahvinkeitin', 'Coffee maker', 'Moccamaster kahvinkeitin, maukkaat kahvit päivittäin!', 'Moccamaster coffee maker, delicious coffee daily!', 300.00, 'kuvat/moccamaster.jpg', 14);
+(40, 'Kahvinkeitin', 'Coffee maker', 'Moccamaster kahvinkeitin, maukkaat kahvit päivittäin!', 'Moccamaster coffee maker, delicious coffee daily!', 300.00, 'kuvat/moccamaster.jpg', 13);
 
 --
 -- Indexes for dumped tables
@@ -299,7 +306,8 @@ ALTER TABLE `kategoriat`
 -- Indexes for table `members`
 --
 ALTER TABLE `members`
-  ADD PRIMARY KEY (`member_id`);
+  ADD PRIMARY KEY (`member_id`),
+  ADD UNIQUE KEY `unique_username` (`username`);
 
 --
 -- Indexes for table `tilaukset`
@@ -336,7 +344,7 @@ ALTER TABLE `tuotteet`
 -- AUTO_INCREMENT for table `arvostelut`
 --
 ALTER TABLE `arvostelut`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `kategoriat`
@@ -348,13 +356,13 @@ ALTER TABLE `kategoriat`
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tilaukset`
 --
 ALTER TABLE `tilaukset`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `tuotteet`

@@ -26,7 +26,7 @@ if (!$db) {
 $qry = "SELECT * FROM tuotteet";
 $result = mysqli_query($link, $qry);
 
-$qry = "SELECT id, nimi, varastomaara FROM tuotteet WHERE varastomaara = 3 OR varastomaara < 3 ORDER BY varastomaara ASC";
+$qry = "SELECT id, nimi, varastomäärä FROM tuotteet WHERE varastomäärä = 3 OR varastomäärä < 3 ORDER BY varastomäärä ASC";
 $result2 = mysqli_query($link, $qry);
 
 $qry = "SELECT tt.product_id, 
@@ -139,7 +139,7 @@ $result4 = mysqli_query($link, $qry);
                 echo '<td>' . htmlspecialchars($row['nimi']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['kuvaus']) . '</td>';
                 echo '<td>' . htmlspecialchars($row['hinta']) . ' €</td>';
-                echo '<td>' . htmlspecialchars($row['varastomaara']) . '</td>';
+                echo '<td>' . htmlspecialchars($row['varastomäärä']) . '</td>';
                 echo '<td>';
                 echo '<a href="edit-tuote.php?id=' . $row['id'] . '" class="admin-btn">Muokkaa</a> ';
                 echo ' | ';

@@ -112,7 +112,7 @@ try {
         }
 
         // Update stock
-        $updateStockQuery = "UPDATE tuotteet SET varastomaara = varastomaara - ? WHERE id = ?";
+        $updateStockQuery = "UPDATE tuotteet SET varastomäärä = varastomäärä - ? WHERE id = ?";
         $updateStmt = mysqli_prepare($link, $updateStockQuery);
         mysqli_stmt_bind_param($updateStmt, 'ii', $quantity, $productId);
         if (!mysqli_stmt_execute($updateStmt)) {

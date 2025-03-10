@@ -24,7 +24,7 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Haetaan tuotteen tiedot käyttäen valmisteltuja lauseita
-    $stmt = $pdo->prepare("SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, hinta, varastomaara, kuva FROM tuotteet WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, hinta, varastomäärä, kuva FROM tuotteet WHERE id = ?");
     $stmt->execute([intval($_GET['id'])]);
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
 

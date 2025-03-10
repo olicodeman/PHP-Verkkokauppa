@@ -63,8 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		exit();
 	}
 
+	$hashedPassword = md5($password);
+
 	//Luodaan query
-	$qry = "SELECT * FROM members WHERE username='$login' AND password='" . md5($_POST['password']) . "'";
+	$qry = "SELECT * FROM members WHERE username='$login' AND password='$hashedPassword'";
 	$result = mysqli_query($link, $qry);
 
 	//Tarkistetaan oliko query onnistunut

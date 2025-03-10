@@ -91,44 +91,61 @@
         $newAddress = test_input($_POST['address']);
         $newPhone = test_input($_POST['phone']);
 
-
-        $oldData = array($fname, $lname, $email, $address, $phone, $username);
-        $newData = array($newFname, $newLname, $newEmail, $newAddress, $newPhone, $newUsername);
-
-        if ($newData == $oldData) {
-            echo "<p style='text-align: center; color: red;'>" . $current_lang['editalert1'] . "</p>";
-        } else {
-            $qry = "UPDATE members SET firstname = ?, lastname = ?, email = ?, address = ?, phonenumber = ?, username = ?
-            WHERE member_id = ?";
+        // Check if the new username already exists in the database (excluding current user)
+        $qry = "SELECT 1 FROM members WHERE username = ? AND member_id != ?";
 
         if ($stmt = $link->prepare($qry)) {
-            $stmt->bind_param("ssssssi", $newFname, $newLname, $newEmail, $newAddress, $newPhone, $newUsername, $userID);
-
-            if ($stmt->execute()) {
-            echo "<p style='text-align: center; color: lime;'>" . $current_lang['editalert2'] . "</p>";
-
-            $_SESSION['SESS_FIRST_NAME'] = $newFname;
-            $_SESSION['SESS_LAST_NAME'] = $newLname;
-            $_SESSION['SESS_LOGIN'] = $newUsername;
-            $_SESSION['SESS_EMAIL'] = $newEmail;
+            $stmt->bind_param("si", $newUsername, $userID); // Bind username and userID
+            $stmt->execute();
+            $stmt->store_result();
             
-            $fname = $newFname;
-            $lname = $newLname;
-            $username = $newUsername;
-            $email = $newEmail;
-        } else {
-            echo "<p style='text-align: center; color: red;'>" . $current_lang['editalert3'] . "</p>" . $stmt->error;
-        }
+            if ($stmt->num_rows > 0) {
+                // Username already exists, show error message
+                echo "<p style='text-align: center; color: red;'>" . $current_lang['usernameExists'] . "</p>";
+            } else {
+                // Proceed if the username is unique
+                $oldData = array($fname, $lname, $email, $address, $phone, $username);
+                $newData = array($newFname, $newLname, $newEmail, $newAddress, $newPhone, $newUsername);
 
-        // Close the statement
-        $stmt->close();
-        } else {
-        echo "<p style='text-align: center; color: red;'>" . $current_lang['editalert4'] . "</p>" . $conn->error;
-        }
-        }
-     }
+                if ($newData == $oldData) {
+                    echo "<p style='text-align: center; color: red;'>" . $current_lang['editalert1'] . "</p>";
+                } else {
+                    // Proceed with the update if data has changed
+                    $qry = "UPDATE members SET firstname = ?, lastname = ?, email = ?, address = ?, phonenumber = ?, username = ? WHERE member_id = ?";
 
-     if (isset($_POST['pwdChange']) && !isset($_POST['sendData'])) { 
+                    if ($stmt = $link->prepare($qry)) {
+                        $stmt->bind_param("ssssssi", $newFname, $newLname, $newEmail, $newAddress, $newPhone, $newUsername, $userID);
+
+                        if ($stmt->execute()) {
+                            // On success, update session data
+                            echo "<p style='text-align: center; color: lime;'>" . $current_lang['editalert2'] . "</p>";
+                            $_SESSION['SESS_FIRST_NAME'] = $newFname;
+                            $_SESSION['SESS_LAST_NAME'] = $newLname;
+                            $_SESSION['SESS_LOGIN'] = $newUsername;
+                            $_SESSION['SESS_EMAIL'] = $newEmail;
+                            
+                            // Update local variables
+                            $fname = $newFname;
+                            $lname = $newLname;
+                            $username = $newUsername;
+                            $email = $newEmail;
+                        } else {
+                            echo "<p style='text-align: center; color: red;'>" . $current_lang['editalert3'] . "</p>" . $stmt->error;
+                        }
+
+                        // Close the statement
+                        $stmt->close();
+                    } else {
+                        echo "<p style='text-align: center; color: red;'>" . $current_lang['editalert4'] . "</p>" . $link->error;
+                    }
+                }
+            }
+        } else {
+            echo "<p style='text-align: center; color: red;'>" . $current_lang['editalert4'] . "</p>" . $link->error;
+        }
+    }
+
+    if (isset($_POST['pwdChange']) && !isset($_POST['sendData'])) { 
         $newPassword = test_input($_POST['pwd']);
 
         if (empty($newPassword)) {
@@ -136,28 +153,28 @@
         } else {
             $newPasswordHashed = md5($newPassword);
 
-        $qry = "UPDATE members SET password = ? WHERE member_id = ?";
+            $qry = "UPDATE members SET password = ? WHERE member_id = ?";
 
-        if ($stmt = $link->prepare($qry)) {
-            $stmt->bind_param("si", $newPasswordHashed, $userID);
+            if ($stmt = $link->prepare($qry)) {
+                $stmt->bind_param("si", $newPasswordHashed, $userID);
 
-            if ($stmt->execute()) {
-            echo "<p style='text-align: center; color: lime;'>" . $current_lang['pwdalert2'] . "</p>";
-        } else {
-            echo "<p style='text-align: center; color: red;'>" . $current_lang['pwdalert3'] . " " . $stmt->error . "</p>";
-        }
-        
-        $stmt->close();
-    } else {
-        echo "<p style='text-align: center; color: red;'>" . $current_lang['editalert4'] . " " . $link->error . "</p>";
+                if ($stmt->execute()) {
+                    echo "<p style='text-align: center; color: lime;'>" . $current_lang['pwdalert2'] . "</p>";
+                } else {
+                    echo "<p style='text-align: center; color: red;'>" . $current_lang['pwdalert3'] . " " . $stmt->error . "</p>";
+                }
 
+                $stmt->close();
+            } else {
+                echo "<p style='text-align: center; color: red;'>" . $current_lang['editalert4'] . " " . $link->error . "</p>";
+            }
         }
     }
-}
-        function test_input($data) {
-            $data = trim($data);
-            $data = stripslashes($data);
-            $data = htmlspecialchars($data);
-            return $data;
-          }
+
+    function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
 ?>

@@ -105,7 +105,7 @@ $productNameColumn = ($_SESSION['lang'] == 'en') ? 'nimi_en' : 'nimi';
 $productDescriptionColumn = ($_SESSION['lang'] == 'en') ? 'kuvaus_en' : 'kuvaus';
 
 // Haetaan tuotteen tiedot valitun kielen mukaan
-$stmt = $pdo->prepare("SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, kuva, hinta, varastomaara FROM tuotteet");
+$stmt = $pdo->prepare("SELECT id, $productNameColumn AS nimi, $productDescriptionColumn AS kuvaus, kuva, hinta, varastomäärä FROM tuotteet");
 $stmt->execute();
 $products = $stmt->fetchAll();
 

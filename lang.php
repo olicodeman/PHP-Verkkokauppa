@@ -118,6 +118,7 @@ $lang = [
         'Product' => 'Product',
         'Amount' => 'Amount',
         'PricePerProduct' => 'Price Per Product',
+        'usernameExists' => 'Username already exists.',
     ],
     //tuotteen käänökset
     'fi' => [
@@ -237,6 +238,7 @@ $lang = [
         'Product' => 'Tuote',
         'Amount' => 'Kpl',
         'PricePerProduct' => 'Hinta per kappale',
+        'usernameExists' => 'Käyttäjänimi on jo olemassa.',
     ]
 ];
 $active_language = $_SESSION['lang'] ?? 'fi'; // Oletus on suomi jos ei ole muutoin valittu

@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kuvaus_en = $_POST['kuvaus_en'];
     $hinta = $_POST['hinta'];
     $kategoriat_selected = $_POST['kategoriat'];  // Haetaan valitut kategoriat
-    $varastomaara = $_POST['varastomaara'];
+    $varastomäärä = $_POST['varastomäärä'];
 
     // Käsitellään kuvan lataaminen
     if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
@@ -64,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (move_uploaded_file($imageTmpPath, $imagePath)) {
                 // Kuvan lataaminen onnistui, lisää tuote tietokantaan
                 try {
-                    $stmt = $pdo->prepare("INSERT INTO tuotteet (nimi, nimi_en, kuvaus, kuvaus_en, hinta, kuva, varastomaara) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                    $stmt->execute([$nimi, $nimi_en, $kuvaus, $kuvaus_en, $hinta, $imagePath, $varastomaara]);
+                    $stmt = $pdo->prepare("INSERT INTO tuotteet (nimi, nimi_en, kuvaus, kuvaus_en, hinta, kuva, varastomäärä) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->execute([$nimi, $nimi_en, $kuvaus, $kuvaus_en, $hinta, $imagePath, $varastomäärä]);
 
                     $tuote_id = $pdo->lastInsertId();  // hae viimeksi laitettu ID
 
@@ -143,8 +143,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="hinta">Tuotteen Hinta (€):</label>
             <input type="number" id="hinta" name="hinta" step="0.01" required>
 
-            <label for="varastomaara">Varastomaara:</label>
-            <input type="number" id="varastomaara" name="varastomaara" step="1.00" required>
+            <label for="varastomäärä">varastomäärä:</label>
+            <input type="number" id="varastomäärä" name="varastomäärä" step="1.00" required>
 
             <h2>Valitse kategoria</h2>
             <div id="kategoriat">
