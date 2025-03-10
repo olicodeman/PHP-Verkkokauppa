@@ -10,10 +10,10 @@ try {
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 } catch (PDOException $e) {
-    die('Tietokantayhteyden muodostaminen epÃ¤onnistui: ' . $e->getMessage());
+    die('Tietokantayhteyden muodostaminen epäonnistui: ' . $e->getMessage());
 }
 
-// Haetaan tuotteet pudotusvalikon tÃ¤yttÃ¤miseksi
+// Haetaan tuotteet pudotusvalikon täyttämiseksi
 try {
     $stmt = $pdo->prepare("SELECT id, nimi FROM tuotteet");
     $stmt->execute();
@@ -57,7 +57,7 @@ if ($product_id) {
     }
 }
 
-// LisÃ¤tty uusi osio tÃ¤hdenarvostelun suodatukselle
+// Lisätty uusi osio tähdenarvostelun suodatukselle
 $rating_filter = isset($_GET['rating_filter']) ? $_GET['rating_filter'] : null;
 
 try {
@@ -70,10 +70,10 @@ try {
 
     // Suodatetaan arvostelun mukaan
     if ($rating_filter) {
-        $query .= " AND tÃ¤htiarvostelu = :rating_filter";
+        $query .= " AND tähtiarvostelu = :rating_filter";
     }
 
-    // Suodatetaan kielen mukaaan
+    // Suodatetaan kielen mukaan
     if ($lang_filter) {
         $query .= " AND kieli = :lang_filter";
     }
@@ -261,7 +261,7 @@ $products = $stmt->fetchAll();
             border-radius: 5px;
         }
 
-        /* TÃ¤hdille css */
+        /* Tähdille css */
         .star-filter {
             text-align: center;
             margin-bottom: 20px;
@@ -342,22 +342,22 @@ $products = $stmt->fetchAll();
     <div class="review-container">
         <h1><?= $current_lang['AllReviews']; ?></h1>
 
-        <!-- TÃ¤htiarvostelujenmukaan suodatus-->
+        <!-- Tähdinarvostelujen mukaan suodatus-->
         <div class="star-filter">
             <form method="GET" action="index.php">
                 <input type="hidden" name="page" value="arvosteluSivu">
                 <label><?= $current_lang['FilterStar']; ?></label>
                 <div class="star-rating">
                     <input type="radio" id="star5" name="rating_filter" value="5" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '5' ? 'checked' : '' ?>>
-                    <label for="star5">â˜…</label>
+                    <label for="star5">★</label>
                     <input type="radio" id="star4" name="rating_filter" value="4" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '4' ? 'checked' : '' ?>>
-                    <label for="star4">â˜…</label>
+                    <label for="star4">★</label>
                     <input type="radio" id="star3" name="rating_filter" value="3" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '3' ? 'checked' : '' ?>>
-                    <label for="star3">â˜…</label>
+                    <label for="star3">★</label>
                     <input type="radio" id="star2" name="rating_filter" value="2" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '2' ? 'checked' : '' ?>>
-                    <label for="star2">â˜…</label>
+                    <label for="star2">★</label>
                     <input type="radio" id="star1" name="rating_filter" value="1" <?= isset($_GET['rating_filter']) && $_GET['rating_filter'] == '1' ? 'checked' : '' ?>>
-                    <label for="star1">â˜…</label>
+                    <label for="star1">★</label>
                 </div>
                 <button type="submit"><?= $current_lang['Search']; ?></button>
             </form>
@@ -375,8 +375,6 @@ $products = $stmt->fetchAll();
             </button>
         </form>
 
-
-
         <!-- Suodatus tuotteen mukaan -->
         <div class="product-filter">
             <form method="GET" action="index.php">
@@ -388,11 +386,11 @@ $products = $stmt->fetchAll();
                     <?php foreach ($products as $product): ?>
                         <option value="<?= $product['id'] ?>" <?= $product['id'] == $product_id ? 'selected' : '' ?>>
                             <?= htmlspecialchars($product['nimi']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <button type="submit"><?= $current_lang['Search']; ?></button>
-            </form>
+                            </option>
+        <?php endforeach; ?>
+        </select>
+        <button type="submit"><?= $current_lang['Search']; ?></button>
+        </form>
         </div>
 
         <!-- Tuotteen tiedot-->
@@ -400,10 +398,10 @@ $products = $stmt->fetchAll();
             <div class="product-details">
                 <h2>
                     <?php
-                    if ($_SESSION['lang'] == 'en') {  // Jos kieli on englanti
-                        echo htmlspecialchars($product_details['nimi_en']);  // Englannin kielinen tuotteen nimi
+                    if ($_SESSION['lang'] == 'en') {  // If language is English
+                        echo htmlspecialchars($product_details['nimi_en']);  // English product name
                     } else {
-                        echo htmlspecialchars($product_details['nimi']);  // Suomen kielinen tuotteen nimi
+                        echo htmlspecialchars($product_details['nimi']);  // Finnish product name
                     }
                     ?>
                 </h2>
@@ -412,27 +410,27 @@ $products = $stmt->fetchAll();
                     alt="<?= htmlspecialchars($_SESSION['lang'] == 'en' ? $product_details['nimi_en'] : $product_details['nimi']) ?>">
                 <p>
                     <?php
-                    if ($_SESSION['lang'] == 'en') {  //Jos kilei on englanti
-                        echo htmlspecialchars($product_details['kuvaus_en']);  // Englanniksi tuotteen tiedot
+                    if ($_SESSION['lang'] == 'en') {  // If language is English
+                        echo htmlspecialchars($product_details['kuvaus_en']);  // English product description
                     } else {
-                        echo htmlspecialchars($product_details['kuvaus']);  // Suomeksi tuotteen tiedot
+                        echo htmlspecialchars($product_details['kuvaus']);  // Finnish product description
                     }
                     ?>
                 </p>
                 <!-- Hinta-->
-                <p><?= $current_lang['price']; ?>     <?= number_format($product_details['hinta'], 2) ?></p>
+                <p><?= $current_lang['price']; ?> <?= number_format($product_details['hinta'], 2) ?></p>
             </div>
         <?php endif; ?>
 
-        <!-- Linkki arvostelun lisÃ¤Ã¤miseen-->
+        <!-- Linkki arvostelun lisäämiseen-->
         <a class="edit-btn" href="index.php?page=lisaaArvostelu">
             <?= $current_lang['leaveReview']; ?></a>
 
-        <!-- NÃ¤ytetÃ¤Ã¤n arvostelut-->
+        <!-- Näytetään arvostelut-->
         <?php if (empty($reviews)): ?>
             <h3><?= $current_lang['no_reviews']; ?><?= $current_lang['give_review']; ?>
                 <!-- Arvostelun antaminen-->
-                <a href="index.php?page=lisaaArvostelu">TÃ¤stÃ¤</a>
+                <a href="index.php?page=lisaaArvostelu">Täältä</a>
             </h3>
         <?php else: ?>
             <?php foreach ($reviews as $review): ?>
@@ -446,15 +444,15 @@ $products = $stmt->fetchAll();
                             <img src="kuvat/englantilippu.png" alt="English" class="lang-icon">
                         <?php endif; ?>
                     </h3>
-                    <!-- TÃ¤htiarvostelu-->
+                    <!-- Tähdillä arviointi-->
                     <p class="rating">Arvostelu:
                         <?php
                         for ($i = 1; $i <= 5; $i++) {
-                            echo ($i <= $review['tÃ¤htiarvostelu']) ? 'â˜…' : 'â˜†';
+                            echo ($i <= $review['tähtiarvostelu']) ? '★' : '☆';
                         }
                         ?>
                     </p>
-                    <!-- Arvostelun Kommentti, otsikko, kirjoittaja ja julkaisu aika-->
+                    <!-- Arvostelun kommentti, otsikko, kirjoittaja ja julkaisu aika-->
                     <p><?= nl2br(htmlspecialchars($review['kommentti'])) ?></p>
                     <p><em><?= $current_lang['writer']; ?>: <?= htmlspecialchars($review['nimi']) ?>
                             <br>
@@ -462,9 +460,9 @@ $products = $stmt->fetchAll();
                 </div>
             <?php endforeach; ?>
 
-        <?php endif; ?>
+<?php endif; ?>
 
-    </div>
+</div>
 
 </body>
 

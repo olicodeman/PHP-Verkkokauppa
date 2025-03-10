@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errflag = true;
     }
     if($email == '') {
-        $errmsg_arr[] = '<p><b style="color: red;">*</b> SÃ¤hkÃ¶posti puuttuu</p>';
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> Sähköposti puuttuu</p>';
         $errflag = true;
     }
     if($address == '') {
@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errflag = true;
     }
     if($login == '') {
-        $errmsg_arr[] = '<p><b style="color: red;">*</b> KÃ¤yttÃ¤jÃ¤tunnus puuttuu</p>';
+        $errmsg_arr[] = '<p><b style="color: red;">*</b> Käyttäjätunnus puuttuu</p>';
         $errflag = true;
     }
     if($password == '') {
@@ -166,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errflag = true;
     }
     if( strcmp($password, $cpassword) != 0 ) {
-        $errmsg_arr[] = '<p>Salasanat eivÃ¤t ole samoja</p>';
+        $errmsg_arr[] = '<p>Salasanat eivät ole samoja</p>';
         $errflag = true;
     }
 
@@ -176,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_query($link, $qry);
         if($result) {
             if(mysqli_num_rows($result) > 0) {
-                $errmsg_arr[] = '<p style="text-align: center;">Tili tÃ¤llÃ¤ kÃ¤yttÃ¤jÃ¤tunnuksella on jo olemassa.<p>';
+                $errmsg_arr[] = '<p style="text-align: center;">Tili tällä käyttäjätunnuksella on jo olemassa.<p>';
                 $errflag = true;
             }
             @mysqli_free_result($result);

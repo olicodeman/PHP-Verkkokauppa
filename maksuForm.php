@@ -93,11 +93,11 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
             <?php foreach ($cart as $item): ?>
                 <p>
                     <?= htmlspecialchars($item['name']) ?> - 
-                    â‚¬<?= number_format($item['price'], 2) ?> 
+                    €<?= number_format($item['price'], 2) ?> 
                     x <?= $item['quantity'] ?>
                 </p>
             <?php endforeach; ?>
-            <p><?= $current_lang['Total']; ?>: â‚¬<?= number_format($totalPrice, 2) ?></p>
+            <p><?= $current_lang['Total']; ?>: €<?= number_format($totalPrice, 2) ?></p>
         <?php endif; ?>
 
         <div class="profile-content-box">
@@ -110,8 +110,8 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
             <label for="osoite"><?= $current_lang['Address']; ?></label>
             <input class="resize" size="30" id="osoite" type="text" value="<?php echo htmlspecialchars($address);?>" readonly>
 
-            <label for="sÃ¤hkÃ¶posti"><?= $current_lang['Email']; ?></label>
-            <input class="resize" size="30" id="sÃ¤hkÃ¶posti" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?>" readonly>
+            <label for="sähköposti"><?= $current_lang['Email']; ?></label>
+            <input class="resize" size="30" id="sähköposti" type="text" value="<?php echo htmlspecialchars($_SESSION['SESS_EMAIL']);?>" readonly>
 
             <label for="puhelin"><?= $current_lang['PhoneNmb']; ?></label>
             <input class="resize" size="30" id="puhelin" type="text" value="<?php echo htmlspecialchars($phoneNumber);?>" readonly>
@@ -204,14 +204,14 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
         var cvv = document.getElementById('cvv').value;
         var expDate = document.getElementById('expdate').value;
         if (!cardNumber || !cvv || !expDate) {
-            alert('TÃ¤ytÃ¤ kaikki kortin tiedot.');
+            alert('Täytä kaikki kortin tiedot.');
             event.preventDefault();
             return false;
         }
     } else if (paymentMethodSelected.value === 'Lasku') {
         var billingAddress = document.getElementById('lo').value;
         if (document.getElementById('contentOption2').style.display !== 'none' && !billingAddress) {
-            alert('SyÃ¶tÃ¤ laskuosoite.');
+            alert('Syötä laskuosoite.');
             event.preventDefault();
             return false;
         }

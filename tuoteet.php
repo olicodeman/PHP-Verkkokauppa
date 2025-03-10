@@ -77,7 +77,7 @@ $products = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitchen Gadget Tuotesivu</title>
     <style>
-        /* tuote ikkunan mÃ¤Ã¤ritykset*/
+        /* tuote ikkunan määritykset*/
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -96,7 +96,7 @@ $products = $stmt->fetchAll();
             background-color: darkslateblue;
             transition: transform 0.3s, background-color 0.3s;
             padding: 20px;
-            /* LisÃ¤Ã¤ vÃ¤hÃ¤n tilaa ympÃ¤rille */
+            /* Lisää vähän tilaa ympärille */
         }
 
         .product:hover {
@@ -108,7 +108,7 @@ $products = $stmt->fetchAll();
             width: 100%;
             height: auto;
             object-fit: cover;
-            /* Varmistaa, ettÃ¤ kuva tÃ¤yttÃ¤Ã¤ alueen ilman venyttÃ¤mistÃ¤ */
+            /* Varmistaa, että kuva täyttää alueen ilman venyttämistä */
             background-color: slateblue;
         }
 
@@ -246,7 +246,7 @@ $products = $stmt->fetchAll();
             margin-top: 10px;
         }
 
-        /* KeskitetÃ¤Ã¤n mÃ¤Ã¤rÃ¤ */
+        /* Keskitetään määrä */
         .keskita label,
         .keskita input {
             max-width: 50px;
@@ -256,11 +256,11 @@ $products = $stmt->fetchAll();
         .center-align {
             display: flex;
             justify-content: center;
-            /* KeskittÃ¤Ã¤ vaakasuunnassa */
+            /* Keskittää vaakasuunnassa */
             align-items: center;
-            /* KeskittÃ¤Ã¤ pystysuunnassa */
+            /* Keskittää pystysuunnassa */
             margin: 20px 0;
-            /* LisÃ¤Ã¤ tilaa ylÃ¤- ja alapuolelle */
+            /* Lisää tilaa ylä- ja alapuolelle */
         }
 
         .edit-btn {
@@ -354,19 +354,19 @@ form {
                 <!-- Product rating -->
                 <p class="rating">
                     <?php
-                    $rating = round($product['avg_rating']); // PyÃ¶ristetÃ¤Ã¤n lÃ¤himpÃ¤Ã¤n kokonaislukuun
+                    $rating = round($product['avg_rating']); // Pyöristetään lähimpään kokonaislukuun
                     for ($i = 1; $i <= 5; $i++) {
                         if ($i <= $rating) {
-                            echo 'â˜…'; // TÃ¤ytetty tÃ¤hti
+                            echo '★'; // Täytetty tähti
                         } else {
-                            echo 'â˜†'; // TyhjÃ¤ tÃ¤hti
+                            echo '☆'; // Tyhjä tähti
                         }
                     }
                     ?>
                 </p>
 
                 <!-- Product price -->
-                <p class="price">â‚¬<?= number_format($product['hinta'], 2) ?></p>
+                <p class="price">€<?= number_format($product['hinta'], 2) ?></p>
             </div>
         <?php endforeach; ?>
     </div>
@@ -375,20 +375,20 @@ form {
     <!-- Tummennettu tausta -->
     <div class="overlay" id="overlay" onclick="hidePopup()"></div>
     <div class="popup" id="popup">
-        <button type="button" class="close-btn" onclick="hidePopup(event)">Ã—</button>
+        <button type="button" class="close-btn" onclick="hidePopup(event)">X</button>
         <img id="popup-img" src="" alt="Tuotteen kuva">
         <h2 id="popup-title"></h2>
         <p id="popup-description"></p>
         <p id="popup-price"></p>
         <p id="popup-varastomaara"></p>
-        <!-- MÃ¤Ã¤rÃ¤ jota halutaan ostaa -->
+        <!-- Määrä jota halutaan ostaa -->
         <div class="keskita">
             <label for="popup-quantity"><?= $current_lang['quantity']; ?>:</label>
             <input id="popup-quantity" type="number" min="1" value="1" step="1" onchange="updateSelectedQuantity()">
         </div>
-        <!-- Ostoskoriin lisÃ¤Ã¤minen -->
+        <!-- Ostoskoriin lisääminen -->
         <div class="icon">
-            <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="LisÃ¤Ã¤ ostoskoriin"
+            <img src="https://cdn-icons-png.flaticon.com/512/6713/6713719.png" alt="Lisää ostoskoriin"
                 onclick="addToCartFromPopup()">
         </div>
         <div class="center-align">
@@ -430,45 +430,45 @@ form {
         });
     }
 
-            // nÃ¤ytetÃ¤Ã¤n tuote popup
+            // näytetään tuote popup
             function showPopup(id, title, description, imageUrl, price, stock) {
                 // popup yksityiskohdat
                 document.getElementById('popup-title').textContent = title;
                 document.getElementById('popup-description').textContent = description;
                 document.getElementById('popup-img').src = imageUrl;
-                document.getElementById('popup-price').textContent = "<?= $current_lang['price']; ?>: â‚¬" + parseFloat(price).toFixed(2);
+                document.getElementById('popup-price').textContent = "<?= $current_lang['price']; ?>: €" + parseFloat(price).toFixed(2);
                 document.getElementById('popup-varastomaara').textContent = "<?= $current_lang['Stock']; ?>: " + stock + " kpl";
 
-                // Asetetaan tuote ID ostoskoriinlisÃ¤Ã¤mistÃ¤ varten 
+                // Asetetaan tuote ID ostoskoriinlisäämistä varten 
                 document.getElementById('popup').setAttribute('data-product-id', id);
 
-                // Tarkistetaan varasto ja pÃ¤ivitetÃ¤Ã¤n popup sen mukaan 
-                const addToCartIcon = document.querySelector('.popup .icon img'); // LisÃ¤Ã¤ ostoskoriin icon
-                const quantityInput = document.getElementById('popup-quantity'); // MÃ¤Ã¤rÃ¤ joka on asetettu 
+                // Tarkistetaan varasto ja päivitetään popup sen mukaan 
+                const addToCartIcon = document.querySelector('.popup .icon img'); // Lisää ostoskoriin icon
+                const quantityInput = document.getElementById('popup-quantity'); // Määrä joka on asetettu 
                 const quantityLabel = document.querySelector('.keskita label');
 
                 if (stock == 0) {
-                    // Varaston mÃ¤Ã¤rÃ¤ on 0, piilotetaan kohtia jos nÃ¤in
-                    quantityInput.style.display = 'none'; // piilotetaan mÃ¤Ã¤rÃ¤
-                    quantityLabel.style.display = 'none'; // Piilotetaan mÃ¤Ã¤rÃ¤n label
-                    const stockMessageElement = document.getElementById('popup-varastomaara'); // NÃ¤ytetÃ¤Ã¤n varastotyhjÃ¤ viesti
-                    stockMessageElement.innerHTML = `<span style="color: red;">Varasto tyhjÃ¤</span>, tÃ¤ytÃ¤mme sen mahdollisimman pian!`;
+                    // Varaston määrä on 0, piilotetaan kohtia jos näin
+                    quantityInput.style.display = 'none'; // piilotetaan määrä
+                    quantityLabel.style.display = 'none'; // Piilotetaan määrän label
+                    const stockMessageElement = document.getElementById('popup-varastomaara'); // Näytetään varastotyhjä viesti
+                    stockMessageElement.innerHTML = `<span style="color: red;">Varasto tyhjä</span>, täytämme sen mahdollisimman pian!`;
 
 
-                    // Muutetaan kuva ja laitetaan niin ettei sitÃ¤ voida klikata
+                    // Muutetaan kuva ja laitetaan niin ettei sitä voida klikata
                     addToCartIcon.src = "https://img.icons8.com/?size=100&id=7850&format=png&color=FFFFFF"; // muutetaan kuva 
                     addToCartIcon.onclick = null; //Ei voi klikata
                 } else {
-                    // Varastossa on tuote joten nÃ¤ytetÃ¤Ã¤n mÃ¤Ã¤rÃ¤ ja miten paljon asiakas haluaa tilata
-                    quantityInput.style.display = 'block'; // NÃ¤ytetÃ¤Ã¤n mÃ¤Ã¤rÃ¤ jota voidaan valita
-                    quantityLabel.style.display = 'block'; // NÃ¤ytetÃ¤Ã¤n mÃ¤Ã¤rÃ¤
+                    // Varastossa on tuote joten näytetään määrä ja miten paljon asiakas haluaa tilata
+                    quantityInput.style.display = 'block'; // Näytetään määrä jota voidaan valita
+                    quantityLabel.style.display = 'block'; // Näytetään määrä
 
-                    // Muokataan kuva toiminnalliseksi ja laitetaan alkuperÃ¤inen kuva
+                    // Muokataan kuva toiminnalliseksi ja laitetaan alkuperäinen kuva
                     addToCartIcon.src = "https://cdn-icons-png.flaticon.com/512/6713/6713719.png";
                     addToCartIcon.onclick = function () { addToCartFromPopup(); }; // toiminnallinen klikkaus
                 }
 
-                // nÃ¤ytetÃ¤Ã¤n popup ja overlay
+                // näytetään popup ja overlay
                 document.getElementById('popup').classList.add('show');
                 document.getElementById('overlay').classList.add('show');
             }
@@ -485,10 +485,10 @@ form {
                 hidePopup(); // piilotetaan popup kun painetaan poistumista
             });
 
-            //lisÃ¤tÃ¤Ã¤n tuote ostoskoriin popupista
+            //lisätään tuote ostoskoriin popupista
             function addToCartFromPopup() {
                 const title = document.getElementById('popup-title').textContent;
-                const price = document.getElementById('popup-price').textContent.replace('<?= $current_lang['price']; ?>: â‚¬', '');
+                const price = document.getElementById('popup-price').textContent.replace('<?= $current_lang['price']; ?>: €', '');
                 const stock = parseInt(document.getElementById('popup-varastomaara').textContent.replace('<?= $current_lang['Stock']; ?>: ', '').replace(' kpl', ''), 10);
                 const quantity = parseInt(document.getElementById('popup-quantity').value, 10);
                 const productID = document.getElementById('popup').getAttribute('data-product-id');
@@ -523,7 +523,7 @@ form {
                     })
                     .catch(error => {
                         console.error('Virhe:', error);
-                        alert('Yhteysvirhe. YritÃ¤ myÃ¶hemmin uudelleen.');
+                        alert('Yhteysvirhe. Yritä myöhemmin uudelleen.');
                     });
             }
         </script>

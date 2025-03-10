@@ -6,10 +6,10 @@ require 'lang.php';
 
 $current_lang = $lang[$_SESSION['lang']] ?? $lang['en'];  // Default to English
 
-// YhdistetÃ¤Ã¤n tietokantaan
+// Yhdistetään tietokantaan
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
 if ($conn->connect_error) {
-    die("Tietokantayhteys epÃ¤onnistui: " . $conn->connect_error);
+    die("Tietokantayhteys epäonnistui: " . $conn->connect_error);
 }
 
 $message = '';
@@ -18,20 +18,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Haetaan lomaketiedot
     $tuote_id = intval($_POST['tuote_id']); // Ensure tuote_id is passed
     $nimi = $conn->real_escape_string(trim($_POST['nimi']));
-    $sÃ¤hkÃ¶posti = $conn->real_escape_string(trim($_POST['sÃ¤hkÃ¶posti']));
+    $sähköposti = $conn->real_escape_string(trim($_POST['sähköposti']));
     $otsikko = $conn->real_escape_string(trim($_POST['otsikko']));
     $kommentti = $conn->real_escape_string(trim($_POST['kommentti']));
-    $tÃ¤htiarvostelu = intval($_POST['tÃ¤htiarvostelu']);
+    $tähtiarvostelu = intval($_POST['tähtiarvostelu']);
     $kieli = isset($_POST['kieli']) && ($_POST['kieli'] === 'fi' || $_POST['kieli'] === 'en') ? $_POST['kieli'] : 'fi';
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-    // Varmistetaan, ettÃ¤ kaikki tiedot ovat olemassa
-    if (empty($nimi) || empty($sÃ¤hkÃ¶posti) || empty($otsikko) || empty($kommentti) || empty($tÃ¤htiarvostelu) || empty($tuote_id)) {
-        $message = "<div class='message error'>TÃ¤ytÃ¤ kaikki kentÃ¤t.</div>";
+    // Varmistetaan, että kaikki tiedot ovat olemassa
+    if (empty($nimi) || empty($sähköposti) || empty($otsikko) || empty($kommentti) || empty($tähtiarvostelu) || empty($tuote_id)) {
+        $message = "<div class='message error'>Täytä kaikki kentät.</div>";
     } else {
-        // Tarkista, ettÃ¤ tuote_id lÃ¶ytyy tuotteet-taulusta
+        // Tarkista, että tuote_id löytyy tuotteet-taulusta
         $checkProduct = $conn->prepare("SELECT COUNT(*) FROM tuotteet WHERE id = ?");
         $checkProduct->bind_param('i', $tuote_id);
         $checkProduct->execute();
@@ -43,11 +43,11 @@ ini_set('display_errors', 1);
             $message = "<div class='message error'>Virhe: Tuote ei ole olemassa.</div>";
         } else {
             // Tallennetaan arvostelu tietokantaan
-            $sql = "INSERT INTO arvostelut (tuote_id, nimi, sÃ¤hkÃ¶posti, otsikko, kommentti, tÃ¤htiarvostelu, kieli) 
+            $sql = "INSERT INTO arvostelut (tuote_id, nimi, sähköposti, otsikko, kommentti, tähtiarvostelu, kieli) 
         VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             if ($stmt) {
-                $stmt->bind_param('issssis', $tuote_id, $nimi, $sÃ¤hkÃ¶posti, $otsikko, $kommentti, $tÃ¤htiarvostelu, $kieli);
+                $stmt->bind_param('issssis', $tuote_id, $nimi, $sähköposti, $otsikko, $kommentti, $tähtiarvostelu, $kieli);
                 if ($stmt->execute()) {
                     $message = "<div class='message success'>{$current_lang['review_success']}</div>";
                 } else {

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KG KeittiÃ¶vÃ¤lineet</title>
+    <title>KG Keittiövälineet</title>
     <link href="style.css" rel="stylesheet">
 </head>
 <style>
@@ -37,7 +37,7 @@
         transform: scale(1.1);
     }
 
-        /* NÃ¤hdÃ¤Ã¤n ettÃ¤ nappia on painettu */
+        /* Nähdään että nappia on painettu */
     .language-switcher .lang-button.selected {
         border: 2px solid #007bff;
         box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
@@ -49,12 +49,12 @@
         height: 30px;
     }
 
-    /*PidetÃ¤Ã¤n ostoskori oikealla puolella */
+    /*Pidetään ostoskori oikealla puolella */
     .navbar .icon {
         margin-left: auto;
     }
     
-        /* Logon mÃ¤Ã¤ritykset */
+        /* Logon määritykset */
     .company-logo {
     width: 50px; 
     height: auto;
@@ -121,7 +121,7 @@
 //Aloitetaan session
 session_start();
 
-// LiitettÃ¤Ã¤n kÃ¤Ã¤nÃ¶kset
+// Liitettään käännökset
 require 'lang.php';
 
 // Aloituskieli asetetaan englanniksi
@@ -129,23 +129,23 @@ if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'en';
 }
 
-// Muutetaan kieli jos kÃ¤yttÃ¤jÃ¤ valitsee
+// Muutetaan kieli jos käyttäjä valitsee
 if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $lang)) {
     $_SESSION['lang'] = $_GET['lang'];
 }
 
-// PÃ¤ivitetÃ¤Ã¤n kieli
+// Päivitetään kieli
 $current_lang = $lang[$_SESSION['lang']];
 
-// Varmistetaan ettÃ¤ kÃ¤yttÃ¤jÃ¤ on kirjautuneena
+// Varmistetaan että käyttäjä on kirjautuneena
 $IsLoggedIn = $_SESSION['loggedin'] ?? false;
 session_write_close();
 
-// MÃ¤Ã¤ritellÃ¤Ã¤n sivut
+// Määritellään sivut
 $pages = array("etusivu", "profiili", "login-form", "register-form", "logout", "register-success", "tuoteet", "user-edit", "ostoskori", "maksuForm", "lisaaArvostelu", "arvosteluSivu", "submit_review");
 $page = "etusivu";
 
-// Tarkistetaan tÃ¤mÃ¤nhetkinen sivu query parametreillÃ¤
+// Tarkistetaan tämänhetkinen sivu query parametreillä
 if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
     $page = $_GET['page'];
 } else {
@@ -211,7 +211,7 @@ if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
     }
     ?>
 
-    <!-- Navigointi valikkon script toiminta pienellÃ¤ nÃ¤ytÃ¶llÃ¤ -->
+    <!-- Navigointi valikkon script toiminta pienellä näytöllä -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const menuIcon = document.querySelector('.menu-icon');

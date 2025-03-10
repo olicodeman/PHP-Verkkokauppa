@@ -18,7 +18,7 @@ try {
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 } catch (PDOException $e) {
-    //KÃ¤sitellÃ¤Ã¤n mahdollinen tietokanta virhe
+    // Käsitellään mahdollinen tietokanta virhe
     die('Database connection failed: ' . $e->getMessage());
 }
 
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kategoriat_selected = $_POST['kategoriat'];  // Haetaan valitut kategoriat
     $varastomaara = $_POST['varastomaara'];
 
-    //kÃ¤sitellÃ¤Ã¤n kuvan lataaminen
+    // Käsitellään kuvan lataaminen
     if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
         $imageTmpPath = $_FILES['image']['tmp_name'];
         $imageName = $_FILES['image']['name'];
@@ -49,10 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $imageType = $_FILES['image']['type'];
         $imageExtension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
 
-        // Varmistetaan kuvan tiedot ettei ole vÃ¤Ã¤rÃ¤nlaisia
+        // Varmistetaan kuvan tiedot ettei ole vääränlaisia
         $validExtensions = ['jpg', 'jpeg', 'png', 'gif'];
         if (in_array($imageExtension, $validExtensions)) {
-            // SiirretÃ¤Ã¤n kuva uploadeihin
+            // Siirretään kuva uploadeihin
             $uploadDir = 'kuvat/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
@@ -62,14 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $imagePath = $uploadDir . $imageName;
 
             if (move_uploaded_file($imageTmpPath, $imagePath)) {
-                // Kuvan lataaminen onnistui, lisÃ¤Ã¤ tuote tietokantaan
+                // Kuvan lataaminen onnistui, lisää tuote tietokantaan
                 try {
                     $stmt = $pdo->prepare("INSERT INTO tuotteet (nimi, nimi_en, kuvaus, kuvaus_en, hinta, kuva, varastomaara) VALUES (?, ?, ?, ?, ?, ?, ?)");
                     $stmt->execute([$nimi, $nimi_en, $kuvaus, $kuvaus_en, $hinta, $imagePath, $varastomaara]);
 
                     $tuote_id = $pdo->lastInsertId();  // hae viimeksi laitettu ID
 
-                    // LisÃ¤tÃ¤Ã¤n suhteet tuote-kategoiroiden vÃ¤lille jos kategoriat ovat valittu
+                    // Lisätään suhteet tuote-kategorioiden välille, jos kategoriat ovat valittu
                     if (!empty($kategoriat_selected)) {
                         foreach ($kategoriat_selected as $kategoria_id) {
                             $stmt = $pdo->prepare("INSERT INTO tuote_kategoria (tuote_id, kategoria_id) VALUES (?, ?)");
@@ -82,24 +82,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo '<p class="error">Error: ' . $e->getMessage() . '</p>';
                 }
             } else {
-                echo '<p class="error"> Kuvan lataamisessa virhe. YritÃ¤ uudelleen.</p>';
+                echo '<p class="error">Kuvan lataamisessa virhe. Yritä uudelleen.</p>';
             }
         } else {
-            echo '<p class="error"> VÃ¤Ã¤rÃ¤ kuva tyyppi, vain JPG, JPEG, PNG, ja GIF ovat sallittuja.</p>';
+            echo '<p class="error">Väärä kuva tyyppi, vain JPG, JPEG, PNG, ja GIF ovat sallittuja.</p>';
         }
     } else {
-        echo '<p class="error"> Kuvan lataaminen epÃ¤onnistui.</p>';
+        echo '<p class="error">Kuvan lataaminen epäonnistui.</p>';
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LisÃ¤Ã¤ tuote</title>
+    <title>Lisää tuote</title>
     <link href="style.css" rel="stylesheet">
 
     <style>
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .kategoria-nappi.valittu {
             background-color: #4CAF50;
-            /*vihreÃ¤ valitulle kategorialle */
+            /*vihreä valitulle kategorialle */
             color: white;
         }
     </style>
@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <div style="color: white; text-align: center;">
-        <h1>LisÃ¤Ã¤ tuote</h1>
+        <h1>Lisää tuote</h1>
         <a href="admin-panel.php">Back</a> | <a href="index.php?page=logout">Logout</a>
         <form action="" method="POST" enctype="multipart/form-data">
 
@@ -140,8 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="kuvaus_en">Product Description (English):</label>
             <textarea id="kuvaus_en" name="kuvaus_en" rows="4" required></textarea>
 
-
-            <label for="hinta">Tuotteen Hinta (â‚¬):</label>
+            <label for="hinta">Tuotteen Hinta (€):</label>
             <input type="number" id="hinta" name="hinta" step="0.01" required>
 
             <label for="varastomaara">Varastomaara:</label>
@@ -153,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php foreach ($kategoriat as $kategoria): ?>
                         <label>
                             <input type="checkbox" name="kategoriat[]" value="<?= $kategoria['id'] ?>">
-                            <?= htmlspecialchars($kategoria['nimi']) ?>
+                            <?= htmlspecialchars($kategoria['nimi'], ENT_QUOTES, 'UTF-8') ?>
                         </label>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -164,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="image">Tuotteen kuva:</label>
             <input type="file" id="image" name="image" accept="image/*" required>
 
-            <button type="submit">LisÃ¤Ã¤ Tuote</button>
+            <button type="submit">Lisää Tuote</button>
         </form>
 
     </div>

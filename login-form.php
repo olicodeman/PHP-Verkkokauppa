@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$login = clean($link, $_POST['login']);
 	$password = clean($link, $_POST['password']);
 
-	//Tietojen tÃ¤yttÃ¶
+	//Tietojen täyttö
 	if ($login == '') {
 		$errmsg_arr[] = 'Login ID missing';
 		$errflag = true;
@@ -88,9 +88,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				exit();
 			}
 		} else {
-			$_SESSION['message'] = "Kirjautuminen epÃ¤onnistunut";
+			$_SESSION['message'] = "Kirjautuminen epäonnistunut";
 			header("location: index.php?page=login-form");
-			echo "Kirjautuminen epÃ¤onnistunut";
+			echo "Kirjautuminen epäonnistunut";
 			exit();
 		}
 	} else {

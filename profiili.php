@@ -302,7 +302,7 @@ if (isset($_GET['order_id'])) {
                 <tbody>
                     <tr>
                         <td><?php echo htmlspecialchars($orderData['order_id']); ?></td>
-                        <td><?php echo htmlspecialchars($orderData['total_price']); ?> â‚¬</td>
+                        <td><?php echo htmlspecialchars($orderData['total_price']); ?> €</td>
                         <td><?php echo htmlspecialchars($orderData['order_date']); ?></td>
                         <td><?php echo htmlspecialchars($orderData['Maksutapa']); ?></td>
                         <td><?php echo htmlspecialchars($orderData['Toimitustapa']); ?></td>
@@ -325,7 +325,7 @@ if (isset($_GET['order_id'])) {
                         <tr>
                             <td><?php echo htmlspecialchars($product['nimi']); ?></td>
                             <td><?php echo htmlspecialchars($product['quantity']); ?></td>
-                            <td><?php echo htmlspecialchars($product['price']); ?> â‚¬</td>
+                            <td><?php echo htmlspecialchars($product['price']); ?> €</td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
