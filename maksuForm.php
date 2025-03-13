@@ -37,7 +37,7 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 ?>
 
 
-<body>
+
 	<style>@media (max-width: 600px) {
     .resize {
         width: 85%;  
@@ -82,7 +82,6 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 }
 
 </style>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <form id="paymentForm" action="tilausKasittely.php?token=<?= htmlspecialchars($token)?>" method="POST">
     <div style="text-align: center;">
         <h1><?= $current_lang['OrderConfirm']; ?></h1>
@@ -235,5 +234,4 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
   }
   </script>
 
-</body>
 

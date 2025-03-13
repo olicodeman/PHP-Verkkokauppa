@@ -31,12 +31,6 @@ foreach ($cart as $item) {
 // Tallennetaan kokonaishinta sessioon
 $_SESSION['cart_total'] = $totalPrice;
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ostoskori</title>
     <style>
         /* Yleinen tyyli ostoskorille */
@@ -272,9 +266,7 @@ $_SESSION['cart_total'] = $totalPrice;
         }
         }
     </style>
-</head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<body>
+
     <div class="cart">
         <h1><?= $current_lang['Cart']; ?></h1>
         <?php if (empty($cart)): ?>
@@ -381,6 +373,3 @@ $_SESSION['cart_total'] = $totalPrice;
             form.submit();
         }
     </script>
-</body>
-
-</html>

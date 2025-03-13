@@ -113,12 +113,8 @@ $products = $stmt->fetchAll();
 ?>
 
 
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>All Reviews</title>
     <style>
         body {
@@ -336,9 +332,9 @@ $products = $stmt->fetchAll();
             vertical-align: middle;
         }
     </style>
-</head>
 
-<body>
+
+
     <div class="review-container">
         <h1><?= $current_lang['AllReviews']; ?></h1>
 
@@ -464,6 +460,5 @@ $products = $stmt->fetchAll();
 
 </div>
 
-</body>
 
-</html>
+

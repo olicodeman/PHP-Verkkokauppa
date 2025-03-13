@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 </style>
 
-<body>
+
 	<p>&nbsp;</p>
 	<form id="loginForm" name="loginForm" method="post"
 		action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?page=<?php echo htmlspecialchars($_GET['page']); ?>">
@@ -137,4 +137,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			</p>
 		</div>
 	</div>
-</body>

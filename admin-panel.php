@@ -173,6 +173,34 @@ $result4 = mysqli_query($link, $qry);
                     <?php endwhile; ?>
                 </table>
             <?php endif; ?>
+
+            <h3>Tilausmäärä per tuotekategoria</h3>
+            <?php if ($result4 && mysqli_num_rows($result4) > 0): ?>
+                <table border="1" cellpadding="10" cellspacing="5" class="analytictables">
+                    <tr><th>Kategoria</th><th>Tilausmäärä</th></tr>
+                    <?php while ($row = mysqli_fetch_assoc($result4)): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['nimi']) ?></td>
+                            <td><?= htmlspecialchars($row['tilausmaara']) ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </table>
+            <?php endif; ?>
+            
+            <h3>Alhaisen varastosaldon tuotteet</h3>
+            <?php if ($result2 && mysqli_num_rows($result2) > 0): ?>
+                <table border="1" cellpadding="10" cellspacing="5" class="analytictables">
+                    <tr><th>ID</th><th>Nimi</th><th>Varastomäärä</th></tr>
+                    <?php while ($row = mysqli_fetch_assoc($result2)): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['id']) ?></td>
+                            <td><?= htmlspecialchars($row['nimi']) ?></td>
+                            <td style='color: red;'><?= htmlspecialchars($row['varastomäärä']) ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </table>
+            <?php endif; ?>
+
         </div>
     </div>
 

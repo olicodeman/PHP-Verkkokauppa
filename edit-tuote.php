@@ -62,7 +62,7 @@ $stmt->close();
         <h1>Tuotteen muokkaus</h1>
         <a href="admin-panel.php">Takaisin</a> | <a href="index.php?page=logout">Kirjaudu ulos</a>
     </div>
-    <form method="POST" action="edit-tuote.php?id=<?php echo htmlspecialchars($tuote['id']); ?>">
+    <form method="POST" enctype="multipart/form-data" action="edit-tuote.php?id=<?php echo htmlspecialchars($tuote['id']); ?>">
         <label for="name"><b>Nimi: </b></label>
         <input type="text" size="30" name="name" value="<?php echo htmlspecialchars($tuote['nimi']); ?>" required>
         <label for="kuvaus"><b>Kuvaus: </b></label>
@@ -71,6 +71,8 @@ $stmt->close();
         <input type="text" size="30" name="hinta" value="<?php echo htmlspecialchars($tuote['hinta']); ?>" required>
         <label for="varasto"><b>Varastomäärä: </b></label>
         <input type="text" size="30" name="varasto" value="<?php echo htmlspecialchars($tuote['varastomäärä']); ?>" required>
+        <label for="image"><b>Tuotteen kuva: </b></label>
+        <input type="file" id="image" name="image" accept="image/*">
         <br><br>
         <div style="padding-bottom: 10px;">
             <input style="border: none;" class="admin-btn" type="submit" value="Tallenna muutokset">
@@ -92,23 +94,62 @@ $stmt->close();
         $newHinta = test_input($_POST["hinta"]);
         $newMaara = test_input($_POST["varasto"]);
 
-        if ($newName === $tuote['nimi'] && $newKuvaus === $tuote['kuvaus'] && floatval($newHinta) === floatval($tuote['hinta']) && intval($newMaara) === intval($tuote['varastomäärä'])) {
-            $_SESSION['message'] = "<p style='text-align: center;'><b style='color: red;'>Vaihda tietoja tuotteen päivittämiseen.</b></p>";
+        $isUpdated = false;
 
-        } else {
+    // Check if a new image is uploaded
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
+        $imageTmpPath = $_FILES['image']['tmp_name'];
+        $imageName = $_FILES['image']['name'];
+        $imageSize = $_FILES['image']['size'];
+        $imageType = $_FILES['image']['type'];
+        $imageExtension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
+
+        // Validate image extension
+        $validExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+        if (in_array($imageExtension, $validExtensions)) {
+            // Create upload directory if not exists
+            $uploadDir = 'kuvat/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            // Sanitize image name and create path
+            $imageName = preg_replace('/[^a-zA-Z0-9_\.-]/', '_', $imageName);
+            $imagePath = $uploadDir . $imageName;
+
+            // Move uploaded file to target directory
+            if (move_uploaded_file($imageTmpPath, $imagePath)) {
+                $isUpdated = true;
+                $stmt = $link->prepare("UPDATE tuotteet SET nimi = ?, kuvaus = ?, hinta = ?, varastomäärä = ?, kuva = ? WHERE id = ?");
+                $stmt->bind_param('ssdiss', $newName, $newKuvaus, $newHinta, $newMaara, $imagePath, $tuoteID);
+            }
+        }
+    }
+
+    // If no image was uploaded, update the product without changing the image
+    if (!isset($_FILES['image']) || $_FILES['image']['error'] != UPLOAD_ERR_OK) {
+        if ($newName !== $tuote['nimi'] || $newKuvaus !== $tuote['kuvaus'] || floatval($newHinta) !== floatval($tuote['hinta']) || intval($newMaara) !== intval($tuote['varastomäärä'])) {
+            $isUpdated = true;
             $stmt = $link->prepare("UPDATE tuotteet SET nimi = ?, kuvaus = ?, hinta = ?, varastomäärä = ? WHERE id = ?");
             $stmt->bind_param('ssdii', $newName, $newKuvaus, $newHinta, $newMaara, $tuoteID);
-
-            if ($stmt->execute()) {
-                $_SESSION['message'] = "<p style='text-align: center;'><b style='color: green;'>Tuotteen tiedot päivitetty onnistuneesti!</b></p>";
-            } else {
-                $_SESSION['message'] = "<p style='text-align: center;'><b style='color: red;'>Virhe päivitettäessä tuotteen tietoja: <?php echo $stmt->error; ?></b></p>";
-            }
-            $stmt->close();
         }
-        header("Location: edit-tuote.php?id=" . $tuoteID);
-        exit();
     }
+
+    // Check if any product data was actually changed
+    if ($isUpdated) {
+        if ($stmt->execute()) {
+            $_SESSION['message'] = "<p style='text-align: center;'><b style='color: green;'>Tuotteen tiedot päivitetty onnistuneesti!</b></p>";
+        } else {
+            $_SESSION['message'] = "<p style='text-align: center;'><b style='color: red;'>Virhe päivitettäessä tuotteen tietoja.</b></p>";
+        }
+        $stmt->close();
+    } else {
+        $_SESSION['message'] = "<p style='text-align: center;'><b style='color: red;'>Vaihda tietoja tuotteen päivittämiseen.</b></p>";
+    }
+
+    header("Location: edit-tuote.php?id=" . $tuoteID);
+    exit();
+}
 
     function test_input($data)
     {

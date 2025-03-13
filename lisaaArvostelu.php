@@ -30,14 +30,14 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tuote_id = intval($_POST['tuote_id']);
     $nimi = htmlspecialchars(trim($_POST['nimi']), ENT_QUOTES, 'UTF-8');
-    $sahkoposti = htmlspecialchars(trim($_POST['sahkoposti']), ENT_QUOTES, 'UTF-8');
+    $sähköposti = htmlspecialchars(trim($_POST['sähköposti']), ENT_QUOTES, 'UTF-8');
     $otsikko = htmlspecialchars(trim($_POST['otsikko']), ENT_QUOTES, 'UTF-8');
     $kommentti = htmlspecialchars(trim($_POST['kommentti']), ENT_QUOTES, 'UTF-8');
-    $tahtiarvostelu = intval($_POST['tahtiarvostelu']);
+    $tahtiarvostelu = intval($_POST['tähtiarvostelu']);
     $kieli = htmlspecialchars(trim($_POST['kieli']), ENT_QUOTES, 'UTF-8'); // Get selected language
 
     // Tarkistetaan syötetyt asiat
-    if (empty($nimi) || empty($sahkoposti) || empty($otsikko) || empty($kommentti) || empty($tahtiarvostelu) || empty($tuote_id) || empty($kieli)) {
+    if (empty($nimi) || empty($sähköposti) || empty($otsikko) || empty($kommentti) || empty($tahtiarvostelu) || empty($tuote_id) || empty($kieli)) {
         die("Täytä kaikki kentät.");
     }
 
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sql = "INSERT INTO arvostelut (tuote_id, nimi, sähköposti, otsikko, kommentti, tähtiarvostelu, kieli) 
             VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $pdo->prepare($sql);
-    if ($stmt->execute([$tuote_id, $nimi, $sahkoposti, $otsikko, $kommentti, $tahtiarvostelu, $kieli])) {
+    if ($stmt->execute([$tuote_id, $nimi, $sähköposti, $otsikko, $kommentti, $tahtiarvostelu, $kieli])) {
         echo "Arvostelu tallennettu onnistuneesti!";
     } else {
         echo "Virhe tallennettaessa arvostelua.";
@@ -62,12 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
     <title>Leave a Review</title>
     <style>
         body {
@@ -154,9 +152,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 
-</head>
 
-<body>
+
+
     <form action="submit_review.php" method="post">
         <label for="product"><?= htmlspecialchars($current_lang['ChooseProductS'], ENT_QUOTES, 'UTF-8'); ?></label>
         <select name="tuote_id" id="product" onchange="fetchProductDetails(this.value)" required>
@@ -175,8 +173,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="nimi"><?= htmlspecialchars($current_lang['FirstName'], ENT_QUOTES, 'UTF-8'); ?>:</label>
         <input type="text" id="nimi" name="nimi" required>
 
-        <label for="sahkoposti"><?= htmlspecialchars($current_lang['Email'], ENT_QUOTES, 'UTF-8'); ?>:</label>
-        <input type="email" id="sahkoposti" name="sahkoposti" required>
+        <label for="sähköposti"><?= htmlspecialchars($current_lang['Email'], ENT_QUOTES, 'UTF-8'); ?>:</label>
+        <input type="email" id="sähköposti" name="sähköposti" required>
 
         <label for="otsikko"><?= htmlspecialchars($current_lang['review_title'], ENT_QUOTES, 'UTF-8'); ?></label>
         <input type="text" id="otsikko" name="otsikko" required>
@@ -185,15 +183,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <textarea id="kommentti" name="kommentti" required></textarea>
 
         <div class="star-rating">
-            <input type="radio" id="star5" name="tahtiarvostelu" value="5" required>
+            <input type="radio" id="star5" name="tähtiarvostelu" value="5" required>
             <label for="star5">★</label>
-            <input type="radio" id="star4" name="tahtiarvostelu" value="4">
+            <input type="radio" id="star4" name="tähtiarvostelu" value="4">
             <label for="star4">★</label>
-            <input type="radio" id="star3" name="tahtiarvostelu" value="3">
+            <input type="radio" id="star3" name="tähtiarvostelu" value="3">
             <label for="star3">★</label>
-            <input type="radio" id="star2" name="tahtiarvostelu" value="2">
+            <input type="radio" id="star2" name="tähtiarvostelu" value="2">
             <label for="star2">★</label>
-            <input type="radio" id="star1" name="tahtiarvostelu" value="1">
+            <input type="radio" id="star1" name="tähtiarvostelu" value="1">
             <label for="star1">★</label>
         </div>
 
@@ -245,6 +243,3 @@ document.getElementById('product-details').innerHTML = productDetailsHTML;
 
     </script>
     
-</body>
-
-</html>

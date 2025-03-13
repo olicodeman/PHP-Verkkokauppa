@@ -170,6 +170,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errflag = true;
     }
 
+    $hashedpwd = md5($password);
+
     // Check for duplicate login ID
     if($login != '') {
         $qry = "SELECT * FROM members WHERE username='$login'";
@@ -196,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Create INSERT query
-    $qry = "INSERT INTO members(firstname, lastname, email, address, phonenumber, username, password) VALUES('$fname','$lname','$email', '$address', '$number', '$login','".md5($_POST['password'])."')";
+    $qry = "INSERT INTO members(firstname, lastname, email, address, phonenumber, username, password) VALUES('$fname','$lname','$email', '$address', '$number', '$login','$hashedpwd')";
     $result = @mysqli_query($link, $qry);
 
     // Check whether the query was successful or not

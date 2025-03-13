@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 10.03.2025 klo 12:33
+-- Generation Time: 13.03.2025 klo 09:24
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -273,7 +273,7 @@ CREATE TABLE `tuotteet` (
 INSERT INTO `tuotteet` (`id`, `nimi`, `nimi_en`, `kuvaus`, `kuvaus_en`, `hinta`, `kuva`, `varastomäärä`) VALUES
 (26, 'Blenderi', 'Blender', 'Vain sileitä smoothieita!', 'For smooth smoothies only!', 500.00, 'kuvat/blender.jpg', 4),
 (27, 'Uuni', 'Oven', 'Uuni jolla saat täyteläisen ja rapean tuloksen!', 'Oven that gives you a full and crisp result!', 1500.00, 'kuvat/uuni.png', 6),
-(28, 'mikroaaltouuni', 'Microwave', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 'Warm up your food fast and efficient!', 600.00, 'kuvat/mikroaaltouuni.jpg', 1),
+(28, 'mikroaaltouuni', 'Microwave', 'Lämmitä ruokasi nopeaa ja tehokkaasti!', 'Warm up your food fast and efficient!', 600.00, 'kuvat/mikroaaltouuni.jpg', 3),
 (29, 'Sauvasekoitin', 'Immersion blender', 'Tehokas sauvasekoitin jolla saat sileän sekä paukuttoman sopan!', 'Efficient immersion blender that gives you a smooth and spotless result!', 85.00, 'kuvat/sauvasekoitin.jpg', 5),
 (31, 'Aterin setti', 'Stainless Steel Cutlery Set', 'Ruostumaton teräs aterin setti. 10 kpl jokaista. Isot lusikat, pienet lusikat, haarukat, sekä veitset.', 'Stainless steel cutlery set. 10 pieces of each. Large spoons, small spoons, forks, and knives.', 50.00, 'kuvat/aterinsetti.jpg', 8),
 (32, 'Aterin setti', 'Silver Cutlery Set', 'Hopeinen aterin setti. 5 kpl jokaista. Pienet lusikat, isot lusikat, haarukat ja veitset.', 'Silver cutlery set. 5 pieces of each. Small spoons, large spoons, forks, and knives.', 50.00, 'kuvat/HopeinenAterinsetti.jpg', 10),
@@ -344,7 +344,7 @@ ALTER TABLE `tuotteet`
 -- AUTO_INCREMENT for table `arvostelut`
 --
 ALTER TABLE `arvostelut`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `kategoriat`
@@ -356,7 +356,7 @@ ALTER TABLE `kategoriat`
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tilaukset`

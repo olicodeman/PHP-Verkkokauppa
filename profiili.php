@@ -228,8 +228,6 @@ if (isset($_GET['order_id'])) {
     }
     }
 </style>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<body>
 <div style="text-align: center;">
     <h1><?= $current_lang['Welcome']; ?> <?php echo htmlspecialchars($_SESSION['SESS_FIRST_NAME']);?></h1>
     <a href="index.php?page=logout"><?= $current_lang['logout']; ?></a>
@@ -346,6 +344,3 @@ if (isset($_GET['order_id'])) {
     }
     </script>
 <?php endif; ?>
-
-</body>
-</html>

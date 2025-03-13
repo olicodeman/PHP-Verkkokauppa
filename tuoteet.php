@@ -69,13 +69,7 @@ $products = $stmt->fetchAll();
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitchen Gadget Tuotesivu</title>
     <style>
         /* tuote ikkunan määritykset*/
         .product-grid {
@@ -308,7 +302,7 @@ form {
     }
 }
     </style>
-</head>
+
 <script>
     function showDetails(name, description) {
         document.getElementById('product-details').innerHTML = `
@@ -318,7 +312,7 @@ form {
     }
 </script>
 
-<body>
+
     <h1 style="text-align: center;"><?= $current_lang['WelcomeProducts']; ?></h1>
     <br>
     <div class="search-bar-container">
