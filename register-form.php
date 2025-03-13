@@ -19,41 +19,7 @@ if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count
     unset($_SESSION['ERRMSG_ARR']);
 }
 ?>
-<style>
-@media (max-width: 1200px) {
-    form {
-        max-width: 100%;
-        margin-left: 0%;
-    }
 
-    /* Stack input fields by making them full-width */
-    table {
-        width: 100%;
-    }
-
-    table tr {
-        display: block;
-        width: 100%;
-    }
-
-    table th, 
-    table td {
-        display: block;
-        width: 100%;
-        text-align: left;
-    }
-
-    input {
-        width: 350px;
-    }
-    input[type="submit"] {
-        font-size: 14px;   /* Smaller text */
-        padding: 8px;      /* Smaller padding */
-        width: auto;       /* Let the button be smaller based on content */
-        margin-top: 10px;  /* Ensure space above */
-    }
-}
-</style>
 <form id="loginForm" name="loginForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?page=<?php echo htmlspecialchars($_GET['page']); ?>">
   <table width="300" border="0" align="center" cellpadding="5" cellspacing="5">
     <tr>

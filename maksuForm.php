@@ -38,50 +38,7 @@ $totalPrice = $_SESSION['cart_total'] ?? 0;
 
 
 
-	<style>@media (max-width: 600px) {
-    .resize {
-        width: 85%;  
-        font-size: 14px;
-        padding: 8px;
-    }
-    #lo, #crdnmb {
-        width: 85% !important;
-    }
-}
 
-@media (max-width: 400px) {
-    .resize {
-        width: 90%;
-        font-size: 12px;
-        padding: 6px;
-    }
-    #lo, #crdnmb {
-        width: 90% !important;
-    }
-}
-
-@media (max-width: 500px) {
-    form {
-        width: 600px;
-        padding: 10px;
-    }
-}
-
-@media (max-width: 400px) {
-    form {
-        width: 95%;
-    }
-}.hidden {
-    display: none;
-}
-
-@media (max-width: 600px) {
-    #contentOption1, #contentOption2 {
-        width: 100%;
-    }
-}
-
-</style>
 <form id="paymentForm" action="tilausKasittely.php?token=<?= htmlspecialchars($token)?>" method="POST">
     <div style="text-align: center;">
         <h1><?= $current_lang['OrderConfirm']; ?></h1>

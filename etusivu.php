@@ -50,179 +50,6 @@ if ($result && $result->num_rows > 0) {
 }
 $conn->close();
 ?>
-<style>
-    .popup {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-        background: #2d2d66;
-        color: white;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        max-width: 400px;
-        width: 90%;
-        padding: 20px;
-        text-align: center;
-    }
-
-    .popup img {
-        width: 100%;
-        height: auto;
-        border-radius: 5px;
-    }
-
-    .popup h4,
-    .popup p {
-        margin: 10px 0;
-    }
-
-    .overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 999;
-    }
-
-    .show {
-        display: block;
-    }
-
-    .product:hover {
-        transform: scale(1.05);
-        background-color: darkcyan;
-    }
-
-    .product {
-        border: 1px solid white;
-        padding: 10px;
-        border-radius: 5px;
-        width: 200px;
-        text-align: left;
-        background-color: darkslateblue;
-        cursor: pointer;
-        transition: transform 0.3s, background-color 0.3s;
-    }
-
-    .keskita {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    .keskita label,
-    .keskita input {
-        max-width: 50px;
-        width: 100%;
-    }
-
-   /* General styles for reviews container */
-.reviews-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-    padding: 20px 0;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Review card styles */
-.review {
-    background-color: #2d2d66;
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: left;
-    flex: 1 1 30%;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-}
-
-/* Review title */
-.review h4 {
-    color: gold;
-    margin: 0;
-}
-
-/* Review text and styling */
-.review p {
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-/* Review date styling */
-.review em {
-    color: #bbb;
-}
-
-/* Adjust layout for smaller screens */
-@media (max-width: 768px) {
-    .reviews-container {
-        justify-content: center;
-    }
-
-    /* For screens smaller than 768px, make each review take up more space */
-    .review {
-        flex: 1 1 100%; /* Make each review take full width */
-        margin-bottom: 20px;
-    }
-}
-
-/* Further adjustment for very small screens like mobile phones (max-width: 480px) */
-@media (max-width: 480px) {
-    .reviews-container {
-        padding: 10px;
-    }
-
-    .review {
-        padding: 15px;
-        font-size: 13px; /* Adjust text size for readability */
-    }
-
-    .review h4 {
-        font-size: 16px; /* Slightly smaller title */
-    }
-}
-
-    .center-align {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 20px 0;
-    }
-
-    .edit-btn {
-        margin-right: 10px;
-        background-color: #4545a6;
-        color: white;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-    }
-
-    .edit-btn:hover {
-        background-color: rgb(85, 85, 145);
-    }
-
-    .KG {
-        width: 300px;
-    }
-</style>
 
 <div style="text-align: center; color: white;">
     <br> <br>
@@ -235,7 +62,7 @@ $conn->close();
         <a style="margin-right: 10px;" id="login-btn" class="edit-btn" href="index.php?page=login-form">
             <?= $current_lang['login']; ?>
         </a>
-        <a class="edit-btn" id="register-btn" href="index.php?page=register-form">
+        <a class="edit-btn" href="index.php?page=register-form">
             <?= $current_lang['register']; ?>
         </a>
     <?php endif; ?>
@@ -299,12 +126,12 @@ $conn->close();
     
     <!-- Arvostelun lisäys nappi -->
     <div class="center-align">
-        <a class="edit-btn" id="register-btn" href="index.php?page=lisaaArvostelu">
+        <a class="edit-btn" href="index.php?page=lisaaArvostelu">
             <?= $current_lang['leaveReview']; ?></a>
 
     <!-- Arviostelujen lukemis nappi -->
         <div class="center-align">
-            <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">
+            <a class="edit-btn" href="index.php?page=arvosteluSivu">
                 <?= $current_lang['read_reviews']; ?></a>
         </div>
         </a>
@@ -317,7 +144,7 @@ $conn->close();
 
     <a class="edit-btn" href="index.php?page=lisaaArvostelu">
         <?= $current_lang['leaveReview']; ?></a>
-    <a class="edit-btn" id="register-btn" href="index.php?page=arvosteluSivu">
+    <a class="edit-btn" href="index.php?page=arvosteluSivu">
         <?= $current_lang['read_reviews']; ?></a>
     <div class="reviews-container">
         <?php if (!empty($reviews)): ?>

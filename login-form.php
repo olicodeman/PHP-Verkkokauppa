@@ -100,14 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 }
 ?>
-<style>
-	@media (max-width: 480px) {
-		form {
-			max-width: 100%;
-			margin-left: 0%;
-		}
-	}
-</style>
+
 
 
 	<p>&nbsp;</p>

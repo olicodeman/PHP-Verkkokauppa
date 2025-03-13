@@ -181,7 +181,7 @@ $conn->close();
             <?php if (!empty($message))
                 echo $message; ?>
             < <div class="center-align">
-                <a class="exciting-text" id="register-btn" href="index.php?page=arvosteluSivu">
+                <a class="exciting-text" href="index.php?page=arvosteluSivu">
                     <?= $current_lang['read_reviews']; ?></a>
         </div>
         <br><br>

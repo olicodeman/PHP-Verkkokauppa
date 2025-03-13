@@ -5,7 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KG Keittiövälineet</title>
+
     <link href="style.css" rel="stylesheet">
+
+    <?php
+    // Dynamically load page-specific CSS if it exists
+    $page = isset($_GET['page']) ? $_GET['page'] : 'etusivu';  // Default to 'etusivu'
+    $cssFile = "dynamicCss/" . $page . ".css";  
+
+    // Check if the page-specific CSS file exists in the dynamicCss folder
+    if (file_exists($cssFile)) {
+        echo '<link rel="stylesheet" href="' . $cssFile . '">';
+    }
+    ?>
 </head>
 <style>
     /* Kielen vaihto form */
@@ -169,7 +181,9 @@ if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
             <li><a href="index.php?page=login-form" class="<?= ($page == 'login-form') ? 'active' : '' ?>"><?= $current_lang['login']; ?></a></li>
             <li><a href="index.php?page=register-form" class="<?= ($page == 'register-form') ? 'active' : '' ?>"><?= $current_lang['register']; ?></a></li>
         <?php endif; ?>
-        
+
+        </ul>
+
         <!-- Kielen vaihto-->
         <form method="get" class="language-switcher">
             <input type="hidden" name="page" value="<?= $_GET['page'] ?? 'etusivu'; ?>"> 
@@ -182,8 +196,6 @@ if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
                 <img src="kuvat/suomenlippu.png" alt="Suomi" class="lang-icon">
             </button>
         </form>
-
-        </ul>
         <div class="nav-right">
 
         <!-- Ostoskori -->
@@ -204,7 +216,7 @@ if (isset($_GET['page']) && in_array($_GET['page'], $pages)) {
     if (isset($_GET['page']))
         $page = $_GET['page'];
 
-    if (in_array($page, $pages)) {
+    if (in_array($page, $pages) && file_exists($page . ".php")) {
         include($page . ".php");
     } else {
         include("error.php");
