@@ -6,9 +6,7 @@ require_once('auth.php');
 require_once('config.php');
 require_once('lang.php');
 
-// Define the language code from the session or default to 'en'
-$langCode = $_SESSION['langCode'] ?? 'en'; // Default to 'en' if not set in session
-$current_lang = $lang[$langCode] ?? $lang['en']; // Default to 'en' if language is not found
+$lang = $_SESSION['lang'] ?? 'fi'; // Suomi oletuskielenä
 
 $cart = $_SESSION['cart'] ?? [];
 $totalPrice = $_SESSION['cart_total'] ?? 0;
