@@ -11,7 +11,7 @@
     <?php
     // Dynamically load page-specific CSS if it exists
     $page = isset($_GET['page']) ? $_GET['page'] : 'etusivu';  // Default to 'etusivu'
-    $cssFile = "dynamicCss/" . $page . ".css";  
+    $cssFile = "DynamicCss/" . $page . ".css";  
 
     // Check if the page-specific CSS file exists in the dynamicCss folder
     if (file_exists($cssFile)) {
